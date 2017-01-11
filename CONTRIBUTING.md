@@ -1,25 +1,4 @@
-# Time-Based Uni-Directional Attestation
-
-This is the working area for the Individual internet-draft, "Time-Based Uni-Directional Attestation".
-
-* [Editor's copy](https://henkbirkholz.github.io/draft-birkholz-tuda/)
-* [Individual Draft] (https://tools.ietf.org/html/draft-birkholz-tuda)
-* [Compare Individual Draft and Editor's copy] (https://tools.ietf.org/rfcdiff?url1=https://tools.ietf.org/id/draft-birkholz-tuda.txt&url2=https://henkbirkholz.github.io/draft-birkholz-tuda/draft-birkholz-tuda.txt)
-
-
-## Building the Draft
-
-Formatted text and HTML versions of the draft can be built using `make`.
-
-```sh
-$ make
-```
-
-This requires that you have the necessary software installed.  See [the
-instructions](https://github.com/martinthomson/i-d-template/blob/master/doc/SETUP.md).
-
-
-## Contributing
+# Contributing
 
 Before submitting feedback, please familiarize yourself with our current issues
 list and review the [working group
