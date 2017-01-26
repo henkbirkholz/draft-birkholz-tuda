@@ -69,21 +69,7 @@ informative:
     date: 2002-12
   I-D.greevenbosch-appsawg-cbor-cddl: cddl
   I-D.vanderstok-core-comi: comi
-  I-D-birkholz-sacm-coswid:
-    -: coswid
-    title: Concise Software Identifiers
-    date: 2016-03-21
-    seriesinfo:
-      Internet-Draft: draft-birkholz-sacm-coswid-01
-    author:
-    - ins: H. Birkholz
-      name: Henk Birkholz
-    - ins: J. Fitzgerald-McKay
-      name: Jessica Fitzgerald-McKay
-    - ins: C. Schmidt
-      name: Charles Schmidt
-    - ins: D. Waltermire
-      name: David Waltermire
+  I-D.ietf-sacm-coswid: coswid
   SCALE:
     title: Improving Scalability for Remote Attestation
     author:
@@ -362,13 +348,14 @@ platform configuration at a certain point in time:
 
 TSA Certificate:
 
-:  The certificate of the Time Stamp Authority that is used in a subsequent synchronization
+: The certificate of the Time Stamp Authority that is used in a subsequent synchronization
   protocol token. This certificate is signed by the TSA-CA.
 
-AIK Certificate ({{AIK-Credential}}, {{AIK-Enrollment}}; see {{aik}}):
+AIK Certificate:
 
-:  A certificate about the Attestation Identity Key (AIK) used. This may or may not
+: A certificate about the Attestation Identity Key (AIK) used. This may or may not
   also be an {{IEEE802.1AR}} IDevID or LDevID, depending on their setting of the corresponding identity property.
+  ({{AIK-Credential}}, {{AIK-Enrollment}}; see {{aik}}.)
 
 Synchronization Token:
 
