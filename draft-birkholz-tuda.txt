@@ -438,9 +438,9 @@ Internet-Draft                    tuda                      January 2017
       used in a subsequent synchronization protocol token.  This
       certificate is signed by the TSA-CA.
 
-   AIK Certificate (<xref target="AIK-Credential"/>, <xref target="AIK-
-   Enrollment"/>; see <xref target="aik"/>):
-
+   AIK Certificate:  A certificate about the Attestation Identity Key
+      (AIK) used.  This may or may not also be an [IEEE802.1AR] IDevID
+      or LDevID, depending on their setting of the corresponding
 
 
 
@@ -450,9 +450,8 @@ Fuchs, et al.             Expires July 15, 2017                 [Page 8]
 Internet-Draft                    tuda                      January 2017
 
 
-      A certificate about the Attestation Identity Key (AIK) used.  This
-      may or may not also be an [IEEE802.1AR] IDevID or LDevID,
-      depending on their setting of the corresponding identity property.
+      identity property.  ([AIK-Credential], [AIK-Enrollment]; see
+      Appendix D.2.1.)
 
    Synchronization Token:  The reference for Attestations are the Tick-
       Sessions of the TPM.  In order to put Attestations into relation
@@ -497,7 +496,8 @@ Internet-Draft                    tuda                      January 2017
       log.  References hashes regarding installed (and therefore
       running) software can be provided by the manufacturer via SWID
       tags.  SWID tags are provided by the Attestee using the Concise
-      SWID representation [I-D-birkholz-sacm-coswid] and bundled into a
+      SWID representation [I-D.ietf-sacm-coswid] and bundled into a CBOR
+
 
 
 
@@ -506,8 +506,8 @@ Fuchs, et al.             Expires July 15, 2017                 [Page 9]
 Internet-Draft                    tuda                      January 2017
 
 
-      CBOR array.  Ideally, the reference hashes include a signature
-      created by the manufacturer of the software.
+      array.  Ideally, the reference hashes include a signature created
+      by the manufacturer of the software.
 
    These information elements could be sent en bloc, but it is
    recommended to retrieve them separately to save bandwidth, since
@@ -706,11 +706,6 @@ Internet-Draft                    tuda                      January 2017
               <https://www.trustedcomputinggroup.org/wp-content/uploads/
               IWG_CMC_Profile_Cert_Enrollment_v1_r7.pdf>.
 
-   [I-D-birkholz-sacm-coswid]
-              Birkholz, H., Fitzgerald-McKay, J., Schmidt, C., and D.
-              Waltermire, "Concise Software Identifiers", draft-
-              birkholz-sacm-coswid-01 (work in progress), March 2016.
-
    [I-D.greevenbosch-appsawg-cbor-cddl]
               Vigano, C. and H. Birkholz, "CBOR data definition language
               (CDDL): a notational convention to express CBOR data
@@ -722,6 +717,11 @@ Internet-Draft                    tuda                      January 2017
               Protocol", draft-ietf-netconf-restconf-18 (work in
               progress), October 2016.
 
+   [I-D.ietf-sacm-coswid]
+              Birkholz, H., Fitzgerald-McKay, J., Schmidt, C., and D.
+              Waltermire, "Concise Software Identifiers", draft-ietf-
+              sacm-coswid-00 (work in progress), January 2017.
+
 
 
 
@@ -732,8 +732,8 @@ Internet-Draft                    tuda                      January 2017
 
    [I-D.vanderstok-core-comi]
               Stok, P., Bierman, A., Veillette, M., and A. Pelov, "CoAP
-              Management Interface", draft-vanderstok-core-comi-10 (work
-              in progress), October 2016.
+              Management Interface", draft-vanderstok-core-comi-11 (work
+              in progress), January 2017.
 
    [IEEE1609]
               IEEE Computer Society, "1609.4-2016 - IEEE Standard for
@@ -985,9 +985,9 @@ B.2.  Relationship to Host Resources MIB
    device and its associated system.
 
    The SWID Tag group (containing a Concise SWID reference hash profile
-   [I-D-birkholz-sacm-coswid]) in the TUDA MIB is analogous to the
-   Software Installed and Software Running groups in the Host Resources
-   MIB [RFC2790].
+   [I-D.ietf-sacm-coswid]) in the TUDA MIB is analogous to the Software
+   Installed and Software Running groups in the Host Resources MIB
+   [RFC2790].
 
 B.3.  Relationship to Entity MIB
 

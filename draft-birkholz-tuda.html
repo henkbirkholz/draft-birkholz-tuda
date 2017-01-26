@@ -587,8 +587,8 @@ address {
 <dl>
   <dt>TSA Certificate:</dt>
   <dd style="margin-left: 8">The certificate of the Time Stamp Authority that is used in a subsequent synchronization protocol token. This certificate is signed by the TSA-CA.</dd>
-  <dt>AIK Certificate (&lt;xref target="AIK-Credential"/&gt;, &lt;xref target="AIK-Enrollment"/&gt;; see &lt;xref target="aik"/&gt;):</dt>
-  <dd style="margin-left: 8">A certificate about the Attestation Identity Key (AIK) used. This may or may not also be an <a href="#IEEE802.1AR">[IEEE802.1AR]</a> IDevID or LDevID, depending on their setting of the corresponding identity property.</dd>
+  <dt>AIK Certificate:</dt>
+  <dd style="margin-left: 8">A certificate about the Attestation Identity Key (AIK) used. This may or may not also be an <a href="#IEEE802.1AR">[IEEE802.1AR]</a> IDevID or LDevID, depending on their setting of the corresponding identity property.  (<a href="#AIK-Credential">[AIK-Credential]</a>, <a href="#AIK-Enrollment">[AIK-Enrollment]</a>; see <a href="#aik">Appendix D.2.1</a>.)</dd>
   <dt>Synchronization Token:</dt>
   <dd style="margin-left: 8">The reference for Attestations are the Tick-Sessions of the TPM. In order to put Attestations into relation with a Real Time Clock (RTC), it is necessary to provide a cryptographic synchronization between the tick session and the RTC. To do so, a synchronization protocol is run with a Time Stamp Authority (TSA).</dd>
   <dt>Restriction Info:</dt>
@@ -600,7 +600,7 @@ address {
   <dt>Implicit Attestation:</dt>
   <dd style="margin-left: 8">The actual attestation is then based upon a TPM_TickStampBlob operation using the restricted temporary key that was certified in the steps above. The TPM_TickStampBlob is executed and thereby provides evidence that at this point in time (with respect to the TPM internal tick-session) a certain configuration existed (namely the PCR values associated with the restricted key). Together with the synchronization token this tick-related timing can then be related to the real-time clock.</dd>
   <dt>Concise SWID tags:</dt>
-  <dd style="margin-left: 8">As an option to better assess the trustworthiness of an Attestee, a Verifier can request the reference hashes (often referred to as golden measurements) of all started software components to compare them with the entries in the measurement log. References hashes regarding installed (and therefore running) software can be provided by the manufacturer via SWID tags. SWID tags are provided by the Attestee using the Concise SWID representation <a href="#I-D-birkholz-sacm-coswid">[I-D-birkholz-sacm-coswid]</a> and bundled into a CBOR array.  Ideally, the reference hashes include a signature created by the manufacturer of the software.</dd>
+  <dd style="margin-left: 8">As an option to better assess the trustworthiness of an Attestee, a Verifier can request the reference hashes (often referred to as golden measurements) of all started software components to compare them with the entries in the measurement log. References hashes regarding installed (and therefore running) software can be provided by the manufacturer via SWID tags. SWID tags are provided by the Attestee using the Concise SWID representation <a href="#I-D.ietf-sacm-coswid">[I-D.ietf-sacm-coswid]</a> and bundled into a CBOR array.  Ideally, the reference hashes include a signature created by the manufacturer of the software.</dd>
 </dl>
 <p id="rfc.section.3.p.3">These information elements could be sent en bloc, but it is recommended to retrieve them separately to save bandwidth, since these elements have different update cycles. In most cases, retransmitting all seven information elements would result in unnecessary redundancy.</p>
 <p id="rfc.section.3.p.4">Furthermore, in some scenarios it might be feasible not to store all elements on the Attestee endpoint, but instead they could be retrieved from another location or pre-deployed to the Verifier.  It is also feasible to only store public keys at the Verifier and skip the whole certificate provisioning completely in order to save bandwidth and computation time for certificate verification.</p>
@@ -728,12 +728,6 @@ Attestee                                                 Verifier
     </tr>
     <tr>
       <td class="reference">
-        <b id="I-D-birkholz-sacm-coswid">[I-D-birkholz-sacm-coswid]</b>
-      </td>
-      <td class="top"><a>Birkholz, H.</a>, <a>Fitzgerald-McKay, J.</a>, <a>Schmidt, C.</a> and <a>D. Waltermire</a>, "<a href="http://tools.ietf.org/html/draft-birkholz-sacm-coswid-01">Concise Software Identifiers</a>", Internet-Draft draft-birkholz-sacm-coswid-01, March 2016.</td>
-    </tr>
-    <tr>
-      <td class="reference">
         <b id="I-D.greevenbosch-appsawg-cbor-cddl">[I-D.greevenbosch-appsawg-cbor-cddl]</b>
       </td>
       <td class="top"><a>Vigano, C.</a> and <a>H. Birkholz</a>, "<a href="http://tools.ietf.org/html/draft-greevenbosch-appsawg-cbor-cddl-09">CBOR data definition language (CDDL): a notational convention to express CBOR data structures</a>", Internet-Draft draft-greevenbosch-appsawg-cbor-cddl-09, September 2016.</td>
@@ -746,9 +740,15 @@ Attestee                                                 Verifier
     </tr>
     <tr>
       <td class="reference">
+        <b id="I-D.ietf-sacm-coswid">[I-D.ietf-sacm-coswid]</b>
+      </td>
+      <td class="top"><a>Birkholz, H.</a>, <a>Fitzgerald-McKay, J.</a>, <a>Schmidt, C.</a> and <a>D. Waltermire</a>, "<a href="http://tools.ietf.org/html/draft-ietf-sacm-coswid-00">Concise Software Identifiers</a>", Internet-Draft draft-ietf-sacm-coswid-00, January 2017.</td>
+    </tr>
+    <tr>
+      <td class="reference">
         <b id="I-D.vanderstok-core-comi">[I-D.vanderstok-core-comi]</b>
       </td>
-      <td class="top"><a>Stok, P.</a>, <a>Bierman, A.</a>, <a>Veillette, M.</a> and <a>A. Pelov</a>, "<a href="http://tools.ietf.org/html/draft-vanderstok-core-comi-10">CoAP Management Interface</a>", Internet-Draft draft-vanderstok-core-comi-10, October 2016.</td>
+      <td class="top"><a>Stok, P.</a>, <a>Bierman, A.</a>, <a>Veillette, M.</a> and <a>A. Pelov</a>, "<a href="http://tools.ietf.org/html/draft-vanderstok-core-comi-11">CoAP Management Interface</a>", Internet-Draft draft-vanderstok-core-comi-11, January 2017.</td>
     </tr>
     <tr>
       <td class="reference">
@@ -930,7 +930,7 @@ Attestee                                                 Verifier
 <h1 id="rfc.appendix.B.2"><a href="#rfc.appendix.B.2">B.2.</a> <a href="#relationship-to-host-resources-mib" id="relationship-to-host-resources-mib">Relationship to Host Resources MIB</a></h1>
 <p id="rfc.section.B.2.p.1">The General group in the TUDA MIB is analogous to the System group in the Host Resources MIB <a href="#RFC2790">[RFC2790]</a> and provides context information for the TUDA attestation process.</p>
 <p id="rfc.section.B.2.p.2">The Verify Token group in the TUDA MIB is analogous to the Device group in the Host MIB and represents the verifiable state of a TPM device and its associated system.</p>
-<p id="rfc.section.B.2.p.3">The SWID Tag group (containing a Concise SWID reference hash profile <a href="#I-D-birkholz-sacm-coswid">[I-D-birkholz-sacm-coswid]</a>) in the TUDA MIB is analogous to the Software Installed and Software Running groups in the Host Resources MIB <a href="#RFC2790">[RFC2790]</a>.</p>
+<p id="rfc.section.B.2.p.3">The SWID Tag group (containing a Concise SWID reference hash profile <a href="#I-D.ietf-sacm-coswid">[I-D.ietf-sacm-coswid]</a>) in the TUDA MIB is analogous to the Software Installed and Software Running groups in the Host Resources MIB <a href="#RFC2790">[RFC2790]</a>.</p>
 <h1 id="rfc.appendix.B.3"><a href="#rfc.appendix.B.3">B.3.</a> <a href="#relationship-to-entity-mib" id="relationship-to-entity-mib">Relationship to Entity MIB</a></h1>
 <p id="rfc.section.B.3.p.1">The General group in the TUDA MIB is analogous to the Entity General group in the Entity MIB v4 <a href="#RFC6933">[RFC6933]</a> and provides context information for the TUDA attestation process.</p>
 <p id="rfc.section.B.3.p.2">The SWID Tag group in the TUDA MIB is analogous to the Entity Logical group in the Entity MIB v4 <a href="#RFC6933">[RFC6933]</a>.</p>
