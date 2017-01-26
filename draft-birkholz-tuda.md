@@ -190,7 +190,7 @@ This memo documents the method and bindings used to conduct time-based uni-direc
 
 # Introduction
 
-Remote attestation describes the attempt to determine and appraise the properties, such as integrity and trustworthiness, of an endpoint --- the attestee --- over a network to another endpoint --- the verifier --- without direct access. Typically, this kind of assessment is based on measurements of software components running on the attestee, where the hash values of all started software components are stored (extended into) a Trust-Anchor implemented as a Hardware Security Module (e.g. a Trusted Platform Module or similar) and reported via a signature over the
+Remote attestation describes the attempt to determine and appraise properties, such as integrity and trustworthiness, of an endpoint --- the attestee --- over a network to another endpoint --- the verifier --- without direct access. Typically, this kind of assessment is based on measurements of software components running on the attestee, where the hash values of all started software components are stored (extended into) a Trust-Anchor implemented as a Hardware Security Module (e.g. a Trusted Platform Module or similar) and reported via a signature over the
 measurements.
 
 ## Remote Attestation
@@ -214,19 +214,20 @@ remote attestation are usually bi-directional challenge/response protocols, such
 
 The Time-Based Uni-directional Attestation protocol --- TUDA --- described in this document can decouple the three activities remote attestation is composed of. As a result, TUDA provides additional capabilities, such as:
 
-* remote attestation for attestees that might not always be able to reach the Internet by enabling the authentication of past states,
+* remote attestation for attestees that might not always be able to reach the Internet by enabling the verification of past states,
 * secure audit logs by combining the evidence created via TUDA with measurement logs that represent a detailed record of corresponding past states,
-* an uni-directional interaction model that can traverse “diode-like” network security functions or can be leveraged in RESTfull architectures (e.g. CoAP {{-coap}}), analogously.
+* an uni-directional interaction model that can traverse “diode-like” network security functions or can be leveraged in RESTful architectures (e.g. CoAP {{-coap}}), analogously.
 
 ## Attestation and Verification
 
-The attestation activity of TUDA requires a Trusted Platform Module (TPM {{TPM12}}), a specific Hardware Security Module (HSM) providing, e.g., Platform Configuration Registers (PCR), restricted signing keys, and a source of (relative) time (i.e. a tick-counter).
+TUDA packages results from specific attestation and verification protocols.  TUDA is currently instantiated for attestion activity based on a Trusted Platform Module (TPM {{TPM12}}), a specific Hardware Security Module (HSM) providing, e.g., Platform Configuration Registers (PCR), restricted signing keys, and a source of (relative) time (i.e. a tick-counter).
 
-Both the attestation and the verification activity of TUDA require a trusted Time Stamp Authority (TSA) {{RFC3161}} as an additional third party next to the attestee and the verifier. The combination of the local source of time provided by the TPM (located on the attestee) and the Time Stamp Tokens provided by the TSA (to both the attestee and the verifier) enable the attestation and verification of an appropriate freshness of the evidence conveyed by the attestee --- without requiring a challenge/response interaction model that uses a nonce to ensure the freshness.
+Both the attestation and the verification activity of TUDA also require a trusted Time Stamp Authority (TSA) as an additional third party next to the attestee and the verifier.
+The current protocol instantiaton uses a Time Stamp Authority based on {{RFC3161}}. The combination of the local source of time provided by the TPM (located on the attestee) and the Time Stamp Tokens provided by the TSA (to both the attestee and the verifier) enable the attestation and verification of an appropriate freshness of the evidence conveyed by the attestee --- without requiring a challenge/response interaction model that uses a nonce to ensure the freshness.
 
 The verification activity also requires declarative guidance (representing desired or compliant endpoint configuration and state) evidence conveyed by the attestee can be evaluated against. The acquisition or representation of declarative guidance as well as the corresponding evaluation methods are out of the scope of this document.
 
-## Information Elements and Conveyance 
+## Information Elements and Conveyance
 
 TUDA defines a set of information elements (IE) that are created or stored on the attestee and are intended to be transferred to the verifier in order to enable appraisal.
 
