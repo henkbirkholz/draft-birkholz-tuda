@@ -286,10 +286,11 @@ address {
 <link href="#rfc.section.1.6" rel="Chapter" title="1.6 Requirements Notation"/>
 <link href="#rfc.section.2" rel="Chapter" title="2 TUDA Core Concept"/>
 <link href="#rfc.section.2.1" rel="Chapter" title="2.1 Terminology"/>
-<link href="#rfc.section.2.1.1" rel="Chapter" title="2.1.1 Roles"/>
-<link href="#rfc.section.2.1.2" rel="Chapter" title="2.1.2 General Types"/>
-<link href="#rfc.section.2.1.3" rel="Chapter" title="2.1.3 TPM-Specific Terms"/>
-<link href="#rfc.section.2.1.4" rel="Chapter" title="2.1.4 Certificates"/>
+<link href="#rfc.section.2.1.1" rel="Chapter" title="2.1.1 Universal Terms"/>
+<link href="#rfc.section.2.1.2" rel="Chapter" title="2.1.2 Roles"/>
+<link href="#rfc.section.2.1.3" rel="Chapter" title="2.1.3 General Types"/>
+<link href="#rfc.section.2.1.4" rel="Chapter" title="2.1.4 TPM-Specific Terms"/>
+<link href="#rfc.section.2.1.5" rel="Chapter" title="2.1.5 Certificates"/>
 <link href="#rfc.section.3" rel="Chapter" title="3 Time-Based Uni-Directional Attestation"/>
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 TUDA Information Elements Update Cycles"/>
 <link href="#rfc.section.4" rel="Chapter" title="4 IANA Considerations"/>
@@ -414,10 +415,11 @@ address {
 <li>1.6.   <a href="#rfc.section.1.6">Requirements Notation</a></li>
 </ul><li>2.   <a href="#rfc.section.2">TUDA Core Concept</a></li>
 <ul><li>2.1.   <a href="#rfc.section.2.1">Terminology</a></li>
-<ul><li>2.1.1.   <a href="#rfc.section.2.1.1">Roles</a></li>
-<li>2.1.2.   <a href="#rfc.section.2.1.2">General Types</a></li>
-<li>2.1.3.   <a href="#rfc.section.2.1.3">TPM-Specific Terms</a></li>
-<li>2.1.4.   <a href="#rfc.section.2.1.4">Certificates</a></li>
+<ul><li>2.1.1.   <a href="#rfc.section.2.1.1">Universal Terms</a></li>
+<li>2.1.2.   <a href="#rfc.section.2.1.2">Roles</a></li>
+<li>2.1.3.   <a href="#rfc.section.2.1.3">General Types</a></li>
+<li>2.1.4.   <a href="#rfc.section.2.1.4">TPM-Specific Terms</a></li>
+<li>2.1.5.   <a href="#rfc.section.2.1.5">Certificates</a></li>
 </ul></ul><li>3.   <a href="#rfc.section.3">Time-Based Uni-Directional Attestation</a></li>
 <ul><li>3.1.   <a href="#rfc.section.3.1">TUDA Information Elements Update Cycles</a></li>
 </ul><li>4.   <a href="#rfc.section.4">IANA Considerations</a></li>
@@ -498,7 +500,7 @@ address {
   <li>increase the confidence in authentication and authorization procedures,</li>
   <li>address the requirements of constrained-node networks,</li>
   <li>support interaction models that do not maintain connection-state over time, such as REST architectures <a href="#REST">[REST]</a>,</li>
-  <li>be able to leverage existing management interfaces, such as SNMP <a href="#RFC3411">[RFC3411]</a>. RESTCONF <a href="#I-D.ietf-netconf-restconf">[I-D.ietf-netconf-restconf]</a> or CoMI <a href="#I-D.vanderstok-core-comi">[I-D.vanderstok-core-comi]</a> &#8212; and corresponding bindings,</li>
+  <li>be able to leverage existing management interfaces, such as SNMP <a href="#RFC3411">[RFC3411]</a>. RESTCONF <a href="#RFC8040">[RFC8040]</a> or CoMI <a href="#I-D.vanderstok-core-comi">[I-D.vanderstok-core-comi]</a> &#8212; and corresponding bindings,</li>
   <li>support broadcast and multicast schemes (e.g. <a href="#IEEE1609">[IEEE1609]</a>),</li>
   <li>be able to cope with temporary loss of connectivity, and to</li>
   <li>provide trustworthy audit logs of past endpoint states.</li>
@@ -540,18 +542,45 @@ address {
 <p><a href="#tpm12">Appendix D</a> contains a realization of TUDA using TPM 1.2 primitives.  A realization of TUDA using TPM 2.0 primitives will be added with the next iteration of this document.</p>
 <h1 id="rfc.section.2.1"><a href="#rfc.section.2.1">2.1.</a> <a href="#terminology" id="terminology">Terminology</a></h1>
 <p id="rfc.section.2.1.p.1">This document introduces roles, information elements and types required to conduct TUDA and uses terminology (e.g. specific certificate names) typically seen in the context of attestation or hardware security modules.</p>
-<h1 id="rfc.section.2.1.1"><a href="#rfc.section.2.1.1">2.1.1.</a> <a href="#roles" id="roles">Roles</a></h1>
+<h1 id="rfc.section.2.1.1"><a href="#rfc.section.2.1.1">2.1.1.</a> <a href="#universal-terms" id="universal-terms">Universal Terms</a></h1>
+<p/>
+
+<dl>
+  <dt>Attestation Identity Key (AIK):</dt>
+  <dd style="margin-left: 8">a special purpose signature (therefore asymmetric) key that supports identity related operations. The private portion of the key pair is maintained confidential to the entity via appropriate measures (that have an impact on the scope of confidence). The public portion of the key pair may be included in AIK credentials that provide a claim about the entity.</dd>
+  <dt>Claim:</dt>
+  <dd style="margin-left: 8">an attribute value pair that is intended to be related to a statement <a href="#I-D.ietf-sacm-terminology">[I-D.ietf-sacm-terminology]</a>.</dd>
+  <dt>Endpoint Attestation:</dt>
+  <dd style="margin-left: 8">the creation of evidence on the attestee that provides proof of a set of the endpoints's integrity measurements. This is done by digitally signing a set of PCRs using an AIK in the TPM.</dd>
+  <dt>Endpoint Characteristics:</dt>
+  <dd style="margin-left: 8">the composition, configuration and state of an endpoint.</dd>
+  <dt>Evidence:</dt>
+  <dd style="margin-left: 8">a trustworthy set of claims about an endpoint's characteristics.</dd>
+  <dt>Identity:</dt>
+  <dd style="margin-left: 8">a set of claims that is intended to be related to an entity.</dd>
+  <dt>Integrity Measurements:</dt>
+  <dd style="margin-left: 8">Metrics of endpoint characteristics (i.e. composition, configuration and state) that affect the confidence in the trustworthiness of an endpoint. Digests of integrity measurements can be stored in shielded locations (i.e. PCR of a TPM).</dd>
+  <dt>Reference Integrity Measurements:</dt>
+  <dd style="margin-left: 8">Signed measurements about the characteristics of an endpoint's characteristics that are provided by a vendor and are intended to be used as declarative guidance <a href="#I-D.ietf-sacm-terminology">[I-D.ietf-sacm-terminology]</a> (e.g. a signed CoSWID).</dd>
+  <dt>Trustworthy:</dt>
+  <dd style="margin-left: 8">the qualities of an endpoint that guarantee a specific behavior and/or endpoint characteristics defined by declarative guidance.  Analogously, trustworthiness is the quality of being trustworthy with respect to declarative guidance.  Trustworthiness is not an absolute property but defined with respect to an entity, corresponding declarative guidance, and has a scope of confidence.</dd>
+  <dt></dt>
+  <dd style="margin-left: 8">Trustworthy Endpoint: an endpoint that guarantees trustworthy behavior and/or composition (with respect to certain declarative guidance and a scope of confidence).</dd>
+  <dt></dt>
+  <dd style="margin-left: 8">Trustworthy Statement: evidence that is trustworthy conveyed by an endpoint that is not necessarily trustworthy.</dd>
+</dl>
+<h1 id="rfc.section.2.1.2"><a href="#rfc.section.2.1.2">2.1.2.</a> <a href="#roles" id="roles">Roles</a></h1>
 <p/>
 
 <dl>
   <dt>Attestee:</dt>
   <dd style="margin-left: 8">the endpoint that is the subject of the attestation to another endpoint.</dd>
   <dt>Verifier:</dt>
-  <dd style="margin-left: 8">the endpoint that consumes the attestation of another endpoint.</dd>
+  <dd style="margin-left: 8">the endpoint that consumes the attestation of another endpoint to conduct a verification.</dd>
   <dt>TSA:</dt>
   <dd style="margin-left: 8">a Time Stamp Authority <a href="#RFC3161">[RFC3161]</a></dd>
 </dl>
-<h1 id="rfc.section.2.1.2"><a href="#rfc.section.2.1.2">2.1.2.</a> <a href="#general-types" id="general-types">General Types</a></h1>
+<h1 id="rfc.section.2.1.3"><a href="#rfc.section.2.1.3">2.1.3.</a> <a href="#general-types" id="general-types">General Types</a></h1>
 <p/>
 
 <dl>
@@ -559,19 +588,17 @@ address {
   <dd style="margin-left: 8">the now customary synonym for octet</dd>
   <dt>Cert:</dt>
   <dd style="margin-left: 8">an X.509 certificate represented as a byte-string</dd>
-  <dt>PCR-Hash:</dt>
-  <dd style="margin-left: 8">a hash value of the security posture measurements stored in a TPM Platform Configuration Register (e.g. regarding running software instances) represented as a byte-string</dd>
 </dl>
-<h1 id="rfc.section.2.1.3"><a href="#rfc.section.2.1.3">2.1.3.</a> <a href="#tpm-specific-terms" id="tpm-specific-terms">TPM-Specific Terms</a></h1>
+<h1 id="rfc.section.2.1.4"><a href="#rfc.section.2.1.4">2.1.4.</a> <a href="#tpm-specific-terms" id="tpm-specific-terms">TPM-Specific Terms</a></h1>
 <p/>
 
 <dl>
-  <dt>AIK:</dt>
-  <dd style="margin-left: 8">an Attestation Identity Key, a special key type used within a TPM for identity-related operations (such as TPM_Certify or TPM_Quote)</dd>
   <dt>PCR:</dt>
   <dd style="margin-left: 8">a Platform Configuration Register that is part of a TPM and is used to securely store and report measurements about security posture</dd>
+  <dt>PCR-Hash:</dt>
+  <dd style="margin-left: 8">a hash value of the security posture measurements stored in a TPM PCR (e.g. regarding running software instances) represented as a byte-string</dd>
 </dl>
-<h1 id="rfc.section.2.1.4"><a href="#rfc.section.2.1.4">2.1.4.</a> <a href="#certificates" id="certificates">Certificates</a></h1>
+<h1 id="rfc.section.2.1.5"><a href="#rfc.section.2.1.5">2.1.5.</a> <a href="#certificates" id="certificates">Certificates</a></h1>
 <p/>
 
 <dl>
@@ -734,15 +761,15 @@ Attestee                                                 Verifier
     </tr>
     <tr>
       <td class="reference">
-        <b id="I-D.ietf-netconf-restconf">[I-D.ietf-netconf-restconf]</b>
+        <b id="I-D.ietf-sacm-coswid">[I-D.ietf-sacm-coswid]</b>
       </td>
-      <td class="top"><a>Bierman, A.</a>, <a>Bjorklund, M.</a> and <a>K. Watsen</a>, "<a href="http://tools.ietf.org/html/draft-ietf-netconf-restconf-18">RESTCONF Protocol</a>", Internet-Draft draft-ietf-netconf-restconf-18, October 2016.</td>
+      <td class="top"><a>Birkholz, H.</a>, <a>Fitzgerald-McKay, J.</a>, <a>Schmidt, C.</a> and <a>D. Waltermire</a>, "<a href="http://tools.ietf.org/html/draft-ietf-sacm-coswid-01">Concise Software Identifiers</a>", Internet-Draft draft-ietf-sacm-coswid-01, February 2017.</td>
     </tr>
     <tr>
       <td class="reference">
-        <b id="I-D.ietf-sacm-coswid">[I-D.ietf-sacm-coswid]</b>
+        <b id="I-D.ietf-sacm-terminology">[I-D.ietf-sacm-terminology]</b>
       </td>
-      <td class="top"><a>Birkholz, H.</a>, <a>Fitzgerald-McKay, J.</a>, <a>Schmidt, C.</a> and <a>D. Waltermire</a>, "<a href="http://tools.ietf.org/html/draft-ietf-sacm-coswid-00">Concise Software Identifiers</a>", Internet-Draft draft-ietf-sacm-coswid-00, January 2017.</td>
+      <td class="top"><a>Birkholz, H.</a>, <a>Lu, J.</a>, <a>Strassner, J.</a> and <a>N. Cam-Winget</a>, "<a href="http://tools.ietf.org/html/draft-ietf-sacm-terminology-11">Secure Automation and Continuous Monitoring (SACM) Terminology</a>", Internet-Draft draft-ietf-sacm-terminology-11, September 2016.</td>
     </tr>
     <tr>
       <td class="reference">
@@ -854,6 +881,12 @@ Attestee                                                 Verifier
     </tr>
     <tr>
       <td class="reference">
+        <b id="RFC8040">[RFC8040]</b>
+      </td>
+      <td class="top"><a>Bierman, A.</a>, <a>Bjorklund, M.</a> and <a>K. Watsen</a>, "<a href="http://tools.ietf.org/html/rfc8040">RESTCONF Protocol</a>", RFC 8040, DOI 10.17487/RFC8040, January 2017.</td>
+    </tr>
+    <tr>
+      <td class="reference">
         <b id="SCALE">[SCALE]</b>
       </td>
       <td class="top"><a>Fuchs, A.</a>, "<a>Improving Scalability for Remote Attestation</a>", Master Thesis (Diplomarbeit), Technische Universitaet Darmstadt, Germany, 2008.</td>
@@ -875,7 +908,7 @@ Attestee                                                 Verifier
   </tbody>
 </table>
 <h1 id="rfc.appendix.A"><a href="#rfc.appendix.A">Appendix A.</a> <a href="#rest" id="rest">REST Realization</a></h1>
-<p id="rfc.section.A.p.1">Each of the seven data items is defined as a media type (<a href="#iana">Section 4</a>).  Representations of resources for each of these media types can be retrieved from URIs that are defined by the respective servers <a href="#RFC7320">[RFC7320]</a>.  As can be derived from the URI, the actual retrieval is via one of the HTTPs (<a href="#RFC7230">[RFC7230]</a>, <a href="#RFC7540">[RFC7540]</a>) or CoAP <a href="#RFC7252">[RFC7252]</a>.  How a client obtains these URIs is dependent on the application; e.g., CoRE Web links <a href="#RFC6690">[RFC6690]</a> can be used to obtain the relevant URIs from the self-description of a server, or they could be prescribed by a RESTCONF data model <a href="#I-D.ietf-netconf-restconf">[I-D.ietf-netconf-restconf]</a>.</p>
+<p id="rfc.section.A.p.1">Each of the seven data items is defined as a media type (<a href="#iana">Section 4</a>).  Representations of resources for each of these media types can be retrieved from URIs that are defined by the respective servers <a href="#RFC7320">[RFC7320]</a>.  As can be derived from the URI, the actual retrieval is via one of the HTTPs (<a href="#RFC7230">[RFC7230]</a>, <a href="#RFC7540">[RFC7540]</a>) or CoAP <a href="#RFC7252">[RFC7252]</a>.  How a client obtains these URIs is dependent on the application; e.g., CoRE Web links <a href="#RFC6690">[RFC6690]</a> can be used to obtain the relevant URIs from the self-description of a server, or they could be prescribed by a RESTCONF data model <a href="#RFC8040">[RFC8040]</a>.</p>
 <h1 id="rfc.appendix.B"><a href="#rfc.appendix.B">Appendix B.</a> <a href="#snmp" id="snmp">SNMP Realization</a></h1>
 <p id="rfc.section.B.p.1">SNMPv3 <a href="#STD62">[STD62]</a> <a href="#RFC3411">[RFC3411]</a> is widely available on computers and also constrained devices.  To transport the TUDA information elements, an SNMP MIB is defined below which encodes each of the seven TUDA information elements into a table.  Each row in a table contains a single read-only columnar SNMP object of datatype OCTET-STRING.  The values of a set of rows in each table can be concatenated to reconstitute a CBOR-encoded TUDA information element.  The Verifier can retrieve the values for each CBOR fragment by using SNMP GetNext requests to "walk" each table and can decode each of the CBOR-encoded data items based on the corresponding CDDL <a href="#I-D.greevenbosch-appsawg-cbor-cddl">[I-D.greevenbosch-appsawg-cbor-cddl]</a> definition.</p>
 <p id="rfc.section.B.p.2">Design Principles:</p>

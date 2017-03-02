@@ -72,40 +72,40 @@ Table of Contents
      1.6.  Requirements Notation . . . . . . . . . . . . . . . . . .   6
    2.  TUDA Core Concept . . . . . . . . . . . . . . . . . . . . . .   6
      2.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   7
-       2.1.1.  Roles . . . . . . . . . . . . . . . . . . . . . . . .   7
-       2.1.2.  General Types . . . . . . . . . . . . . . . . . . . .   8
-       2.1.3.  TPM-Specific Terms  . . . . . . . . . . . . . . . . .   8
-       2.1.4.  Certificates  . . . . . . . . . . . . . . . . . . . .   8
-   3.  Time-Based Uni-Directional Attestation  . . . . . . . . . . .   8
-     3.1.  TUDA Information Elements Update Cycles . . . . . . . . .  10
-   4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  12
-   5.  Security Considerations . . . . . . . . . . . . . . . . . . .  12
-   6.  Change Log  . . . . . . . . . . . . . . . . . . . . . . . . .  12
-   7.  Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  13
-   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  13
-     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  13
-     8.2.  Informative References  . . . . . . . . . . . . . . . . .  13
-   Appendix A.  REST Realization . . . . . . . . . . . . . . . . . .  16
-   Appendix B.  SNMP Realization . . . . . . . . . . . . . . . . . .  16
-     B.1.  Structure of TUDA MIB . . . . . . . . . . . . . . . . . .  17
-       B.1.1.  Cycle Index . . . . . . . . . . . . . . . . . . . . .  17
-       B.1.2.  Instance Index  . . . . . . . . . . . . . . . . . . .  18
-       B.1.3.  Fragment Index  . . . . . . . . . . . . . . . . . . .  18
-     B.2.  Relationship to Host Resources MIB  . . . . . . . . . . .  18
-     B.3.  Relationship to Entity MIB  . . . . . . . . . . . . . . .  18
-     B.4.  Relationship to Other MIBs  . . . . . . . . . . . . . . .  19
-     B.5.  Definition of TUDA MIB  . . . . . . . . . . . . . . . . .  19
-   Appendix C.  YANG Realization . . . . . . . . . . . . . . . . . .  34
-   Appendix D.  Realization with TPM 1.2 functions . . . . . . . . .  35
-     D.1.  TPM Functions . . . . . . . . . . . . . . . . . . . . . .  35
-       D.1.1.  Tick-Session and Tick-Stamp . . . . . . . . . . . . .  35
-       D.1.2.  Platform Configuration Registers (PCRs) . . . . . . .  35
-       D.1.3.  PCR restricted Keys . . . . . . . . . . . . . . . . .  36
-       D.1.4.  CertifyInfo . . . . . . . . . . . . . . . . . . . . .  36
-     D.2.  Protocol and Procedure  . . . . . . . . . . . . . . . . .  36
-       D.2.1.  AIK and AIK Certificate . . . . . . . . . . . . . . .  36
-       D.2.2.  Synchronization Token . . . . . . . . . . . . . . . .  37
-       D.2.3.  RestrictionInfo . . . . . . . . . . . . . . . . . . .  39
+       2.1.1.  Universal Terms . . . . . . . . . . . . . . . . . . .   7
+       2.1.2.  Roles . . . . . . . . . . . . . . . . . . . . . . . .   8
+       2.1.3.  General Types . . . . . . . . . . . . . . . . . . . .   9
+       2.1.4.  TPM-Specific Terms  . . . . . . . . . . . . . . . . .   9
+       2.1.5.  Certificates  . . . . . . . . . . . . . . . . . . . .   9
+   3.  Time-Based Uni-Directional Attestation  . . . . . . . . . . .   9
+     3.1.  TUDA Information Elements Update Cycles . . . . . . . . .  11
+   4.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  13
+   5.  Security Considerations . . . . . . . . . . . . . . . . . . .  13
+   6.  Change Log  . . . . . . . . . . . . . . . . . . . . . . . . .  13
+   7.  Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  14
+   8.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  14
+     8.1.  Normative References  . . . . . . . . . . . . . . . . . .  14
+     8.2.  Informative References  . . . . . . . . . . . . . . . . .  14
+   Appendix A.  REST Realization . . . . . . . . . . . . . . . . . .  17
+   Appendix B.  SNMP Realization . . . . . . . . . . . . . . . . . .  17
+     B.1.  Structure of TUDA MIB . . . . . . . . . . . . . . . . . .  18
+       B.1.1.  Cycle Index . . . . . . . . . . . . . . . . . . . . .  18
+       B.1.2.  Instance Index  . . . . . . . . . . . . . . . . . . .  19
+       B.1.3.  Fragment Index  . . . . . . . . . . . . . . . . . . .  19
+     B.2.  Relationship to Host Resources MIB  . . . . . . . . . . .  19
+     B.3.  Relationship to Entity MIB  . . . . . . . . . . . . . . .  19
+     B.4.  Relationship to Other MIBs  . . . . . . . . . . . . . . .  20
+     B.5.  Definition of TUDA MIB  . . . . . . . . . . . . . . . . .  20
+   Appendix C.  YANG Realization . . . . . . . . . . . . . . . . . .  35
+   Appendix D.  Realization with TPM 1.2 functions . . . . . . . . .  36
+     D.1.  TPM Functions . . . . . . . . . . . . . . . . . . . . . .  36
+       D.1.1.  Tick-Session and Tick-Stamp . . . . . . . . . . . . .  36
+       D.1.2.  Platform Configuration Registers (PCRs) . . . . . . .  36
+       D.1.3.  PCR restricted Keys . . . . . . . . . . . . . . . . .  37
+       D.1.4.  CertifyInfo . . . . . . . . . . . . . . . . . . . . .  37
+     D.2.  Protocol and Procedure  . . . . . . . . . . . . . . . . .  37
+       D.2.1.  AIK and AIK Certificate . . . . . . . . . . . . . . .  37
+       D.2.2.  Synchronization Token . . . . . . . . . . . . . . . .  38
 
 
 
@@ -114,11 +114,12 @@ Fuchs, et al.             Expires July 15, 2017                 [Page 2]
 Internet-Draft                    tuda                      January 2017
 
 
-       D.2.4.  Measurement Log . . . . . . . . . . . . . . . . . . .  41
-       D.2.5.  Implicit Attestation  . . . . . . . . . . . . . . . .  42
-       D.2.6.  Attestation Verification Approach . . . . . . . . . .  43
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  45
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  45
+       D.2.3.  RestrictionInfo . . . . . . . . . . . . . . . . . . .  40
+       D.2.4.  Measurement Log . . . . . . . . . . . . . . . . . . .  42
+       D.2.5.  Implicit Attestation  . . . . . . . . . . . . . . . .  43
+       D.2.6.  Attestation Verification Approach . . . . . . . . . .  44
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  46
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  46
 
 1.  Introduction
 
@@ -160,7 +161,6 @@ Internet-Draft                    tuda                      January 2017
    described in this document can decouple the three activities remote
    attestation is composed of.  As a result, TUDA provides additional
    capabilities, such as:
-
 
 
 
@@ -255,8 +255,8 @@ Internet-Draft                    tuda                      January 2017
       over time, such as REST architectures [REST],
 
    o  be able to leverage existing management interfaces, such as SNMP
-      [RFC3411].  RESTCONF [I-D.ietf-netconf-restconf] or CoMI
-      [I-D.vanderstok-core-comi] -- and corresponding bindings,
+      [RFC3411].  RESTCONF [RFC8040] or CoMI [I-D.vanderstok-core-comi]
+      -- and corresponding bindings,
 
    o  support broadcast and multicast schemes (e.g.  [IEEE1609]),
 
@@ -375,15 +375,15 @@ Internet-Draft                    tuda                      January 2017
    certificate names) typically seen in the context of attestation or
    hardware security modules.
 
-2.1.1.  Roles
+2.1.1.  Universal Terms
 
-   Attestee:  the endpoint that is the subject of the attestation to
-      another endpoint.
-
-   Verifier:  the endpoint that consumes the attestation of another
-      endpoint.
-
-   TSA:  a Time Stamp Authority [RFC3161]
+   Attestation Identity Key (AIK):  a special purpose signature
+      (therefore asymmetric) key that supports identity related
+      operations.  The private portion of the key pair is maintained
+      confidential to the entity via appropriate measures (that have an
+      impact on the scope of confidence).  The public portion of the key
+      pair may be included in AIK credentials that provide a claim about
+      the entity.
 
 
 
@@ -394,27 +394,84 @@ Fuchs, et al.             Expires July 15, 2017                 [Page 7]
 Internet-Draft                    tuda                      January 2017
 
 
-2.1.2.  General Types
+   Claim:  an attribute value pair that is intended to be related to a
+      statement [I-D.ietf-sacm-terminology].
+
+   Endpoint Attestation:  the creation of evidence on the attestee that
+      provides proof of a set of the endpoints's integrity measurements.
+      This is done by digitally signing a set of PCRs using an AIK in
+      the TPM.
+
+   Endpoint Characteristics:  the composition, configuration and state
+      of an endpoint.
+
+   Evidence:  a trustworthy set of claims about an endpoint's
+      characteristics.
+
+   Identity:  a set of claims that is intended to be related to an
+      entity.
+
+   Integrity Measurements:  Metrics of endpoint characteristics (i.e.
+      composition, configuration and state) that affect the confidence
+      in the trustworthiness of an endpoint.  Digests of integrity
+      measurements can be stored in shielded locations (i.e.  PCR of a
+      TPM).
+
+   Reference Integrity Measurements:  Signed measurements about the
+      characteristics of an endpoint's characteristics that are provided
+      by a vendor and are intended to be used as declarative guidance
+      [I-D.ietf-sacm-terminology] (e.g. a signed CoSWID).
+
+   Trustworthy:  the qualities of an endpoint that guarantee a specific
+      behavior and/or endpoint characteristics defined by declarative
+      guidance.  Analogously, trustworthiness is the quality of being
+      trustworthy with respect to declarative guidance.  Trustworthiness
+      is not an absolute property but defined with respect to an entity,
+      corresponding declarative guidance, and has a scope of confidence.
+
+      Trustworthy Endpoint: an endpoint that guarantees trustworthy
+      behavior and/or composition (with respect to certain declarative
+      guidance and a scope of confidence).
+
+      Trustworthy Statement: evidence that is trustworthy conveyed by an
+      endpoint that is not necessarily trustworthy.
+
+2.1.2.  Roles
+
+   Attestee:  the endpoint that is the subject of the attestation to
+      another endpoint.
+
+
+
+
+
+Fuchs, et al.             Expires July 15, 2017                 [Page 8]
+
+Internet-Draft                    tuda                      January 2017
+
+
+   Verifier:  the endpoint that consumes the attestation of another
+      endpoint to conduct a verification.
+
+   TSA:  a Time Stamp Authority [RFC3161]
+
+2.1.3.  General Types
 
    Byte:  the now customary synonym for octet
 
    Cert:  an X.509 certificate represented as a byte-string
 
-   PCR-Hash:  a hash value of the security posture measurements stored
-      in a TPM Platform Configuration Register (e.g. regarding running
-      software instances) represented as a byte-string
-
-2.1.3.  TPM-Specific Terms
-
-   AIK:  an Attestation Identity Key, a special key type used within a
-      TPM for identity-related operations (such as TPM_Certify or
-      TPM_Quote)
+2.1.4.  TPM-Specific Terms
 
    PCR:  a Platform Configuration Register that is part of a TPM and is
       used to securely store and report measurements about security
       posture
 
-2.1.4.  Certificates
+   PCR-Hash:  a hash value of the security posture measurements stored
+      in a TPM PCR (e.g. regarding running software instances)
+      represented as a byte-string
+
+2.1.5.  Certificates
 
    TSA-CA:  the Certificate Authority that provides the certificate for
       the TSA represented as a Cert
@@ -444,8 +501,7 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-
-Fuchs, et al.             Expires July 15, 2017                 [Page 8]
+Fuchs, et al.             Expires July 15, 2017                 [Page 9]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -501,7 +557,7 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                 [Page 9]
+Fuchs, et al.             Expires July 15, 2017                [Page 10]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -557,7 +613,7 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 10]
+Fuchs, et al.             Expires July 15, 2017                [Page 11]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -613,7 +669,7 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 11]
+Fuchs, et al.             Expires July 15, 2017                [Page 12]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -669,7 +725,7 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 12]
+Fuchs, et al.             Expires July 15, 2017                [Page 13]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -712,20 +768,20 @@ Internet-Draft                    tuda                      January 2017
               structures", draft-greevenbosch-appsawg-cbor-cddl-09 (work
               in progress), September 2016.
 
-   [I-D.ietf-netconf-restconf]
-              Bierman, A., Bjorklund, M., and K. Watsen, "RESTCONF
-              Protocol", draft-ietf-netconf-restconf-18 (work in
-              progress), October 2016.
-
    [I-D.ietf-sacm-coswid]
               Birkholz, H., Fitzgerald-McKay, J., Schmidt, C., and D.
               Waltermire, "Concise Software Identifiers", draft-ietf-
-              sacm-coswid-00 (work in progress), January 2017.
+              sacm-coswid-01 (work in progress), February 2017.
+
+   [I-D.ietf-sacm-terminology]
+              Birkholz, H., Lu, J., Strassner, J., and N. Cam-Winget,
+              "Secure Automation and Continuous Monitoring (SACM)
+              Terminology", draft-ietf-sacm-terminology-11 (work in
+              progress), September 2016.
 
 
 
-
-Fuchs, et al.             Expires July 15, 2017                [Page 13]
+Fuchs, et al.             Expires July 15, 2017                [Page 14]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -781,7 +837,7 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 14]
+Fuchs, et al.             Expires July 15, 2017                [Page 15]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -829,18 +885,22 @@ Internet-Draft                    tuda                      January 2017
               DOI 10.17487/RFC7540, May 2015,
               <http://www.rfc-editor.org/info/rfc7540>.
 
-   [SCALE]    Fuchs, A., "Improving Scalability for Remote Attestation",
-              Master Thesis (Diplomarbeit), Technische Universitaet
-              Darmstadt, Germany, 2008.
+   [RFC8040]  Bierman, A., Bjorklund, M., and K. Watsen, "RESTCONF
+              Protocol", RFC 8040, DOI 10.17487/RFC8040, January 2017,
+              <http://www.rfc-editor.org/info/rfc8040>.
 
 
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 15]
+Fuchs, et al.             Expires July 15, 2017                [Page 16]
 
 Internet-Draft                    tuda                      January 2017
 
+
+   [SCALE]    Fuchs, A., "Improving Scalability for Remote Attestation",
+              Master Thesis (Diplomarbeit), Technische Universitaet
+              Darmstadt, Germany, 2008.
 
    [SFKE2008]
               Stumpf, F., Fuchs, A., Katzenbeisser, S., and C. Eckert,
@@ -869,7 +929,7 @@ Appendix A.  REST Realization
    client obtains these URIs is dependent on the application; e.g., CoRE
    Web links [RFC6690] can be used to obtain the relevant URIs from the
    self-description of a server, or they could be prescribed by a
-   RESTCONF data model [I-D.ietf-netconf-restconf].
+   RESTCONF data model [RFC8040].
 
 Appendix B.  SNMP Realization
 
@@ -887,17 +947,16 @@ Appendix B.  SNMP Realization
 
    Design Principles:
 
-   1.  Over time, TUDA attestation values age and should no longer be
-       used.  Every table in the TUDA MIB has a primary index with the
-       value of a separate scalar cycle counter object that
 
 
-
-Fuchs, et al.             Expires July 15, 2017                [Page 16]
+Fuchs, et al.             Expires July 15, 2017                [Page 17]
 
 Internet-Draft                    tuda                      January 2017
 
 
+   1.  Over time, TUDA attestation values age and should no longer be
+       used.  Every table in the TUDA MIB has a primary index with the
+       value of a separate scalar cycle counter object that
        disambiguates the transition from one attestation cycle to the
        next.
 
@@ -946,10 +1005,7 @@ B.1.1.  Cycle Index
 
 
 
-
-
-
-Fuchs, et al.             Expires July 15, 2017                [Page 17]
+Fuchs, et al.             Expires July 15, 2017                [Page 18]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -1005,7 +1061,7 @@ B.3.  Relationship to Entity MIB
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 18]
+Fuchs, et al.             Expires July 15, 2017                [Page 19]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -1061,7 +1117,7 @@ B.5.  Definition of TUDA MIB
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 19]
+Fuchs, et al.             Expires July 15, 2017                [Page 20]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -1117,7 +1173,7 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 20]
+Fuchs, et al.             Expires July 15, 2017                [Page 21]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -1173,7 +1229,7 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 21]
+Fuchs, et al.             Expires July 15, 2017                [Page 22]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -1229,7 +1285,7 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 22]
+Fuchs, et al.             Expires July 15, 2017                [Page 23]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -1285,7 +1341,7 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 23]
+Fuchs, et al.             Expires July 15, 2017                [Page 24]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -1341,7 +1397,7 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 24]
+Fuchs, et al.             Expires July 15, 2017                [Page 25]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -1397,7 +1453,7 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 25]
+Fuchs, et al.             Expires July 15, 2017                [Page 26]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -1453,7 +1509,7 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 26]
+Fuchs, et al.             Expires July 15, 2017                [Page 27]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -1509,7 +1565,7 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 27]
+Fuchs, et al.             Expires July 15, 2017                [Page 28]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -1565,7 +1621,7 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 28]
+Fuchs, et al.             Expires July 15, 2017                [Page 29]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -1621,7 +1677,7 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 29]
+Fuchs, et al.             Expires July 15, 2017                [Page 30]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -1677,7 +1733,7 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 30]
+Fuchs, et al.             Expires July 15, 2017                [Page 31]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -1733,7 +1789,7 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 31]
+Fuchs, et al.             Expires July 15, 2017                [Page 32]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -1789,7 +1845,7 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 32]
+Fuchs, et al.             Expires July 15, 2017                [Page 33]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -1845,7 +1901,7 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 33]
+Fuchs, et al.             Expires July 15, 2017                [Page 34]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -1901,7 +1957,7 @@ Appendix C.  YANG Realization
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 34]
+Fuchs, et al.             Expires July 15, 2017                [Page 35]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -1957,7 +2013,7 @@ D.1.2.  Platform Configuration Registers (PCRs)
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 35]
+Fuchs, et al.             Expires July 15, 2017                [Page 36]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -2013,7 +2069,7 @@ D.2.1.  AIK and AIK Certificate
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 36]
+Fuchs, et al.             Expires July 15, 2017                [Page 37]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -2069,7 +2125,7 @@ D.2.2.  Synchronization Token
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 37]
+Fuchs, et al.             Expires July 15, 2017                [Page 38]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -2125,7 +2181,7 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 38]
+Fuchs, et al.             Expires July 15, 2017                [Page 39]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -2181,7 +2237,7 @@ D.2.3.  RestrictionInfo
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 39]
+Fuchs, et al.             Expires July 15, 2017                [Page 40]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -2237,7 +2293,7 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 40]
+Fuchs, et al.             Expires July 15, 2017                [Page 41]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -2293,7 +2349,7 @@ D.2.4.  Measurement Log
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 41]
+Fuchs, et al.             Expires July 15, 2017                [Page 42]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -2349,7 +2405,7 @@ D.2.5.  Implicit Attestation
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 42]
+Fuchs, et al.             Expires July 15, 2017                [Page 43]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -2405,7 +2461,7 @@ D.2.6.  Attestation Verification Approach
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 43]
+Fuchs, et al.             Expires July 15, 2017                [Page 44]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -2461,7 +2517,7 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 44]
+Fuchs, et al.             Expires July 15, 2017                [Page 45]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -2517,7 +2573,7 @@ Authors' Addresses
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 45]
+Fuchs, et al.             Expires July 15, 2017                [Page 46]
 
 Internet-Draft                    tuda                      January 2017
 
@@ -2573,4 +2629,4 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 46]
+Fuchs, et al.             Expires July 15, 2017                [Page 47]
