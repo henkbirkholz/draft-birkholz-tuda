@@ -728,11 +728,10 @@ context information for the TUDA attestation process.
 # YANG Realization {#yang}
 
 ~~~~ YANG
-
-TBD
-
+<CODE BEGINS>
+{::include TUDA-V1-ATTESTATION-MIB.yang}
+<CODE ENDS>
 ~~~~
-
 
 # Realization with TPM 1.2 functions {#tpm12}
 
