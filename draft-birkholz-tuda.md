@@ -68,6 +68,7 @@ informative:
       RFCs: 3411 to 3418
     date: 2002-12
   I-D.greevenbosch-appsawg-cbor-cddl: cddl
+  I-D.ietf-sacm-terminology: sacmterm
   I-D.vanderstok-core-comi: comi
   I-D-birkholz-sacm-coswid:
     -: coswid
@@ -180,7 +181,7 @@ informative:
   RFC7252: coap
   RFC7540: http2
   RFC6690: link
-  I-D.ietf-netconf-restconf: restconf
+  RFC8040: restconf
   IEEE802.1AR:
     title: 802.1AR-2009 - IEEE Standard for Local and metropolitan area networks - Secure Device Identity
     author:
@@ -316,13 +317,59 @@ A realization of TUDA using TPM 2.0 primitives will be added with the next itera
 
 This document introduces roles, information elements and types required to conduct TUDA and uses terminology (e.g. specific certificate names) typically seen in the context of attestation or hardware security modules.
 
+### Universal Terms
+
+Attestation Identity Key (AIK):
+
+: a special purpose signature (therefore asymmetric) key that supports identity related operations. The private portion of the key pair is maintained confidential to the entity via appropriate measures (that have an impact on the scope of confidence). The public portion of the key pair may be included in AIK credentials that provide a claim about the entity.
+
+Claim:
+
+: an attribute value pair that is intended to be related to a statement {{-sacmterm}}.
+
+Endpoint Attestation:
+
+: the creation of evidence on the attestee that provides proof of a set of the endpoints's integrity measurements. This is done by digitally signing a set of PCRs using an AIK in the TPM.
+
+Endpoint Characteristics:
+
+: the composition, configuration and state of an endpoint.
+
+Evidence:
+
+: a trustworthy set of claims about an endpoint's characteristics.
+
+Identity:
+
+: a set of claims that is intended to be related to an entity.
+
+Integrity Measurements:
+
+: Metrics of endpoint characteristics (i.e. composition, configuration and state) that 
+affect the confidence in the trustworthiness of an endpoint. Digests of integrity measurements
+can be stored in shielded locations (i.e. PCR of a TPM).
+
+Reference Integrity Measurements:
+
+: Signed measurements about the characteristics of an endpoint's characteristics that are provided by a vendor and are intended to be used as declarative guidance {{-sacmterm}} (e.g. a signed CoSWID).
+
+Trustworthy:
+
+: the qualities of an endpoint that guarantee a specific behavior and/or endpoint characteristics defined by declarative guidance.
+Analogously, trustworthiness is the quality of being trustworthy with respect to declarative guidance.
+Trustworthiness is not an absolute property but defined with respect to an entity, corresponding declarative guidance, and has a scope of confidence.
+
+: Trustworthy Endpoint: an endpoint that guarantees trustworthy behavior and/or composition (with respect to certain declarative guidance and a scope of confidence).
+
+: Trustworthy Statement: evidence that is trustworthy conveyed by an endpoint that is not necessarily trustworthy.
+
 ### Roles
 
 Attestee:
 : the endpoint that is the subject of the attestation to another endpoint.
 
 Verifier:
-: the endpoint that consumes the attestation of another endpoint.
+: the endpoint that consumes the attestation of another endpoint to conduct a verification.
 
 TSA:
 : a Time Stamp Authority {{-timestamp}}
@@ -335,16 +382,13 @@ Byte:
 Cert:
 : an X.509 certificate represented as a byte-string
 
-PCR-Hash:
-: a hash value of the security posture measurements stored in a TPM Platform Configuration Register (e.g. regarding running software instances) represented as a byte-string
-
 ### TPM-Specific Terms
-
-AIK:
-: an Attestation Identity Key, a special key type used within a TPM for identity-related operations (such as TPM_Certify or TPM_Quote)
 
 PCR:
 : a Platform Configuration Register that is part of a TPM and is used to securely store and report measurements about security posture
+
+PCR-Hash:
+: a hash value of the security posture measurements stored in a TPM PCR (e.g. regarding running software instances) represented as a byte-string
 
 ### Certificates
 
