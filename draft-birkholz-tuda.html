@@ -460,7 +460,7 @@ address {
   </ul>
 
   <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a></h1>
-<p id="rfc.section.1.p.1">Remote attestation describes the attempt to determine and appraise the properties, such as integrity and trustworthiness, of an endpoint &#8212; the attestee &#8212; over a network to another endpoint &#8212; the verifier &#8212; without direct access. Typically, this kind of assessment is based on measurements of software components running on the attestee, where the hash values of all started software components are stored (extended into) a Trust-Anchor implemented as a Hardware Security Module (e.g. a Trusted Platform Module or similar) and reported via a signature over the measurements.</p>
+<p id="rfc.section.1.p.1">Remote attestation describes the attempt to determine and appraise properties, such as integrity and trustworthiness, of an endpoint &#8212; the attestee &#8212; over a network to another endpoint &#8212; the verifier &#8212; without direct access. Typically, this kind of assessment is based on measurements of software components running on the attestee, where the hash values of all started software components are stored (extended into) a Trust-Anchor implemented as a Hardware Security Module (e.g. a Trusted Platform Module or similar) and reported via a signature over the measurements.</p>
 <h1 id="rfc.section.1.1"><a href="#rfc.section.1.1">1.1.</a> <a href="#remote-attestation" id="remote-attestation">Remote Attestation</a></h1>
 <p id="rfc.section.1.1.p.1">In essence, remote attestation is composed of three activities. The following definitions are derived from the definitions presented in <a href="#PRIRA">[PRIRA]</a> and <a href="#TCGGLOSS">[TCGGLOSS]</a>.</p>
 <p/>
@@ -478,13 +478,13 @@ address {
 <p/>
 
 <ul>
-  <li>remote attestation for attestees that might not always be able to reach the Internet by enabling the authentication of past states,</li>
+  <li>remote attestation for attestees that might not always be able to reach the Internet by enabling the verification of past states,</li>
   <li>secure audit logs by combining the evidence created via TUDA with measurement logs that represent a detailed record of corresponding past states,</li>
-  <li>an uni-directional interaction model that can traverse "diode-like" network security functions or can be leveraged in RESTfull architectures (e.g. CoAP <a href="#RFC7252">[RFC7252]</a>), analogously.</li>
+  <li>an uni-directional interaction model that can traverse "diode-like" network security functions or can be leveraged in RESTful architectures (e.g. CoAP <a href="#RFC7252">[RFC7252]</a>), analogously.</li>
 </ul>
 <h1 id="rfc.section.1.2"><a href="#rfc.section.1.2">1.2.</a> <a href="#attestation-and-verification" id="attestation-and-verification">Attestation and Verification</a></h1>
-<p id="rfc.section.1.2.p.1">The attestation activity of TUDA requires a Trusted Platform Module (TPM <a href="#TPM12">[TPM12]</a>), a specific Hardware Security Module (HSM) providing, e.g., Platform Configuration Registers (PCR), restricted signing keys, and a source of (relative) time (i.e. a tick-counter).</p>
-<p id="rfc.section.1.2.p.2">Both the attestation and the verification activity of TUDA require a trusted Time Stamp Authority (TSA) <a href="#RFC3161">[RFC3161]</a> as an additional third party next to the attestee and the verifier. The combination of the local source of time provided by the TPM (located on the attestee) and the Time Stamp Tokens provided by the TSA (to both the attestee and the verifier) enable the attestation and verification of an appropriate freshness of the evidence conveyed by the attestee &#8212; without requiring a challenge/response interaction model that uses a nonce to ensure the freshness.</p>
+<p id="rfc.section.1.2.p.1">TUDA is a family of protocols that package results from specific attestation and verification protocols.  TUDA is currently instantiated for attestion activity based on a Trusted Platform Module (TPM <a href="#TPM12">[TPM12]</a>), a specific Hardware Security Module (HSM) providing, e.g., Platform Configuration Registers (PCR), restricted signing keys, and a source of (relative) time (i.e. a tick-counter).</p>
+<p id="rfc.section.1.2.p.2">Both the attestation and the verification activity of TUDA also require a trusted Time Stamp Authority (TSA) as an additional third party next to the attestee and the verifier.  The current protocol instantiaton uses a Time Stamp Authority based on <a href="#RFC3161">[RFC3161]</a>. The combination of the local source of time provided by the TPM (located on the attestee) and the Time Stamp Tokens provided by the TSA (to both the attestee and the verifier) enable the attestation and verification of an appropriate freshness of the evidence conveyed by the attestee &#8212; without requiring a challenge/response interaction model that uses a nonce to ensure the freshness.</p>
 <p id="rfc.section.1.2.p.3">The verification activity also requires declarative guidance (representing desired or compliant endpoint configuration and state) evidence conveyed by the attestee can be evaluated against. The acquisition or representation of declarative guidance as well as the corresponding evaluation methods are out of the scope of this document.</p>
 <h1 id="rfc.section.1.3"><a href="#rfc.section.1.3">1.3.</a> <a href="#information-elements-and-conveyance" id="information-elements-and-conveyance">Information Elements and Conveyance</a></h1>
 <p id="rfc.section.1.3.p.1">TUDA defines a set of information elements (IE) that are created or stored on the attestee and are intended to be transferred to the verifier in order to enable appraisal.</p>
@@ -1014,7 +1014,7 @@ tudaV1MIB MODULE-IDENTITY
     REVISION "201701090000Z" -- 09 January 2017
         DESCRIPTION
         "Fourth version, published as draft-birkholz-tuda-03."
-    
+
     REVISION "201607080000Z" -- 08 July 2016
     DESCRIPTION
         "Third version, published as draft-birkholz-tuda-02."
@@ -1071,7 +1071,7 @@ tudaV1AIKCertCycles OBJECT-TYPE
     MAX-ACCESS  read-only
     STATUS      current
     DESCRIPTION
-        "Count of AIK Certificate chain update cycles that have 
+        "Count of AIK Certificate chain update cycles that have
         occurred.
 
         DEFVAL intentionally omitted - counter object."
@@ -1158,7 +1158,7 @@ tudaV1TSACertCycles OBJECT-TYPE
     MAX-ACCESS  read-only
     STATUS      current
     DESCRIPTION
-        "Count of TSA Certificate chain update cycles that have 
+        "Count of TSA Certificate chain update cycles that have
         occurred.
 
         DEFVAL intentionally omitted - counter object."
@@ -1245,12 +1245,12 @@ tudaV1SyncTokenCycles OBJECT-TYPE
     MAX-ACCESS  read-only
     STATUS      current
     DESCRIPTION
-        "Count of Sync Token update cycles that have 
+        "Count of Sync Token update cycles that have
         occurred.
 
         DEFVAL intentionally omitted - counter object."
     ::= { tudaV1SyncToken 1 }
-        
+
 tudaV1SyncTokenInstances OBJECT-TYPE
     SYNTAX      Counter32
     MAX-ACCESS  read-only
@@ -1277,14 +1277,14 @@ tudaV1SyncTokenEntry OBJECT-TYPE
     DESCRIPTION
         "An entry for one fragment of Sync Token data."
     INDEX       { tudaV1SyncTokenCycleIndex,
-                                  tudaV1SyncTokenInstanceIndex,
+                  tudaV1SyncTokenInstanceIndex,
                   tudaV1SyncTokenFragmentIndex }
     ::= { tudaV1SyncTokenTable 1 }
 
 TudaV1SyncTokenEntry ::=
     SEQUENCE {
         tudaV1SyncTokenCycleIndex       Integer32,
-                tudaV1SyncTokenInstanceIndex    Integer32,
+        tudaV1SyncTokenInstanceIndex    Integer32,
         tudaV1SyncTokenFragmentIndex    Integer32,
         tudaV1SyncTokenData             OCTET STRING
     }
@@ -1300,7 +1300,7 @@ tudaV1SyncTokenCycleIndex OBJECT-TYPE
 
         DEFVAL intentionally omitted - index object."
     ::= { tudaV1SyncTokenEntry 1 }
-        
+
 tudaV1SyncTokenInstanceIndex OBJECT-TYPE
     SYNTAX      Integer32 (1..2147483647)
     MAX-ACCESS  not-accessible
@@ -1308,7 +1308,7 @@ tudaV1SyncTokenInstanceIndex OBJECT-TYPE
     DESCRIPTION
         "Middle index of this Sync Token fragment.
         Ordinal of this instance of Sync Token data
-                (NOT bounded by the value of tudaV1SyncTokenInstances).
+        (NOT bounded by the value of tudaV1SyncTokenInstances).
 
         DEFVAL intentionally omitted - index object."
     ::= { tudaV1SyncTokenEntry 2 }
@@ -1342,7 +1342,7 @@ tudaV1RestrictCycles OBJECT-TYPE
     MAX-ACCESS  read-only
     STATUS      current
     DESCRIPTION
-        "Count of Restriction Info update cycles that have 
+        "Count of Restriction Info update cycles that have
         occurred.
 
         DEFVAL intentionally omitted - counter object."
@@ -1403,7 +1403,7 @@ tudaV1MeasureCycles OBJECT-TYPE
     MAX-ACCESS  read-only
     STATUS      current
     DESCRIPTION
-        "Count of Measurement Log update cycles that have 
+        "Count of Measurement Log update cycles that have
         occurred.
 
         DEFVAL intentionally omitted - counter object."
@@ -1488,7 +1488,7 @@ tudaV1VerifyTokenCycles OBJECT-TYPE
     MAX-ACCESS  read-only
     STATUS      current
     DESCRIPTION
-        "Count of Verify Token update cycles that have 
+        "Count of Verify Token update cycles that have
         occurred.
 
         DEFVAL intentionally omitted - counter object."
