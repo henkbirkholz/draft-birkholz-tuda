@@ -2,7 +2,7 @@
 title: 'Time-Based Uni-Directional Attestation'
 abbrev: tuda
 docname: draft-birkholz-tuda-latest
-date: 2017-01-11
+date: 2017-03-13
 stand_alone: true
 coding: us-ascii
 ipr: trust200902
@@ -69,7 +69,7 @@ informative:
     date: 2002-12
   I-D.greevenbosch-appsawg-cbor-cddl: cddl
   I-D.ietf-sacm-terminology: sacmterm
-  I-D.vanderstok-core-comi: comi
+  I-D.ietf-core-comi: comi
   I-D.ietf-sacm-coswid: coswid
   SCALE:
     title: Improving Scalability for Remote Attestation
