@@ -220,7 +220,7 @@ The Time-Based Uni-directional Attestation protocol --- TUDA --- described in th
 
 ## Attestation and Verification
 
-TUDA packages results from specific attestation and verification protocols.  TUDA is currently instantiated for attestion activity based on a Trusted Platform Module (TPM {{TPM12}}), a specific Hardware Security Module (HSM) providing, e.g., Platform Configuration Registers (PCR), restricted signing keys, and a source of (relative) time (i.e. a tick-counter).
+TUDA is a family of protocols that package results from specific attestation and verification protocols.  TUDA is currently instantiated for attestion activity based on a Trusted Platform Module (TPM {{TPM12}}), a specific Hardware Security Module (HSM) providing, e.g., Platform Configuration Registers (PCR), restricted signing keys, and a source of (relative) time (i.e. a tick-counter).
 
 Both the attestation and the verification activity of TUDA also require a trusted Time Stamp Authority (TSA) as an additional third party next to the attestee and the verifier.
 The current protocol instantiaton uses a Time Stamp Authority based on {{RFC3161}}. The combination of the local source of time provided by the TPM (located on the attestee) and the Time Stamp Tokens provided by the TSA (to both the attestee and the verifier) enable the attestation and verification of an appropriate freshness of the evidence conveyed by the attestee --- without requiring a challenge/response interaction model that uses a nonce to ensure the freshness.
