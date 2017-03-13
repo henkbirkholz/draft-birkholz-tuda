@@ -806,7 +806,8 @@ Internet-Draft                    tuda                        March 2017
               J., O'Hanlon, B., Ramsdell, J., Segall, A., Sheehy, J.,
               and B. Sniffen, "Principles of Remote Attestation",
               Springer International Journal of Information Security,
-              page 63-81, n.d..
+              Vol. 10, pp. 63-81, DOI 10.1007/s10207-011-0124-7, April
+              2011.
 
    [PTS]      TCG TNC Working Group, "TCG Attestation PTS Protocol
               Binding to TNC IF-M", 2011,
@@ -832,7 +833,6 @@ Internet-Draft                    tuda                        March 2017
               "Internet X.509 Public Key Infrastructure Time-Stamp
               Protocol (TSP)", RFC 3161, DOI 10.17487/RFC3161, August
               2001, <http://www.rfc-editor.org/info/rfc3161>.
-
 
 
 
@@ -906,7 +906,8 @@ Internet-Draft                    tuda                        March 2017
               Stumpf, F., Fuchs, A., Katzenbeisser, S., and C. Eckert,
               "Improving the scalability of platform attestation",
               ACM Proceedings of the 3rd ACM workshop on Scalable
-              trusted computing, page 1-10, 2008.
+              trusted computing - STC '08 , page 1-10,
+              DOI 10.1145/1456455.1456457, 2008.
 
    [STD62]    "Internet Standard 62", STD 62, RFCs 3411 to 3418,
               December 2002.
@@ -945,7 +946,6 @@ Appendix B.  SNMP Realization
    data items based on the corresponding CDDL
    [I-D.greevenbosch-appsawg-cbor-cddl] definition.
 
-   Design Principles:
 
 
 
@@ -953,6 +953,8 @@ Fuchs, et al.          Expires September 14, 2017              [Page 17]
 
 Internet-Draft                    tuda                        March 2017
 
+
+   Design Principles:
 
    1.  Over time, TUDA attestation values age and should no longer be
        used.  Every table in the TUDA MIB has a primary index with the
@@ -1000,8 +1002,6 @@ B.1.1.  Cycle Index
        and/or deleted from the table (bounded by tudaV1<Group>Cycles);
        and
 
-   3.  binding in the tudaV1TrapV2Cycles notification for directed
-       polling.
 
 
 
@@ -1009,6 +1009,9 @@ Fuchs, et al.          Expires September 14, 2017              [Page 18]
 
 Internet-Draft                    tuda                        March 2017
 
+
+   3.  binding in the tudaV1TrapV2Cycles notification for directed
+       polling.
 
 B.1.2.  Instance Index
 
@@ -1053,9 +1056,6 @@ B.3.  Relationship to Entity MIB
 
    The SWID Tag group in the TUDA MIB is analogous to the Entity Logical
    group in the Entity MIB v4 [RFC6933].
-
-
-
 
 
 
