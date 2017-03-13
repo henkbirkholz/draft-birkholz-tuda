@@ -570,6 +570,20 @@ Attestee                                                 Verifier
 ~~~~~~~~~~~
 {: #SequenceExample title="Example sequence of events"}
 
+#  Sync Base Protocol
+
+The uni-directional approach of TUDA requires evidence on how the TPM time represented in ticks (relative time since boot of the TPM) relates to the standard time provided by the TSA.
+The Sync Base Protocol (SBP) creates evidence that binds the TPM tick time to the TSA timestamp. The binding information is used by and conveyed via the Sync Token (TUDA IE). There are three actions required to create the content of a Sync Token:
+
+* At a given point in time (called left), a tickstamp counter value is acquired from the TPM that is also signed by the TPM. The hash of counter and signature is used as a nonce in the request directed at the TSA.
+* The corresponding response includes a data-structure incorporating the timestamp and its signature created by the TSA.
+* At the point in time the response arrives (right), a signed tickstamp counter value is acquired from the TPM again, using a hash of the signed TSA timestamp as a nonce.
+
+The three time-related values --- TPM tick counters (left and right) and the TSA timestamp --- and their corresponding signatures are aggregated in order to create a corresponding Sync Token to be used as a TUDA Information Element that can be conveyed as evidence to a verifier.
+
+The drift of a TPM clock that drives the increments of the tick counter constitutes one of the triggers that can initiate a TUDA Information Element Update Cycle in respect to the freshness of the available Sync Token. The following functions illustrate the worst case freshness-window assuming the maximum drift of TPM tick counters that is considered acceptable in respect to the standard time --- 15 percent --- as defined by the TPM specification:
+
+content TBD
 
 #  IANA Considerations {#iana}
 
@@ -585,6 +599,19 @@ There are Security Considerations. TBD
 
 
 #  Change Log
+
+Changes from version 03 to version 04:
+
+* Refactoring of Introduction, intend, scope and audience
+* Added first draft of Sync Base Prootol section illustrated background for interaction with TSA
+* Added YANG module
+* Added missing changelog entry
+
+Changes from version 02 to version 03:
+
+* Moved base concept out of Introduction
+* First refactoring of Inttroduction and Concept
+* Firrst restructuring of Appendices and improved references
 
 Changes from version 01 to version 02:
 
