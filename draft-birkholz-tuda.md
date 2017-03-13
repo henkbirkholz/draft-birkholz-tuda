@@ -103,8 +103,9 @@ informative:
     - ins: B. Sniffen
       name: Brian Sniffen
     seriesinfo:
-      Springer: International Journal of Information Security
-      page: 63-81
+      Springer: International Journal of Information Security, Vol. 10, pp. 63-81
+      DOI: 10.1007/s10207-011-0124-7
+    date: 2011-04-23
   SFKE2008:
     title: Improving the scalability of platform attestation
     author:
@@ -117,8 +118,10 @@ informative:
     - ins: C. Eckert
       name: Claudia Eckert
     seriesinfo:
-      ACM: Proceedings of the 3rd ACM workshop on Scalable trusted computing
+      ACM: >
+        Proceedings of the 3rd ACM workshop on Scalable trusted computing - STC '08
       page: 1-10
+      DOI: 10.1145/1456455.1456457
     date: 2008
   TPM12:
     title: >
