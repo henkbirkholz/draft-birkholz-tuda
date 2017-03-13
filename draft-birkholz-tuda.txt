@@ -5,11 +5,11 @@
 Network Working Group                                           A. Fuchs
 Internet-Draft                                               H. Birkholz
 Intended status: Informational                            Fraunhofer SIT
-Expires: July 15, 2017                                       I. McDonald
+Expires: September 14, 2017                                  I. McDonald
                                                           High North Inc
                                                               C. Bormann
                                                  Universitaet Bremen TZI
-                                                        January 11, 2017
+                                                          March 13, 2017
 
 
                  Time-Based Uni-Directional Attestation
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on July 15, 2017.
+   This Internet-Draft will expire on September 14, 2017.
 
 Copyright Notice
 
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Fuchs, et al.             Expires July 15, 2017                 [Page 1]
+Fuchs, et al.          Expires September 14, 2017               [Page 1]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
    the Trust Legal Provisions and are provided without warranty as
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Fuchs, et al.             Expires July 15, 2017                 [Page 2]
+Fuchs, et al.          Expires September 14, 2017               [Page 2]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
        D.2.3.  RestrictionInfo . . . . . . . . . . . . . . . . . . .  54
@@ -165,9 +165,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                 [Page 3]
+Fuchs, et al.          Expires September 14, 2017               [Page 3]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
    o  remote attestation for attestees that might not always be able to
@@ -221,9 +221,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                 [Page 4]
+Fuchs, et al.          Expires September 14, 2017               [Page 4]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
    Each TUDA IE that requires a certain freshness is only created/
@@ -255,8 +255,8 @@ Internet-Draft                    tuda                      January 2017
       over time, such as REST architectures [REST],
 
    o  be able to leverage existing management interfaces, such as SNMP
-      [RFC3411].  RESTCONF [RFC8040] or CoMI [I-D.vanderstok-core-comi]
-      -- and corresponding bindings,
+      [RFC3411].  RESTCONF [RFC8040] or CoMI [I-D.ietf-core-comi] -- and
+      corresponding bindings,
 
    o  support broadcast and multicast schemes (e.g.  [IEEE1609]),
 
@@ -277,9 +277,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                 [Page 5]
+Fuchs, et al.          Expires September 14, 2017               [Page 5]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
    intended to encourages the use of any appropriate HSM or equivalent
@@ -333,9 +333,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                 [Page 6]
+Fuchs, et al.          Expires September 14, 2017               [Page 6]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
    o  the transmission of a TUDA time-synchronization token, and
@@ -389,9 +389,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                 [Page 7]
+Fuchs, et al.          Expires September 14, 2017               [Page 7]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
    Claim:  an attribute value pair that is intended to be related to a
@@ -445,9 +445,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                 [Page 8]
+Fuchs, et al.          Expires September 14, 2017               [Page 8]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
    Verifier:  the endpoint that consumes the attestation of another
@@ -501,9 +501,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                 [Page 9]
+Fuchs, et al.          Expires September 14, 2017               [Page 9]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
       identity property.  ([AIK-Credential], [AIK-Enrollment]; see
@@ -557,9 +557,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 10]
+Fuchs, et al.          Expires September 14, 2017              [Page 10]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
       array.  Ideally, the reference hashes include a signature created
@@ -613,9 +613,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 11]
+Fuchs, et al.          Expires September 14, 2017              [Page 11]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
    o  Too much time has passed since the last attestation statement
@@ -669,9 +669,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 12]
+Fuchs, et al.          Expires September 14, 2017              [Page 12]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
     Create Sync-Token                                           |
@@ -725,9 +725,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 13]
+Fuchs, et al.          Expires September 14, 2017              [Page 13]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
    Changes from version 00 to version 01:
@@ -768,28 +768,29 @@ Internet-Draft                    tuda                      January 2017
               structures", draft-greevenbosch-appsawg-cbor-cddl-09 (work
               in progress), September 2016.
 
+   [I-D.ietf-core-comi]
+              Stok, P., Bierman, A., Veillette, M., and A. Pelov, "CoAP
+              Management Interface", draft-ietf-core-comi-00 (work in
+              progress), January 2017.
+
    [I-D.ietf-sacm-coswid]
               Birkholz, H., Fitzgerald-McKay, J., Schmidt, C., and D.
               Waltermire, "Concise Software Identifiers", draft-ietf-
               sacm-coswid-01 (work in progress), February 2017.
+
+
+
+
+Fuchs, et al.          Expires September 14, 2017              [Page 14]
+
+Internet-Draft                    tuda                        March 2017
+
 
    [I-D.ietf-sacm-terminology]
               Birkholz, H., Lu, J., Strassner, J., and N. Cam-Winget,
               "Secure Automation and Continuous Monitoring (SACM)
               Terminology", draft-ietf-sacm-terminology-11 (work in
               progress), September 2016.
-
-
-
-Fuchs, et al.             Expires July 15, 2017                [Page 14]
-
-Internet-Draft                    tuda                      January 2017
-
-
-   [I-D.vanderstok-core-comi]
-              Stok, P., Bierman, A., Veillette, M., and A. Pelov, "CoAP
-              Management Interface", draft-vanderstok-core-comi-11 (work
-              in progress), January 2017.
 
    [IEEE1609]
               IEEE Computer Society, "1609.4-2016 - IEEE Standard for
@@ -836,10 +837,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-
-Fuchs, et al.             Expires July 15, 2017                [Page 15]
+Fuchs, et al.          Expires September 14, 2017              [Page 15]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
    [RFC3411]  Harrington, D., Presuhn, R., and B. Wijnen, "An
@@ -893,9 +893,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 16]
+Fuchs, et al.          Expires September 14, 2017              [Page 16]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
    [SCALE]    Fuchs, A., "Improving Scalability for Remote Attestation",
@@ -949,9 +949,9 @@ Appendix B.  SNMP Realization
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 17]
+Fuchs, et al.          Expires September 14, 2017              [Page 17]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
    1.  Over time, TUDA attestation values age and should no longer be
@@ -1005,9 +1005,9 @@ B.1.1.  Cycle Index
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 18]
+Fuchs, et al.          Expires September 14, 2017              [Page 18]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
 B.1.2.  Instance Index
@@ -1061,9 +1061,9 @@ B.3.  Relationship to Entity MIB
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 19]
+Fuchs, et al.          Expires September 14, 2017              [Page 19]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
 B.4.  Relationship to Other MIBs
@@ -1117,9 +1117,9 @@ B.5.  Definition of TUDA MIB
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 20]
+Fuchs, et al.          Expires September 14, 2017              [Page 20]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
      REVISION "201701090000Z" -- 09 January 2017
@@ -1173,9 +1173,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 21]
+Fuchs, et al.          Expires September 14, 2017              [Page 21]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
      ::= { tudaV1General 2 }
@@ -1229,9 +1229,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 22]
+Fuchs, et al.          Expires September 14, 2017              [Page 22]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
      STATUS      current
@@ -1285,9 +1285,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 23]
+Fuchs, et al.          Expires September 14, 2017              [Page 23]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
      MAX-ACCESS  read-only
@@ -1341,9 +1341,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 24]
+Fuchs, et al.          Expires September 14, 2017              [Page 24]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
  tudaV1TSACertInstanceIndex OBJECT-TYPE
@@ -1397,9 +1397,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 25]
+Fuchs, et al.          Expires September 14, 2017              [Page 25]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
  tudaV1SyncTokenInstances OBJECT-TYPE
@@ -1453,9 +1453,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 26]
+Fuchs, et al.          Expires September 14, 2017              [Page 26]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
      ::= { tudaV1SyncTokenEntry 1 }
@@ -1509,9 +1509,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 27]
+Fuchs, et al.          Expires September 14, 2017              [Page 27]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
  tudaV1RestrictTable OBJECT-TYPE
@@ -1565,9 +1565,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 28]
+Fuchs, et al.          Expires September 14, 2017              [Page 28]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
  tudaV1Measure           OBJECT IDENTIFIER ::= { tudaV1MIBObjects 6 }
@@ -1621,9 +1621,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 29]
+Fuchs, et al.          Expires September 14, 2017              [Page 29]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
  tudaV1MeasureCycleIndex OBJECT-TYPE
@@ -1677,9 +1677,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 30]
+Fuchs, et al.          Expires September 14, 2017              [Page 30]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
  tudaV1VerifyTokenTable OBJECT-TYPE
@@ -1733,9 +1733,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 31]
+Fuchs, et al.          Expires September 14, 2017              [Page 31]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
  tudaV1SWIDTagCycles OBJECT-TYPE
@@ -1789,9 +1789,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 32]
+Fuchs, et al.          Expires September 14, 2017              [Page 32]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
  tudaV1SWIDTagInstanceIndex OBJECT-TYPE
@@ -1845,9 +1845,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 33]
+Fuchs, et al.          Expires September 14, 2017              [Page 33]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
          "This trap is sent when the value of any cycle or instance
@@ -1901,9 +1901,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 34]
+Fuchs, et al.          Expires September 14, 2017              [Page 34]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
          tudaV1GeneralVersionInfo,
@@ -1957,9 +1957,9 @@ Appendix C.  YANG Realization
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 35]
+Fuchs, et al.          Expires September 14, 2017              [Page 35]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
  *
@@ -2013,9 +2013,9 @@ module TUDA-V1-ATTESTATION-MIB {
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 36]
+Fuchs, et al.          Expires September 14, 2017              [Page 36]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
   }
@@ -2069,9 +2069,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 37]
+Fuchs, et al.          Expires September 14, 2017              [Page 37]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
         DEFVAL intentionally omitted - counter object.";
@@ -2125,9 +2125,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 38]
+Fuchs, et al.          Expires September 14, 2017              [Page 38]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
          "Low-order index of this AIK Certificate fragment.
@@ -2181,9 +2181,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 39]
+Fuchs, et al.          Expires September 14, 2017              [Page 39]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
           occurred (bounded by the value of tudaV1TSACertCycles).
@@ -2237,9 +2237,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 40]
+Fuchs, et al.          Expires September 14, 2017              [Page 40]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
         occurred.
@@ -2293,9 +2293,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 41]
+Fuchs, et al.          Expires September 14, 2017              [Page 41]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
           Ordinal of this instance of Sync Token data
@@ -2349,9 +2349,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 42]
+Fuchs, et al.          Expires September 14, 2017              [Page 42]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
        "An entry for one instance of Restriction Info data.";
@@ -2405,9 +2405,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 43]
+Fuchs, et al.          Expires September 14, 2017              [Page 43]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
     /* XXX table comments here XXX */
@@ -2461,9 +2461,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 44]
+Fuchs, et al.          Expires September 14, 2017              [Page 44]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
     leaf tudaV1VerifyTokenCycles {
@@ -2517,9 +2517,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 45]
+Fuchs, et al.          Expires September 14, 2017              [Page 45]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
       type yang:counter32;
@@ -2573,9 +2573,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 46]
+Fuchs, et al.          Expires September 14, 2017              [Page 46]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
         }
@@ -2629,9 +2629,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 47]
+Fuchs, et al.          Expires September 14, 2017              [Page 47]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
     container tudaV1TrapV2Cycles-tudaV1TSACertCycles {
@@ -2685,9 +2685,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 48]
+Fuchs, et al.          Expires September 14, 2017              [Page 48]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
          "Count of Measurement Log update cycles that have
@@ -2741,9 +2741,9 @@ Appendix D.  Realization with TPM 1.2 functions
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 49]
+Fuchs, et al.          Expires September 14, 2017              [Page 49]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
 D.1.  TPM Functions
@@ -2797,9 +2797,9 @@ D.1.2.  Platform Configuration Registers (PCRs)
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 50]
+Fuchs, et al.          Expires September 14, 2017              [Page 50]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
    The initial measurement is triggered by the Platforms so-called pre-
@@ -2853,9 +2853,9 @@ D.2.1.  AIK and AIK Certificate
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 51]
+Fuchs, et al.          Expires September 14, 2017              [Page 51]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
    TUDA-Cert = [AIK-Cert, TSA-Cert]; maybe split into two for SNMP
@@ -2909,9 +2909,9 @@ D.2.2.  Synchronization Token
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 52]
+Fuchs, et al.          Expires September 14, 2017              [Page 52]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
    o  Another TickStampBlob with the AIK is created using the TSA's
@@ -2965,9 +2965,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 53]
+Fuchs, et al.          Expires September 14, 2017              [Page 53]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
    | dummyDigest = h'0000000000000000000000000000000000000000'
@@ -3021,9 +3021,9 @@ D.2.3.  RestrictionInfo
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 54]
+Fuchs, et al.          Expires September 14, 2017              [Page 54]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
  PCRSelection = bytes .size (2..4) ; used as bit string
@@ -3077,9 +3077,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 55]
+Fuchs, et al.          Expires September 14, 2017              [Page 55]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
    ; "If the key is using the default exponent then the exponentSize
@@ -3133,9 +3133,9 @@ D.2.4.  Measurement Log
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 56]
+Fuchs, et al.          Expires September 14, 2017              [Page 56]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
    TUDA-Measurement-Log = [*PCR-Event]
@@ -3189,9 +3189,9 @@ D.2.5.  Implicit Attestation
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 57]
+Fuchs, et al.          Expires September 14, 2017              [Page 57]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
 D.2.6.  Attestation Verification Approach
@@ -3245,9 +3245,9 @@ D.2.6.  Attestation Verification Approach
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 58]
+Fuchs, et al.          Expires September 14, 2017              [Page 58]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
    | compositeHash = hash_init()
@@ -3301,9 +3301,9 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 59]
+Fuchs, et al.          Expires September 14, 2017              [Page 59]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
   | ts = Verifytoken
@@ -3357,9 +3357,9 @@ Authors' Addresses
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 60]
+Fuchs, et al.          Expires September 14, 2017              [Page 60]
 
-Internet-Draft                    tuda                      January 2017
+Internet-Draft                    tuda                        March 2017
 
 
    Carsten Bormann
@@ -3413,4 +3413,4 @@ Internet-Draft                    tuda                      January 2017
 
 
 
-Fuchs, et al.             Expires July 15, 2017                [Page 61]
+Fuchs, et al.          Expires September 14, 2017              [Page 61]
