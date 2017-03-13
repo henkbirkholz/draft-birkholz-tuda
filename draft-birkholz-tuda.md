@@ -216,7 +216,7 @@ Verification:
 Protocols that facilitate Trust-Anchor based signatures in order to provide
 remote attestation are usually bi-directional challenge/response protocols, such as the Platform Trust Service protocol {{PTS}} or CAVES {{PRIRA}}, where one entity sends a challenge that is included inside the response to ensure the recentness --- the freshness --- of the attestation information. The corresponding interaction model tightly couples the three activities of creating, transferring and appraising evidence.
 
-The Time-Based Uni-directional Attestation protocol --- TUDA --- described in this document can decouple the three activities remote attestation is composed of. As a result, TUDA provides additional capabilities, such as:
+The Time-Based Uni-directional Attestation family of protocols --- TUDA --- described in this document can decouple the three activities remote attestation is composed of. As a result, TUDA provides additional capabilities, such as:
 
 * remote attestation for attestees that might not always be able to reach the Internet by enabling the verification of past states,
 * secure audit logs by combining the evidence created via TUDA with measurement logs that represent a detailed record of corresponding past states,
@@ -245,7 +245,7 @@ Each TUDA IE that requires a certain freshness can be reused for multiple remote
 
 ## TUDA Objectives
 
-The Time-Based Uni-directional Attestation is designed to:
+The Time-Based Uni-directional Attestation family of protocols is designed to:
 
 * increase the confidence in authentication and authorization procedures,
 * address the requirements of constrained-node networks,
