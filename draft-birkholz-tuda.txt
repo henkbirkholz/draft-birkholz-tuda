@@ -2304,7 +2304,7 @@ Internet-Draft                    tuda                        March 2017
         description
          "Middle index of this Sync Token fragment.
           Ordinal of this instance of Sync Token data
-                        (NOT bounded by the value of tudaV1SyncTokenInstances).
+          (NOT bounded by the value of tudaV1SyncTokenInstances).
 
           DEFVAL intentionally omitted - index object.";
       }
