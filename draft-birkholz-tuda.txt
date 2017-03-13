@@ -157,10 +157,10 @@ Internet-Draft                    tuda                        March 2017
    tightly couples the three activities of creating, transferring and
    appraising evidence.
 
-   The Time-Based Uni-directional Attestation protocol -- TUDA --
-   described in this document can decouple the three activities remote
-   attestation is composed of.  As a result, TUDA provides additional
-   capabilities, such as:
+   The Time-Based Uni-directional Attestation family of protocols --
+   TUDA -- described in this document can decouple the three activities
+   remote attestation is composed of.  As a result, TUDA provides
+   additional capabilities, such as:
 
 
 
@@ -247,7 +247,8 @@ Internet-Draft                    tuda                        March 2017
 
 1.4.  TUDA Objectives
 
-   The Time-Based Uni-directional Attestation is designed to:
+   The Time-Based Uni-directional Attestation family of protocols is
+   designed to:
 
    o  increase the confidence in authentication and authorization
       procedures,
@@ -273,7 +274,6 @@ Internet-Draft                    tuda                        March 2017
    TUDA IE is specific to the methods provided by the HSM used.  As a
    reference, this document includes pseudo-code that illustrates the
    production of TUDA IE using a TPM 1.2 and the corresponding TPM
-   commands specified in [TPM12] as an example.  The references to TPM
 
 
 
@@ -282,6 +282,7 @@ Fuchs, et al.          Expires September 14, 2017               [Page 5]
 Internet-Draft                    tuda                        March 2017
 
 
+   commands specified in [TPM12] as an example.  The references to TPM
    1.2 commands and corresponding pseudo-code only serve as guidance to
    enable a better understanding of the attestation scheme and is
    intended to encourages the use of any appropriate HSM or equivalent
@@ -328,7 +329,6 @@ Internet-Draft                    tuda                        March 2017
    o  the time of transmission of the nonce, and
 
    o  the reception of the response
-
 
 
 

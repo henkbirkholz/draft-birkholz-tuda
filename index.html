@@ -474,7 +474,7 @@ address {
   <dd style="margin-left: 8">The appraisal of evidence by evaluating it against declarative guidance.</dd>
 </dl>
 <p id="rfc.section.1.1.p.3">Protocols that facilitate Trust-Anchor based signatures in order to provide remote attestation are usually bi-directional challenge/response protocols, such as the Platform Trust Service protocol <a href="#PTS">[PTS]</a> or CAVES <a href="#PRIRA">[PRIRA]</a>, where one entity sends a challenge that is included inside the response to ensure the recentness &#8212; the freshness &#8212; of the attestation information. The corresponding interaction model tightly couples the three activities of creating, transferring and appraising evidence.</p>
-<p id="rfc.section.1.1.p.4">The Time-Based Uni-directional Attestation protocol &#8212; TUDA &#8212; described in this document can decouple the three activities remote attestation is composed of. As a result, TUDA provides additional capabilities, such as:</p>
+<p id="rfc.section.1.1.p.4">The Time-Based Uni-directional Attestation family of protocols &#8212; TUDA &#8212; described in this document can decouple the three activities remote attestation is composed of. As a result, TUDA provides additional capabilities, such as:</p>
 <p/>
 
 <ul>
@@ -493,7 +493,7 @@ address {
 <p id="rfc.section.1.3.p.4">Each TUDA IE is only transferred when required, which reduces the amount of data in motion necessary to conduct remote attestation significantly. Only IE that have changed since their last conveyance have to be transferred.</p>
 <p id="rfc.section.1.3.p.5">Each TUDA IE that requires a certain freshness can be reused for multiple remote attestation procedures in the limits of its corresponding freshness-window, further reducing the load imposed on the attestee and its corresponding TPM.</p>
 <h1 id="rfc.section.1.4"><a href="#rfc.section.1.4">1.4.</a> <a href="#tuda-objectives" id="tuda-objectives">TUDA Objectives</a></h1>
-<p id="rfc.section.1.4.p.1">The Time-Based Uni-directional Attestation is designed to:</p>
+<p id="rfc.section.1.4.p.1">The Time-Based Uni-directional Attestation family of protocols is designed to:</p>
 <p/>
 
 <ul>
