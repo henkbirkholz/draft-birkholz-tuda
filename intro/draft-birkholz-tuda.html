@@ -481,7 +481,7 @@ address {
   <li>an uni-directional interaction model that can traverse "diode-like" network security functions or can be leveraged in RESTful architectures (e.g. CoAP <a href="#RFC7252">[RFC7252]</a>), analogously.</li>
 </ul>
 <h1 id="rfc.section.1.2"><a href="#rfc.section.1.2">1.2.</a> <a href="#attestation-and-verification" id="attestation-and-verification">Attestation and Verification</a></h1>
-<p id="rfc.section.1.2.p.1">TUDA packages results from specific attestation and verification protocols.  TUDA is currently instantiated for attestion activity based on a Trusted Platform Module (TPM <a href="#TPM12">[TPM12]</a>), a specific Hardware Security Module (HSM) providing, e.g., Platform Configuration Registers (PCR), restricted signing keys, and a source of (relative) time (i.e. a tick-counter).</p>
+<p id="rfc.section.1.2.p.1">TUDA is a family of protocols that package results from specific attestation and verification protocols.  TUDA is currently instantiated for attestion activity based on a Trusted Platform Module (TPM <a href="#TPM12">[TPM12]</a>), a specific Hardware Security Module (HSM) providing, e.g., Platform Configuration Registers (PCR), restricted signing keys, and a source of (relative) time (i.e. a tick-counter).</p>
 <p id="rfc.section.1.2.p.2">Both the attestation and the verification activity of TUDA also require a trusted Time Stamp Authority (TSA) as an additional third party next to the attestee and the verifier.  The current protocol instantiaton uses a Time Stamp Authority based on <a href="#RFC3161">[RFC3161]</a>. The combination of the local source of time provided by the TPM (located on the attestee) and the Time Stamp Tokens provided by the TSA (to both the attestee and the verifier) enable the attestation and verification of an appropriate freshness of the evidence conveyed by the attestee &#8212; without requiring a challenge/response interaction model that uses a nonce to ensure the freshness.</p>
 <p id="rfc.section.1.2.p.3">The verification activity also requires declarative guidance (representing desired or compliant endpoint configuration and state) evidence conveyed by the attestee can be evaluated against. The acquisition or representation of declarative guidance as well as the corresponding evaluation methods are out of the scope of this document.</p>
 <h1 id="rfc.section.1.3"><a href="#rfc.section.1.3">1.3.</a> <a href="#information-elements-and-conveyance" id="information-elements-and-conveyance">Information Elements and Conveyance</a></h1>
@@ -742,7 +742,7 @@ Attestee                                                 Verifier
       <td class="reference">
         <b id="I-D.ietf-sacm-coswid">[I-D.ietf-sacm-coswid]</b>
       </td>
-      <td class="top"><a>Birkholz, H.</a>, <a>Fitzgerald-McKay, J.</a>, <a>Schmidt, C.</a> and <a>D. Waltermire</a>, "<a href="http://tools.ietf.org/html/draft-ietf-sacm-coswid-00">Concise Software Identifiers</a>", Internet-Draft draft-ietf-sacm-coswid-00, January 2017.</td>
+      <td class="top"><a>Birkholz, H.</a>, <a>Fitzgerald-McKay, J.</a>, <a>Schmidt, C.</a> and <a>D. Waltermire</a>, "<a href="http://tools.ietf.org/html/draft-ietf-sacm-coswid-01">Concise Software Identifiers</a>", Internet-Draft draft-ietf-sacm-coswid-01, February 2017.</td>
     </tr>
     <tr>
       <td class="reference">
