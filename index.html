@@ -293,13 +293,14 @@ address {
 <link href="#rfc.section.2.1.5" rel="Chapter" title="2.1.5 Certificates"/>
 <link href="#rfc.section.3" rel="Chapter" title="3 Time-Based Uni-Directional Attestation"/>
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 TUDA Information Elements Update Cycles"/>
-<link href="#rfc.section.4" rel="Chapter" title="4 IANA Considerations"/>
-<link href="#rfc.section.5" rel="Chapter" title="5 Security Considerations"/>
-<link href="#rfc.section.6" rel="Chapter" title="6 Change Log"/>
-<link href="#rfc.section.7" rel="Chapter" title="7 Contributors"/>
-<link href="#rfc.references" rel="Chapter" title="8 References"/>
-<link href="#rfc.references.1" rel="Chapter" title="8.1 Normative References"/>
-<link href="#rfc.references.2" rel="Chapter" title="8.2 Informative References"/>
+<link href="#rfc.section.4" rel="Chapter" title="4 Sync Base Protocol"/>
+<link href="#rfc.section.5" rel="Chapter" title="5 IANA Considerations"/>
+<link href="#rfc.section.6" rel="Chapter" title="6 Security Considerations"/>
+<link href="#rfc.section.7" rel="Chapter" title="7 Change Log"/>
+<link href="#rfc.section.8" rel="Chapter" title="8 Contributors"/>
+<link href="#rfc.references" rel="Chapter" title="9 References"/>
+<link href="#rfc.references.1" rel="Chapter" title="9.1 Normative References"/>
+<link href="#rfc.references.2" rel="Chapter" title="9.2 Informative References"/>
 <link href="#rfc.appendix.A" rel="Chapter" title="A REST Realization"/>
 <link href="#rfc.appendix.B" rel="Chapter" title="B SNMP Realization"/>
 <link href="#rfc.appendix.B.1" rel="Chapter" title="B.1 Structure of TUDA MIB"/>
@@ -422,13 +423,14 @@ address {
 <li>2.1.5.   <a href="#rfc.section.2.1.5">Certificates</a></li>
 </ul></ul><li>3.   <a href="#rfc.section.3">Time-Based Uni-Directional Attestation</a></li>
 <ul><li>3.1.   <a href="#rfc.section.3.1">TUDA Information Elements Update Cycles</a></li>
-</ul><li>4.   <a href="#rfc.section.4">IANA Considerations</a></li>
-<li>5.   <a href="#rfc.section.5">Security Considerations</a></li>
-<li>6.   <a href="#rfc.section.6">Change Log</a></li>
-<li>7.   <a href="#rfc.section.7">Contributors</a></li>
-<li>8.   <a href="#rfc.references">References</a></li>
-<ul><li>8.1.   <a href="#rfc.references.1">Normative References</a></li>
-<li>8.2.   <a href="#rfc.references.2">Informative References</a></li>
+</ul><li>4.   <a href="#rfc.section.4">Sync Base Protocol</a></li>
+<li>5.   <a href="#rfc.section.5">IANA Considerations</a></li>
+<li>6.   <a href="#rfc.section.6">Security Considerations</a></li>
+<li>7.   <a href="#rfc.section.7">Change Log</a></li>
+<li>8.   <a href="#rfc.section.8">Contributors</a></li>
+<li>9.   <a href="#rfc.references">References</a></li>
+<ul><li>9.1.   <a href="#rfc.references.1">Normative References</a></li>
+<li>9.2.   <a href="#rfc.references.2">Informative References</a></li>
 </ul><li>Appendix A.   <a href="#rfc.appendix.A">REST Realization</a></li>
 <li>Appendix B.   <a href="#rfc.appendix.B">SNMP Realization</a></li>
 <ul><li>B.1.   <a href="#rfc.appendix.B.1">Structure of TUDA MIB</a></li>
@@ -706,13 +708,42 @@ Attestee                                                 Verifier
    |                                                         |
 </pre>
 <p class="figure">Figure 1: Example sequence of events</p>
-<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#iana" id="iana">IANA Considerations</a></h1>
-<p id="rfc.section.4.p.1">This memo includes requests to IANA, including registrations for media type definitions.</p>
-<p id="rfc.section.4.p.2">TBD</p>
-<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
-<p id="rfc.section.5.p.1">There are Security Considerations. TBD</p>
-<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#change-log" id="change-log">Change Log</a></h1>
-<p id="rfc.section.6.p.1">Changes from version 01 to version 02:</p>
+<h1 id="rfc.section.4"><a href="#rfc.section.4">4.</a> <a href="#sync-base-protocol" id="sync-base-protocol">Sync Base Protocol</a></h1>
+<p id="rfc.section.4.p.1">The uni-directional approach of TUDA requires evidence on how the TPM time represented in ticks (relative time since boot of the TPM) relates to the standard time provided by the TSA.  The Sync Base Protocol (SBP) creates evidence that binds the TPM tick time to the TSA timestamp. The binding information is used by and conveyed via the Sync Token (TUDA IE). There are three actions required to create the content of a Sync Token:</p>
+<p/>
+
+<ul>
+  <li>At a given point in time (called left), a tickstamp counter value is acquired from the TPM that is also signed by the TPM. The hash of counter and signature is used as a nonce in the request directed at the TSA.</li>
+  <li>The corresponding response includes a data-structure incorporating the timestamp and its signature created by the TSA.</li>
+  <li>At the point in time the response arrives (right), a signed tickstamp counter value is acquired from the TPM again, using a hash of the signed TSA timestamp as a nonce.</li>
+</ul>
+<p id="rfc.section.4.p.3">The three time-related values &#8212; TPM tick counters (left and right) and the TSA timestamp &#8212; and their corresponding signatures are aggregated in order to create a corresponding Sync Token to be used as a TUDA Information Element that can be conveyed as evidence to a verifier.</p>
+<p id="rfc.section.4.p.4">The drift of a TPM clock that drives the increments of the tick counter constitutes one of the triggers that can initiate a TUDA Information Element Update Cycle in respect to the freshness of the available Sync Token. The following functions illustrate the worst case freshness-window assuming the maximum drift of TPM tick counters that is considered acceptable in respect to the standard time &#8212; 15 percent &#8212; as defined by the TPM specification:</p>
+<p id="rfc.section.4.p.5">content TBD</p>
+<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#iana" id="iana">IANA Considerations</a></h1>
+<p id="rfc.section.5.p.1">This memo includes requests to IANA, including registrations for media type definitions.</p>
+<p id="rfc.section.5.p.2">TBD</p>
+<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
+<p id="rfc.section.6.p.1">There are Security Considerations. TBD</p>
+<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#change-log" id="change-log">Change Log</a></h1>
+<p id="rfc.section.7.p.1">Changes from version 03 to version 04:</p>
+<p/>
+
+<ul>
+  <li>Refactoring of Introduction, intend, scope and audience</li>
+  <li>Added first draft of Sync Base Prootol section illustrated background for interaction with TSA</li>
+  <li>Added YANG module</li>
+  <li>Added missing changelog entry</li>
+</ul>
+<p id="rfc.section.7.p.3">Changes from version 02 to version 03:</p>
+<p/>
+
+<ul>
+  <li>Moved base concept out of Introduction</li>
+  <li>First refactoring of Inttroduction and Concept</li>
+  <li>Firrst restructuring of Appendices and improved references</li>
+</ul>
+<p id="rfc.section.7.p.5">Changes from version 01 to version 02:</p>
 <p/>
 
 <ul>
@@ -722,12 +753,12 @@ Attestee                                                 Verifier
   <li>Clarification of descriptions of approach (these were the FIXMEs)</li>
   <li>Correction of RestrictionInfo structure: Added missing signature member</li>
 </ul>
-<p id="rfc.section.6.p.3">Changes from version 00 to version 01:</p>
-<p id="rfc.section.6.p.4">Major update to the SNMP MIB and added a table for the Concise SWID profile Reference Hashes that provides additional information to be compared with the measurement logs.</p>
-<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#contributors" id="contributors">Contributors</a></h1>
-<p id="rfc.section.7.p.1">TBD</p>
-<h1 id="rfc.references"><a href="#rfc.references">8.</a> References</h1>
-<h1 id="rfc.references.1"><a href="#rfc.references.1">8.1.</a> Normative References</h1>
+<p id="rfc.section.7.p.7">Changes from version 00 to version 01:</p>
+<p id="rfc.section.7.p.8">Major update to the SNMP MIB and added a table for the Concise SWID profile Reference Hashes that provides additional information to be compared with the measurement logs.</p>
+<h1 id="rfc.section.8"><a href="#rfc.section.8">8.</a> <a href="#contributors" id="contributors">Contributors</a></h1>
+<p id="rfc.section.8.p.1">TBD</p>
+<h1 id="rfc.references"><a href="#rfc.references">9.</a> References</h1>
+<h1 id="rfc.references.1"><a href="#rfc.references.1">9.1.</a> Normative References</h1>
 <table>
   <tbody>
     <tr>
@@ -738,7 +769,7 @@ Attestee                                                 Verifier
     </tr>
   </tbody>
 </table>
-<h1 id="rfc.references.2"><a href="#rfc.references.2">8.2.</a> Informative References</h1>
+<h1 id="rfc.references.2"><a href="#rfc.references.2">9.2.</a> Informative References</h1>
 <table>
   <tbody>
     <tr>
@@ -908,7 +939,7 @@ Attestee                                                 Verifier
   </tbody>
 </table>
 <h1 id="rfc.appendix.A"><a href="#rfc.appendix.A">Appendix A.</a> <a href="#rest" id="rest">REST Realization</a></h1>
-<p id="rfc.section.A.p.1">Each of the seven data items is defined as a media type (<a href="#iana">Section 4</a>).  Representations of resources for each of these media types can be retrieved from URIs that are defined by the respective servers <a href="#RFC7320">[RFC7320]</a>.  As can be derived from the URI, the actual retrieval is via one of the HTTPs (<a href="#RFC7230">[RFC7230]</a>, <a href="#RFC7540">[RFC7540]</a>) or CoAP <a href="#RFC7252">[RFC7252]</a>.  How a client obtains these URIs is dependent on the application; e.g., CoRE Web links <a href="#RFC6690">[RFC6690]</a> can be used to obtain the relevant URIs from the self-description of a server, or they could be prescribed by a RESTCONF data model <a href="#RFC8040">[RFC8040]</a>.</p>
+<p id="rfc.section.A.p.1">Each of the seven data items is defined as a media type (<a href="#iana">Section 5</a>).  Representations of resources for each of these media types can be retrieved from URIs that are defined by the respective servers <a href="#RFC7320">[RFC7320]</a>.  As can be derived from the URI, the actual retrieval is via one of the HTTPs (<a href="#RFC7230">[RFC7230]</a>, <a href="#RFC7540">[RFC7540]</a>) or CoAP <a href="#RFC7252">[RFC7252]</a>.  How a client obtains these URIs is dependent on the application; e.g., CoRE Web links <a href="#RFC6690">[RFC6690]</a> can be used to obtain the relevant URIs from the self-description of a server, or they could be prescribed by a RESTCONF data model <a href="#RFC8040">[RFC8040]</a>.</p>
 <h1 id="rfc.appendix.B"><a href="#rfc.appendix.B">Appendix B.</a> <a href="#snmp" id="snmp">SNMP Realization</a></h1>
 <p id="rfc.section.B.p.1">SNMPv3 <a href="#STD62">[STD62]</a> <a href="#RFC3411">[RFC3411]</a> is widely available on computers and also constrained devices.  To transport the TUDA information elements, an SNMP MIB is defined below which encodes each of the seven TUDA information elements into a table.  Each row in a table contains a single read-only columnar SNMP object of datatype OCTET-STRING.  The values of a set of rows in each table can be concatenated to reconstitute a CBOR-encoded TUDA information element.  The Verifier can retrieve the values for each CBOR fragment by using SNMP GetNext requests to "walk" each table and can decode each of the CBOR-encoded data items based on the corresponding CDDL <a href="#I-D.greevenbosch-appsawg-cbor-cddl">[I-D.greevenbosch-appsawg-cbor-cddl]</a> definition.</p>
 <p id="rfc.section.B.p.2">Design Principles:</p>
