@@ -551,7 +551,9 @@ address {
   <dt>Attestation Identity Key (AIK):</dt>
   <dd style="margin-left: 8">a special purpose signature (therefore asymmetric) key that supports identity related operations. The private portion of the key pair is maintained confidential to the entity via appropriate measures (that have an impact on the scope of confidence). The public portion of the key pair may be included in AIK credentials that provide a claim about the entity.</dd>
   <dt>Claim:</dt>
-  <dd style="margin-left: 8">an attribute value pair that is intended to be related to a statement <a href="#I-D.ietf-sacm-terminology">[I-D.ietf-sacm-terminology]</a>.</dd>
+  <dd style="margin-left: 8">A piece of information asserted about a subject.  A claim is represented as a name/value pair consisting of a Claim Name and a Claim Value <a href="#RFC7519">[RFC7519]</a></dd>
+  <dt></dt>
+  <dd style="margin-left: 8">In the context of SACM, a claim is also specialized as an attribute/value pair that is intended to be related to a statement <a href="#I-D.ietf-sacm-terminology">[I-D.ietf-sacm-terminology]</a>.</dd>
   <dt>Endpoint Attestation:</dt>
   <dd style="margin-left: 8">the creation of evidence on the attestee that provides proof of a set of the endpoints's integrity measurements. This is done by digitally signing a set of PCRs using an AIK in the TPM.</dd>
   <dt>Endpoint Characteristics:</dt>
@@ -788,7 +790,7 @@ Attestee                                                 Verifier
       <td class="reference">
         <b id="I-D.greevenbosch-appsawg-cbor-cddl">[I-D.greevenbosch-appsawg-cbor-cddl]</b>
       </td>
-      <td class="top"><a>Vigano, C.</a> and <a>H. Birkholz</a>, "<a href="http://tools.ietf.org/html/draft-greevenbosch-appsawg-cbor-cddl-09">CBOR data definition language (CDDL): a notational convention to express CBOR data structures</a>", Internet-Draft draft-greevenbosch-appsawg-cbor-cddl-09, September 2016.</td>
+      <td class="top"><a>Birkholz, H.</a>, <a>Vigano, C.</a> and <a>C. Bormann</a>, "<a href="http://tools.ietf.org/html/draft-greevenbosch-appsawg-cbor-cddl-10">CBOR data definition language (CDDL): a notational convention to express CBOR data structures</a>", Internet-Draft draft-greevenbosch-appsawg-cbor-cddl-10, March 2017.</td>
     </tr>
     <tr>
       <td class="reference">
@@ -806,7 +808,7 @@ Attestee                                                 Verifier
       <td class="reference">
         <b id="I-D.ietf-sacm-terminology">[I-D.ietf-sacm-terminology]</b>
       </td>
-      <td class="top"><a>Birkholz, H.</a>, <a>Lu, J.</a>, <a>Strassner, J.</a> and <a>N. Cam-Winget</a>, "<a href="http://tools.ietf.org/html/draft-ietf-sacm-terminology-11">Secure Automation and Continuous Monitoring (SACM) Terminology</a>", Internet-Draft draft-ietf-sacm-terminology-11, September 2016.</td>
+      <td class="top"><a>Birkholz, H.</a>, <a>Lu, J.</a>, <a>Strassner, J.</a> and <a>N. Cam-Winget</a>, "<a href="http://tools.ietf.org/html/draft-ietf-sacm-terminology-12">Security Automation and Continuous Monitoring (SACM) Terminology</a>", Internet-Draft draft-ietf-sacm-terminology-12, March 2017.</td>
     </tr>
     <tr>
       <td class="reference">
@@ -903,6 +905,12 @@ Attestee                                                 Verifier
         <b id="RFC7320">[RFC7320]</b>
       </td>
       <td class="top"><a>Nottingham, M.</a>, "<a href="http://tools.ietf.org/html/rfc7320">URI Design and Ownership</a>", BCP 190, RFC 7320, DOI 10.17487/RFC7320, July 2014.</td>
+    </tr>
+    <tr>
+      <td class="reference">
+        <b id="RFC7519">[RFC7519]</b>
+      </td>
+      <td class="top"><a>Jones, M.</a>, <a>Bradley, J.</a> and <a>N. Sakimura</a>, "<a href="http://tools.ietf.org/html/rfc7519">JSON Web Token (JWT)</a>", RFC 7519, DOI 10.17487/RFC7519, May 2015.</td>
     </tr>
     <tr>
       <td class="reference">
