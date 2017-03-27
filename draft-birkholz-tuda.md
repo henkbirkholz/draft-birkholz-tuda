@@ -166,6 +166,7 @@ informative:
   RFC3161: timestamp
   RFC3411: snmp
   RFC7320: lawn
+  RFC7519: jwt
   RFC7230: http1
   RFC7252: coap
   RFC7540: http2
@@ -315,7 +316,9 @@ Attestation Identity Key (AIK):
 
 Claim:
 
-: an attribute value pair that is intended to be related to a statement {{-sacmterm}}.
+: A piece of information asserted about a subject.  A claim is represented as a name/value pair consisting of a Claim Name and a Claim Value {{-jwt}}
+
+: In the context of SACM, a claim is also specialized as an attribute/value pair that is intended to be related to a statement {{-sacmterm}}.
 
 Endpoint Attestation:
 
