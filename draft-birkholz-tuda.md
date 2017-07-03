@@ -53,7 +53,7 @@ normative:
   RFC2119:
 
 informative:
-#  RFC4949:
+  RFC4949:
   RFC2790:
   RFC6933:
   RFC1213:
@@ -129,6 +129,18 @@ informative:
     seriesinfo:
       ISO/IEC: 11889-1
     date: 2009
+  TPM2:
+    title: >
+      Trusted Platform Module Library Specification, Family 2.0, Level 00, Revision 01.16 ed.,
+     
+      Trusted Computing Group
+    date: 2014
+  TEE:
+    title: >
+      TEE System Architecture v1.1, GPD_SPE_009
+    author:
+    - org: Global Platform
+    date: 2017
   PTS:
     target: https://www.trustedcomputinggroup.org/wp-content/uploads/IFM_PTS_v1_0_r28.pdf
     title: TCG Attestation PTS Protocol Binding to TNC IF-M
@@ -195,8 +207,7 @@ This memo documents the method and bindings used to conduct time-based uni-direc
 
 # Introduction
 
-Remote attestation describes the attempt to determine and appraise properties, such as integrity and trustworthiness, of an endpoint --- the attestee --- over a network to another endpoint --- the verifier --- without direct access. Typically, this kind of assessment is based on measurements of software components running on the attestee, where the hash values of all started software components are stored (extended into) a Trust-Anchor implemented as a Hardware Security Module (e.g. a Trusted Platform Module or similar) and reported via a signature over the
-measurements.
+Remote attestation describes the attempt to determine and appraise properties, such as integrity and trustworthiness, of an endpoint --- the attestee --- over a network to another endpoint --- the verifier --- without direct access. Typically, this kind of appraisal is based on integrity measurements of software components right before they are loaded as software instances on the attestee. In general, attestation procedures are utilizing a hardware root of trust (RoT). The TUDA protocol family uses hash values of all started software components that are stored (extended into) a Trust-Anchor (the Rot) implemented as a Hardware Security Module (e.g. a Trusted Platform Module or similar) and are reported via a signature over those measurements.
 
 ## Remote Attestation
 
@@ -204,45 +215,48 @@ In essence, remote attestation is composed of three activities. The following de
 
 Attestation:
 
-: The creation of a claim about the properties of an attestee, such that the claim can be used as evidence.
+: The creation of one ore more claims about the properties of an attestee, such that the claims can be used as evidence.
 
 Conveyance:
 
-: The transfer of evidence from the attestee to the verifier. 
+: The transfer of evidence from the attestee to the verifier via an interconnect. 
 
 Verification: 
 
 : The appraisal of evidence by evaluating it against declarative guidance.
 
+With TUDA, the claims that compose the evidence are signatures over trustworthy integrity measurements created by leveraging a hardware RoT. The evidence is appraised via corresponding signatures over reference integrity measurements (RIM, represented, for example via {{-coswid}}).
+
 Protocols that facilitate Trust-Anchor based signatures in order to provide
-remote attestation are usually bi-directional challenge/response protocols, such as the Platform Trust Service protocol {{PTS}} or CAVES {{PRIRA}}, where one entity sends a challenge that is included inside the response to ensure the recentness --- the freshness --- of the attestation information. The corresponding interaction model tightly couples the three activities of creating, transferring and appraising evidence.
+remote attestation are usually bi-directional challenge/response protocols, such as the Platform Trust Service protocol {{PTS}} or CAVES {{PRIRA}}, where one entity sends a challenge that is included inside the response to ensure the recentness --- the freshness (see fresh in {{RFC4949}}) --- of the attestation information. The corresponding interaction model tightly couples the three activities of creating, transferring and appraising evidence.
 
 The Time-Based Uni-directional Attestation family of protocols --- TUDA --- described in this document can decouple the three activities remote attestation is composed of. As a result, TUDA provides additional capabilities, such as:
 
 * remote attestation for attestees that might not always be able to reach the Internet by enabling the verification of past states,
-* secure audit logs by combining the evidence created via TUDA with measurement logs that represent a detailed record of corresponding past states,
-* an uni-directional interaction model that can traverse “diode-like” network security functions or can be leveraged in RESTful architectures (e.g. CoAP {{-coap}}), analogously.
+* secure audit logs by combining the evidence created via TUDA with integrity measurement logs that represent a detailed record of corresponding past states,
+* an uni-directional interaction model that can traverse "diode-like" network security functions (NSF) or can be leveraged in RESTful architectures (e.g. CoAP {{-coap}}), analogously.
 
 ## Attestation and Verification
 
-TUDA is a family of protocols that package results from specific attestation and verification protocols.  TUDA is currently instantiated for attestion activity based on a Trusted Platform Module (TPM {{TPM12}}), a specific Hardware Security Module (HSM) providing, e.g., Platform Configuration Registers (PCR), restricted signing keys, and a source of (relative) time (i.e. a tick-counter).
+TUDA is a family of protocols that packages results from specific attestation and verification activities. The attestation activities of TUDA are based on a hardware root of trust that provides the following capabilities:
+
+* platform Configuration Registers (PCR) that store measurements consecutively and represent the chain of measurements as a single measurement value,
+* restricted signing keys that are can only be accessed if a specific signature about measurements can be provided as authentication, and
+* a source of relative time (for example, a tick counter).
 
 Both the attestation and the verification activity of TUDA also require a trusted Time Stamp Authority (TSA) as an additional third party next to the attestee and the verifier.
-The current protocol instantiaton uses a Time Stamp Authority based on {{RFC3161}}. The combination of the local source of time provided by the TPM (located on the attestee) and the Time Stamp Tokens provided by the TSA (to both the attestee and the verifier) enable the attestation and verification of an appropriate freshness of the evidence conveyed by the attestee --- without requiring a challenge/response interaction model that uses a nonce to ensure the freshness.
+The protocol uses a Time Stamp Authority based on {{RFC3161}}. The combination of the local source of time provided by the hardware RoT (located on the attestee) and the Time Stamp Tokens provided by the TSA (to both the attestee and the verifier) enable the attestation and verification of an appropriate freshness of the evidence conveyed by the attestee --- without requiring a challenge/response interaction model that uses a nonce to ensure the freshness.
 
-The verification activity also requires declarative guidance (representing desired or compliant endpoint configuration and state) evidence conveyed by the attestee can be evaluated against. The acquisition or representation of declarative guidance as well as the corresponding evaluation methods are out of the scope of this document.
+The verification activity can also use declarative guidance (representing desired or compliant endpoint characteristics in the form of RIM) to appraise the individual integrity measurements the conveyed evidence is based on. The acquisition or representation of declarative guidance as well as the corresponding evaluation methods are out of the scope of this document.
 
 ## Information Elements and Conveyance
 
-TUDA defines a set of information elements (IE) that are created or stored on the attestee and are intended to be transferred to the verifier in order to enable appraisal.
+TUDA defines a set of information elements (IE) that are created and stored on the attestee and are intended to be transferred to the verifier in order to enable appraisal. Each TUDA IE:
 
-Each TUDA IE is encoded in the Concise Binary Object Representation (CBOR {{-cbor}}) to minimize the volume of data in motion. In this document, the composition of the CBOR data items that represent IE is described using the CBOR Data Definition Language, CDDL {{-cddl}}.
-
-Each TUDA IE that requires a certain freshness is only created/updated when out-dated, which reduces the overall resources required from the attestee, including the utilization of the TPM. The IE that have to be created are determined by their age or by specific state changes on the attestee (e.g. state changes due to a reboot-cycle).
-
-Each TUDA IE is only transferred when required, which reduces the amount of data in motion necessary to conduct remote attestation significantly. Only IE that have changed since their last conveyance have to be transferred.
-
-Each TUDA IE that requires a certain freshness can be reused for multiple remote attestation procedures in the limits of its corresponding freshness-window, further reducing the load imposed on the attestee and its corresponding TPM.
+* is encoded in the Concise Binary Object Representation (CBOR {{-cbor}}) to minimize the volume of data in motion. In this document, the composition of the CBOR data items that represent IE is described using the Concise Data Definition Language, CDDL {{-cddl}}
+* that requires a certain freshness is only created/updated when out-dated, which reduces the overall resources required from the attestee, including the utilization of the hardware root of trust. The IE that have to be created are determined by their age or by specific state changes on the attestee (e.g. state changes due to a reboot-cycle)
+* is only transferred when required, which reduces the amount of data in motion necessary to conduct remote attestation significantly. Only IE that have changed since their last conveyance have to be transferred
+* that requires a certain freshness can be reused for multiple remote attestation procedures in the limits of its corresponding freshness-window, further reducing the load imposed on the attestee and its corresponding hardware RoT.
 
 ## TUDA Objectives
 
@@ -258,7 +272,7 @@ The Time-Based Uni-directional Attestation family of protocols is designed to:
 
 ## Hardware Dependencies
 
-The binding of the attestation scheme used by TUDA to generate the TUDA IE is specific to the methods provided by the HSM used. As a reference, this document includes pseudo-code that illustrates the production of TUDA IE using a TPM 1.2 and the corresponding TPM commands specified in {{TPM12}} as an example. The references to TPM 1.2 commands and corresponding pseudo-code only serve as guidance to enable a better understanding of the attestation scheme and is intended to encourages the use of any appropriate HSM or equivalent set of Trust-Zone functions.
+The binding of the attestation scheme used by TUDA to generate the TUDA IE is specific to the methods provided by the hardware RoT used. As a reference, this document includes pseudo-code that illustrates the production of TUDA IE using a TPM 1.2 and TPM 2.0 as well as the corresponding TPM commands specified in {{TPM12}} and {{TPM2}} as an example. The references to TPM commands and corresponding pseudo-code only serve as guidance to enable a better understanding of the attestation scheme and is intended to encourages the use of any appropriate hardware RoT or equivalent set of functions stored in a Trusted Execution Environment {{TEE}}.
 
 ## Requirements Notation
 
@@ -290,19 +304,20 @@ Given the time-based attestation scheme, the freshness property of TUDA is equiv
 
 The accuracy of this time-frame is defined by two factors: 
 
-* the time-synchronization between the attestee and the TSA. The time between the two TPM tickstamps give the maximum drift (left and right) to the TSA timestamp, and
-* the drift of local TPM clocks.
+* the time-synchronization between the attestee and the TSA. The time between the two tickstamps acquired via the hardware RoT define the scope of the maximum drift ("left" and "right" in respect to the timeline) to the TSA timestamp, and
+* the drift of clocks included in the hardware RoT.
 
-Since TUDA attestations do not rely upon a verifier provided value (i.e. the nonce), the security guarantees of the protocol only incorporate the TSA and the TPM. As a consequence TUDA attestations can even serve as proof of integrity in audit logs with point in time guarantees, in contrast to classical attestations.
+Since TUDA attestations do not rely upon a verifier provided value (i.e. the nonce), the security guarantees of the protocol only incorporate the TSA and the hardware RoT. In consequence, TUDA attestations can even serve as proof of integrity in audit logs with precise point-in-time guarantees, in contrast to classical attestations.
 
 {{rest}} contains guidance on how to utilize a REST architecture.
 
 {{snmp}} contains guidance on how to create an SNMP binding and a corresponding TUDA-MIB.
 
-{{yang}} contains a corrresponding YANG module that supports both RESTCONF and CoMI.
+{{yang}} contains a corresponding YANG module that supports both RESTCONF and CoMI.
 
 {{tpm12}} contains a realization of TUDA using TPM 1.2 primitives.
-A realization of TUDA using TPM 2.0 primitives will be added with the next iteration of this document.
+
+{{tpm2}} contains a realization of TUDA using TPM 2.0 primitives.
 
 ## Terminology
 
@@ -316,17 +331,17 @@ Attestation Identity Key (AIK):
 
 Claim:
 
-: A piece of information asserted about a subject.  A claim is represented as a name/value pair consisting of a Claim Name and a Claim Value {{-jwt}}
+: A piece of information asserted about a subject {{RFC4949}}. A claim is represented as a name/value pair consisting of a Claim Name and a Claim Value {{-jwt}}
 
 : In the context of SACM, a claim is also specialized as an attribute/value pair that is intended to be related to a statement {{-sacmterm}}.
 
 Endpoint Attestation:
 
-: the creation of evidence on the attestee that provides proof of a set of the endpoints's integrity measurements. This is done by digitally signing a set of PCRs using an AIK in the TPM.
+: the creation of evidence on the attestee that provides proof of a set of the endpoints's integrity measurements. This is done by digitally signing a set of PCRs using an AIK shielded by the hardware RoT.
 
 Endpoint Characteristics:
 
-: the composition, configuration and state of an endpoint.
+: the context, composition, configuration, state, and behavior of an endpoint.
 
 Evidence:
 
@@ -375,10 +390,10 @@ Byte:
 Cert:
 : an X.509 certificate represented as a byte-string
 
-### TPM-Specific Terms
+### RoT specific terms
 
 PCR:
-: a Platform Configuration Register that is part of a TPM and is used to securely store and report measurements about security posture
+: a Platform Configuration Register that is part of a hardware root of trust and is used to securely store and report measurements about security posture
 
 PCR-Hash:
 : a hash value of the security posture measurements stored in a TPM PCR (e.g. regarding running software instances) represented as a byte-string
@@ -410,21 +425,21 @@ AIK Certificate:
 
 Synchronization Token:
 
-: The reference for Attestations are the Tick-Sessions of the TPM. In
-  order to put Attestations into relation with a Real Time Clock
+: The reference for attestations are the relative timestanps provided by the hardware RoT. In
+  order to put attestations into relation with a Real Time Clock
   (RTC), it is necessary to provide a cryptographic synchronization
-  between the tick session and the RTC. To do so, a synchronization
+  between these trusted relative timestamps and the regular RTC that is a hardware component of the attestee. To do so, a synchronization
   protocol is run with a Time Stamp Authority (TSA).
 
 Restriction Info:
 
-: The attestation relies on the capability of the TPM to operate on restricted keys.
+: The attestation relies on the capability of the hardware RoT to operate on restricted keys.
   Whenever the PCR values for the machine to be attested change, a new restricted key
   is created that can only be operated as long as the PCRs remain in their current state.
 
 : In order to prove to the Verifier that this restricted temporary key actually has
-  these properties and also to provide the PCR value that it is restricted, the TPM
-  command TPM_CertifyInfo is used. It creates a signed certificate using the AIK about
+  these properties and also to provide the PCR value that it is restricted, the corresponding
+  signing capabilities of the hardware RoT are used. It creates a signed certificate using the AIK about
   the newly created restricted key.
 
 Measurement Log:
@@ -433,25 +448,24 @@ Measurement Log:
   values in order to estimate the trustworthiness of the device. As such, a list of
   those elements that were extended into the PCRs is reported. Note though that for
   certain environments, this step may be optional if a list of valid PCR configurations
-  exists and no measurement log is required.
+  (in the form of RIM available to the verifier) exists and no measurement log is required.
 
 Implicit Attestation:
 
-: The actual attestation is then based upon a TPM_TickStampBlob operation using the restricted
-  temporary key that was certified in the steps above. The TPM_TickStampBlob is executed
-  and thereby provides evidence that at this point in time (with respect to the TPM
-  internal tick-session) a certain configuration existed (namely the PCR values associated
-  with the restricted key). Together with the synchronization token this tick-related
-  timing can then be related to the real-time clock.
+: The actual attestation is then based upon a signed timestamp provided by the hardware RoT using the restricted
+  temporary key that was certified in the steps above. The signed timestamp provides evidence that at this point in time (with respect to the relative time of the hardware RoT)
+  a certain configuration existed (namely the PCR values associated
+  with the restricted key). Together with the synchronization token this timestamp represented in relative time
+  can then be related to the real-time clock.
 
 Concise SWID tags:
 
 : As an option to better assess the trustworthiness of an Attestee, a Verifier can request the
-  reference hashes (often referred to as golden measurements) of all started software components
+  reference hashes (RIM, which are often referred to as golden measurements) of all started software components
   to compare them with the entries in the measurement log. References hashes regarding installed
   (and therefore running) software can be provided by the manufacturer via SWID tags. SWID tags are
-  provided by the Attestee using the Concise SWID representation {{-coswid}} and bundled into a CBOR array. 
-  Ideally, the reference hashes include a signature created by the manufacturer of the software.
+  provided by the attestee using the Concise SWID representation {{-coswid}} and bundled into a CBOR array (a RIM Manifest). 
+  Ideally, the reference hashes include a signature created by the manufacturer of the software to prove their integrity.
 
 
 These information elements could be sent en bloc, but it is recommended 
@@ -461,8 +475,8 @@ all seven information elements would result in unnecessary redundancy.
 
 Furthermore, in some scenarios it might be feasible not to store all
 elements on the Attestee endpoint, but instead they could be retrieved
-from another location or pre-deployed to the Verifier.
-It is also feasible to only store public keys at the Verifier and skip the whole
+from another location or be pre-deployed to the Verifier.
+It is also feasible to only store public keys on the Verifier and skip the whole
 certificate provisioning completely in order to save bandwidth and computation
 time for certificate verification.
 
@@ -470,20 +484,20 @@ time for certificate verification.
 
 An endpoint can be in various states and have various information associated
  with it during its life cycle. For TUDA, a subset of the states 
-(which can include associated information) that an endpoint and its TPM can be in, is
- important to the attestation process.
+(which can include associated information) that an endpoint and its hardware root of trust can be in, is
+ important to the attestation process. States can be:
 
-* Some states are persistent, even after reboot. This includes certificates
+* persistent, even after a hard reboot. This includes certificates
   that are associated with the endpoint itself or with services it relies on.
 
-* Some states are more volatile and change at the beginning of each boot cycle.
-  This includes the TPM-internal Tick-Session which provides the basis for the
-  synchronization token and implicit attestation.
+* volatile to a degree, because they change at the beginning of each boot cycle.
+  This includes the capability of a hardware RoT to provide relative time which provides the basis for the
+  synchronization token and implicit attestation---and which can reset after an endpoint is powered off.
 
-* Some states are even more volatile and change during an uptime cycle
+* very volatile, because they change during an uptime cycle
   (the period of time an endpoint is powered on, starting with its boot).
-  This includes the content of PCRs of a TPM and thereby also the PCR-restricted
-  keys used during attestation.
+  This includes the content of PCRs of a hardware RoT and thereby also the PCR-restricted signing 
+  keys used for attestation.
 
 Depending on this "lifetime of state", data has to be transported over the wire,
  or not. E.g. information that does not change due to a reboot typically
@@ -495,14 +509,14 @@ There are three kinds of events that require a renewed attestation:
 * A relevant PCR changes
 * Too much time has passed since the last attestation statement
 
-The third event listed above is variable per application use case and can therefore be
-set appropriately. For usage scenarios, in which the device would periodically
+The third event listed above is variable per application use case and also depends on the precision of the clock included in the hardware RoT.
+For usage scenarios, in which the device would periodically
 push information to be used in an audit-log, a time-frame of approximately one update
 per minute should be sufficient in most cases. For those usage scenarios, where
-verifiers request (pull) a fresh attestation statement, an implementation could use the TPM
+verifiers request (pull) a fresh attestation statement, an implementation could use the hardware RoT
 continuously to always present the most freshly created results. To save some
-utilization of the TPM for other purposes, however, a time-frame of once per ten
-seconds is recommended, which would leave 80% of utilization for applications.
+utilization of the hardware RoT for other purposes, however, a time-frame of once per ten
+seconds is recommended, which would typically leave about 80% of utilization for other applications.
 
 <!--
 
@@ -578,13 +592,15 @@ Attestee                                                 Verifier
 The uni-directional approach of TUDA requires evidence on how the TPM time represented in ticks (relative time since boot of the TPM) relates to the standard time provided by the TSA.
 The Sync Base Protocol (SBP) creates evidence that binds the TPM tick time to the TSA timestamp. The binding information is used by and conveyed via the Sync Token (TUDA IE). There are three actions required to create the content of a Sync Token:
 
-* At a given point in time (called left), a tickstamp counter value is acquired from the TPM that is also signed by the TPM. The hash of counter and signature is used as a nonce in the request directed at the TSA.
-* The corresponding response includes a data-structure incorporating the timestamp and its signature created by the TSA.
-* At the point in time the response arrives (right), a signed tickstamp counter value is acquired from the TPM again, using a hash of the signed TSA timestamp as a nonce.
+* At a given point in time (called "left"), a signed tickstamp counter value is acquired from the hardware RoT. The hash of counter and signature is used as a nonce in the request directed at the TSA.
+* The corresponding response includes a data-structure incorporating the trusted timestamp token and its signature created by the TSA.
+* At the point-in-time the response arrives (called "right"), a signed tickstamp counter value is acquired from the hardware RoT again, using a hash of the signed TSA timestamp as a nonce.
 
-The three time-related values --- TPM tick counters (left and right) and the TSA timestamp --- and their corresponding signatures are aggregated in order to create a corresponding Sync Token to be used as a TUDA Information Element that can be conveyed as evidence to a verifier.
+The three time-related values --- the relative timestamps provided by the hardware RoT ("left" and "right") and the TSA timestamp --- and their corresponding signatures are aggregated in order to create a corresponding Sync Token to be used as a TUDA Information Element that can be conveyed as evidence to a verifier.
 
-The drift of a TPM clock that drives the increments of the tick counter constitutes one of the triggers that can initiate a TUDA Information Element Update Cycle in respect to the freshness of the available Sync Token. The following functions illustrate the worst case freshness-window assuming the maximum drift of TPM tick counters that is considered acceptable in respect to the standard time --- 15 percent --- as defined by the TPM specification:
+The drift of a clock incorporated in the hardware RoT that drives the increments of the tick counter constitutes one of the triggers that can initiate a TUDA Information Element Update Cycle in respect to the freshness of the available Sync Token. 
+
+<!-- The following functions illustrate the worst case freshness-window assuming the maximum drift of TPM tick counters that is considered acceptable in respect to the standard time - 15 percent - as defined by the TPM specification: -->
 
 content TBD
 
@@ -602,6 +618,9 @@ There are Security Considerations. TBD
 
 
 #  Change Log
+
+Changes from version 04 to I2NSF related document version 00:
+* 
 
 Changes from version 03 to version 04:
 
@@ -767,12 +786,12 @@ context information for the TUDA attestation process.
 <CODE ENDS>
 ~~~~
 
-# Realization with TPM 1.2 functions {#tpm12}
+# Realization with TPM functions
 
 ## TPM Functions
 
 The following TPM structures, resources and functions are used within this approach.
-They are based upon the TPM 1.2 specification {{TPM12}}.
+They are based upon the TPM specifications {{TPM12}} and {{TPM2}}.
 
 ### Tick-Session and Tick-Stamp
 
@@ -839,7 +858,7 @@ using another key. This includes especially the keyInfo which in turn includes t
 used during key creation. This way, a third party can be assured about the fact that
 a key is only usable if the PCRs are in a certain state.
 
-## Protocol and Procedure
+## IE Generation Procedures for TPM 1.2 {#tpm12} 
 
 ### AIK and AIK Certificate {#aik}
 
@@ -1074,7 +1093,7 @@ Required TPM functions:
 {: #make-pubkey title="Creating the pubkey"}
 
 
-### Measurement Log
+### Measurement Log {#mlog}
 
 Similarly to regular attestations, the Verifier needs a way to reconstruct the PCRs'
 values in order to estimate the trustworthiness of the device. As such, a list of
@@ -1104,7 +1123,7 @@ tagged-hash /= [sha1: 0, bytes .size 20]
 tagged-hash /= [sha256: 1, bytes .size 32]
 ~~~~
 
-### Implicit Attestation
+### Implicit Attestation {#impa}
 
 The actual attestation is then based upon a TickStampBlob using the restricted
 temporary key that was certified in the steps above. The TPM-Tickstamp is executed
@@ -1237,7 +1256,87 @@ the corresponding code listings need to be re-executed.
 ~~~~
 {: #verify-attestation title="Verification of Attestation Token"}
 
+## IE Generation Procedures for TPM 2.0 {#tpm2}
 
+### AIK and AIK Certificate
+
+~~~~
+AIK-Certificate := X.509-Certificate(AIK-Key,Restricted-Flag)
+TSA-Certificate := X.509-Certificate(TSA-Key, TSA-Flag)
+~~~~
+
+### Synchronization Token
+
+The synchronization token
+uses a different TPM command, TPM2 GetTime() instead
+of TPM TickStampBlob(). The TPM2 GetTime() command
+contains the clock and time information of the TPM. The
+clock information is the equivalent of TUDA v1’s tickSession
+information.
+
+~~~~
+SyncToken := {
+   left_GetTime := sig(AIK-Key,
+                       TimeInfo := {time,
+                                    resetCount,
+                                    restartCount}),
+   middle_TimeStamp := sig(TSA-Key,
+                            h(left_TickStampBlob),
+                            UTC),
+   right_TickStampBlob := sig(AIK-Key,
+                              h(middle_TimeStamp),
+                              TimeInfo := {time,
+                                           resetCount,
+                                           restartCount})
+}
+~~~~
+
+### RestrictionInfo
+
+The restriction
+to certain PCR values is defined as a policy state-
+ment containing a TPM2 PolicyPCR element referencing the
+according PCR selection and values. The digest of this policy
+statement is registered in the public area of the key during key
+creation. In order to provide proof of this PCR restriction, the
+command TPM2 Certify() is used. The restriction information
+accordingly consists of the PolicyPCR-information, KeyPublic-
+information and the certificate of this key.
+
+~~~~
+Restriction-Token := {
+   pcr-restriction := {PCR-Selection,
+                       PCR-Values},
+   key-certificate := sig(AIK-Key,
+                          Restricted-PubKey,
+                          PolicyPCRdigest(pcr-restriction)
+})
+~~~~
+
+### Measurement Log
+
+The creation procedure is identical to {mlog}.
+
+~~~~
+Measurement-Log := List(EventName,
+                        PCR-Num,
+                        Event-Hash)
+~~~~
+
+### Implicit Attestation
+
+The attestation token consists of
+the result of TPM2 GetTime(). It proofs that at a
+certain point-in-time with respect to the TPM’s internal clock, a certain
+configuration of PCRs was present, as denoted in the keys
+restriction information.
+
+~~~~
+TUDA-Verifytoken := sig(Restricted-Key,
+                    TimeInfo := {time,
+                                 resetCount,
+                                 restartCount})
+~~~~
 
 #  Acknowledgements
 {: numbered="no"}
