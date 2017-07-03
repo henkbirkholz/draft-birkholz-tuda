@@ -132,7 +132,6 @@ informative:
   TPM2:
     title: >
       Trusted Platform Module Library Specification, Family 2.0, Level 00, Revision 01.16 ed.,
-     
       Trusted Computing Group
     date: 2014
   TEE:
@@ -207,7 +206,7 @@ This memo documents the method and bindings used to conduct time-based uni-direc
 
 # Introduction
 
-Remote attestation describes the attempt to determine and appraise properties, such as integrity and trustworthiness, of an endpoint --- the attestee --- over a network to another endpoint --- the verifier --- without direct access. Typically, this kind of appraisal is based on integrity measurements of software components right before they are loaded as software instances on the attestee. In general, attestation procedures are utilizing a hardware root of trust (RoT). The TUDA protocol family uses hash values of all started software components that are stored (extended into) a Trust-Anchor (the Rot) implemented as a Hardware Security Module (e.g. a Trusted Platform Module or similar) and are reported via a signature over those measurements.
+Remote attestation describes the attempt to determine and appraise properties, such as integrity and trustworthiness, of an endpoint --- the attestee --- over a network to another endpoint --- the verifier --- without direct access. Typically, this kind of appraisal is based on integrity measurements of software components right before they are loaded as software instances on the attestee. In general, attestation procedures are utilizing a hardware root of trust (RoT). The TUDA protocol family uses hash values of all started software components that are stored (extended into) a Trust-Anchor (the RoT) implemented as a Hardware Security Module (e.g. a Trusted Platform Module or similar) and are reported via a signature over those measurements.
 
 ## Remote Attestation
 
@@ -238,7 +237,7 @@ The Time-Based Uni-directional Attestation family of protocols --- TUDA --- desc
 
 ## Attestation and Verification
 
-TUDA is a family of protocols that packages results from specific attestation and verification activities. The attestation activities of TUDA are based on a hardware root of trust that provides the following capabilities:
+TUDA is a family of protocols that package results from specific attestation and verification activities. The attestation activities of TUDA are based on a hardware root of trust that provides the following capabilities:
 
 * platform Configuration Registers (PCR) that store measurements consecutively and represent the chain of measurements as a single measurement value,
 * restricted signing keys that are can only be accessed if a specific signature about measurements can be provided as authentication, and
@@ -331,7 +330,7 @@ Attestation Identity Key (AIK):
 
 Claim:
 
-: A piece of information asserted about a subject {{RFC4949}}. A claim is represented as a name/value pair consisting of a Claim Name and a Claim Value {{-jwt}}
+: A piece of information asserted about a subject {{RFC4949}}. A claim is represented as a name/value pair consisting of a Claim Name and a Claim Value {{-jwt}}.
 
 : In the context of SACM, a claim is also specialized as an attribute/value pair that is intended to be related to a statement {{-sacmterm}}.
 
