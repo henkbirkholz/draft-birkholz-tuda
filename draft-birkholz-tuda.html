@@ -526,7 +526,7 @@ address {
   <h1 id="rfc.section.1">
 <a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a>
 </h1>
-<p id="rfc.section.1.p.1">Remote attestation describes the attempt to determine and appraise properties, such as integrity and trustworthiness, of an endpoint &#8212; the attestee &#8212; over a network to another endpoint &#8212; the verifier &#8212; without direct access. Typically, this kind of appraisal is based on integrity measurements of software components right before they are loaded as software instances on the attestee. In general, attestation procedures are utilizing a hardware root of trust (RoT). The TUDA protocol family uses hash values of all started software components that are stored (extended into) a Trust-Anchor (the Rot) implemented as a Hardware Security Module (e.g. a Trusted Platform Module or similar) and are reported via a signature over those measurements.</p>
+<p id="rfc.section.1.p.1">Remote attestation describes the attempt to determine and appraise properties, such as integrity and trustworthiness, of an endpoint &#8212; the attestee &#8212; over a network to another endpoint &#8212; the verifier &#8212; without direct access. Typically, this kind of appraisal is based on integrity measurements of software components right before they are loaded as software instances on the attestee. In general, attestation procedures are utilizing a hardware root of trust (RoT). The TUDA protocol family uses hash values of all started software components that are stored (extended into) a Trust-Anchor (the RoT) implemented as a Hardware Security Module (e.g. a Trusted Platform Module or similar) and are reported via a signature over those measurements.</p>
 <h1 id="rfc.section.1.1">
 <a href="#rfc.section.1.1">1.1.</a> <a href="#remote-attestation" id="remote-attestation">Remote Attestation</a>
 </h1>
@@ -554,7 +554,7 @@ address {
 <h1 id="rfc.section.1.2">
 <a href="#rfc.section.1.2">1.2.</a> <a href="#attestation-and-verification" id="attestation-and-verification">Attestation and Verification</a>
 </h1>
-<p id="rfc.section.1.2.p.1">TUDA is a family of protocols that packages results from specific attestation and verification activities. The attestation activities of TUDA are based on a hardware root of trust that provides the following capabilities:</p>
+<p id="rfc.section.1.2.p.1">TUDA is a family of protocols that package results from specific attestation and verification activities. The attestation activities of TUDA are based on a hardware root of trust that provides the following capabilities:</p>
 <p></p>
 
 <ul>
@@ -647,8 +647,7 @@ address {
 <dt>Attestation Identity Key (AIK):</dt>
 <dd style="margin-left: 8">a special purpose signature (therefore asymmetric) key that supports identity related operations. The private portion of the key pair is maintained confidential to the entity via appropriate measures (that have an impact on the scope of confidence). The public portion of the key pair may be included in AIK credentials that provide a claim about the entity.</dd>
 <dt>Claim:</dt>
-<dd style="margin-left: 8">A piece of information asserted about a subject <a href="#RFC4949" class="xref">[RFC4949]</a>. A claim is represented as a name/value pair consisting of a Claim Name and a Claim Value <a href="#RFC7519" class="xref">[RFC7519]</a>
-</dd>
+<dd style="margin-left: 8">A piece of information asserted about a subject <a href="#RFC4949" class="xref">[RFC4949]</a>. A claim is represented as a name/value pair consisting of a Claim Name and a Claim Value <a href="#RFC7519" class="xref">[RFC7519]</a>.</dd>
 <dt></dt>
 <dd style="margin-left: 8">In the context of SACM, a claim is also specialized as an attribute/value pair that is intended to be related to a statement <a href="#I-D.ietf-sacm-terminology" class="xref">[I-D.ietf-sacm-terminology]</a>.</dd>
 <dt>Endpoint Attestation:</dt>

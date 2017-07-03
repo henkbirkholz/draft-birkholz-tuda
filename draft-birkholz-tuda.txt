@@ -138,7 +138,7 @@ Internet-Draft                    tuda                        March 2017
    loaded as software instances on the attestee.  In general,
    attestation procedures are utilizing a hardware root of trust (RoT).
    The TUDA protocol family uses hash values of all started software
-   components that are stored (extended into) a Trust-Anchor (the Rot)
+   components that are stored (extended into) a Trust-Anchor (the RoT)
    implemented as a Hardware Security Module (e.g. a Trusted Platform
    Module or similar) and are reported via a signature over those
    measurements.
@@ -200,7 +200,7 @@ Internet-Draft                    tuda                        March 2017
 
 1.2.  Attestation and Verification
 
-   TUDA is a family of protocols that packages results from specific
+   TUDA is a family of protocols that package results from specific
    attestation and verification activities.  The attestation activities
    of TUDA are based on a hardware root of trust that provides the
    following capabilities:
@@ -432,7 +432,7 @@ Internet-Draft                    tuda                        March 2017
 
    Claim:  A piece of information asserted about a subject [RFC4949].  A
       claim is represented as a name/value pair consisting of a Claim
-      Name and a Claim Value [RFC7519]
+      Name and a Claim Value [RFC7519].
 
       In the context of SACM, a claim is also specialized as an
       attribute/value pair that is intended to be related to a statement
