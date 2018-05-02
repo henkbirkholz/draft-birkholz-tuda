@@ -534,8 +534,8 @@ ul.toc li {
   <h1 id="rfc.section.1">
 <a href="#rfc.section.1">1.</a> <a href="#introduction" id="introduction">Introduction</a>
 </h1>
-<p id="rfc.section.1.p.1">Remote attestation describes the attempt to determine and appraise properties, such as integrity and trustworthiness, of an endpoint &#8212; the Attestor &#8212; over a network to another endpoint &#8212; the Verifier &#8212; without direct access. Typically, this kind of appraisal is based on integrity measurements of software components right before they are loaded as software instances on the Attestor. In general, attestation procedures are utilizing a hardware root of trust (RoT). The TUDA protocol family uses hash values of all started software components that are stored (extended into) a Trust-Anchor (the Rot) implemented as a Hardware Security Module (e.g. a Trusted Platform Module or similar) and are reported via a signature over those measurements.</p>
-<p id="rfc.section.1.p.2">This draft introduces the concept of including the exchange of evidence (created via a hardware root of trust containing an shielded secret that is unknown to the user in order to increase the confidence that a communication peer is a Trusted System <a href="#RFC4949" class="xref">[RFC4949]</a>. In consequnce, this document introduces the term forward authenticity.</p>
+<p id="rfc.section.1.p.1">Remote attestation (RA) describes the attempt to determine and appraise properties, such as integrity and trustworthiness, of an endpoint &#8212; the Attestor &#8212; over a network to another endpoint &#8212; the Verifier &#8212; without direct access. Typically, this kind of appraisal is based on integrity measurements of software components right before they are loaded as software instances on the Attestor. In general, attestation procedures are utilizing a hardware root of trust (RoT). The TUDA protocol family uses hash values of all started software components that are stored (extended into) a Trust-Anchor (the RoT) implemented as a Hardware Security Module (e.g. a Trusted Platform Module or similar) and are reported via a signature over those measurements.</p>
+<p id="rfc.section.1.p.2">This draft introduces the concept of including the exchange of evidence &#8212; created via a hardware RoT containing a shielded secret that is inaccessible to the user &#8212; in order to increase the confidence in a communication peer that is supposed to be a Trusted System <a href="#RFC4949" class="xref">[RFC4949]</a>. In consequence, this document introduces the term forward authenticity.</p>
 <p></p>
 
 <dl>
@@ -3078,7 +3078,7 @@ TUDA-SyncToken = [
 <h1 id="rfc.appendix.D.3.3">
 <a href="#rfc.appendix.D.3.3">D.3.3.</a> <a href="#measurement-log" id="measurement-log">Measurement Log</a>
 </h1>
-<p id="rfc.section.D.3.3.p.1">The creation procedure is identical to {mlog}.</p>
+<p id="rfc.section.D.3.3.p.1">The creation procedure is identical to <a href="#mlog" class="xref">Appendix D.2.4</a>.</p>
 <div id="rfc.figure.17"></div>
 <div id="log-token2"></div>
 <pre>
