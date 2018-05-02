@@ -876,120 +876,6 @@ using another key. This includes especially the keyInfo which in turn includes t
 used during key creation. This way, a third party can be assured about the fact that
 a key is only usable if the PCRs are in a certain state.
 
-## IE Generation Procedures for TPM 2.0 {#tpm20}
-
-The pseudo code below includes general operations that are conducted as specific TPM commands:
-
-* hash() : description TBD
-* sig() : description TBD
-* X.509-Certificate() : description TBD
-
-These represent the output structure of that command in the form of a byte string value.
-
-### AIK and AIK Certificate {#aik2}
-
-Attestations are based upon a cryptographic signature performed by the TPM using
-a so-called Attestation Identity Key (AIK). An AIK has the properties that it cannot
-be exported from a TPM and is used for attestations. Trust in the AIK is established
-by an X.509 Certificate emitted by a Certificate Authority. The AIK certificate is
-either provided directly or via a so-called PrivacyCA {{AIK-Enrollment}}.
-
-This element consists of the AIK certificate that includes the AIK's public key used
-during verification as well as the certificate chain up to the Root CA for validation
-of the AIK certificate itself.
-
-~~~~ pseudo
-TUDA-Cert = [AIK-Cert, TSA-Cert]; maybe split into two for SNMP
-AIK-Certificate = X.509-Certificate(AIK-Key,Restricted-Flag)
-TSA-Certificate = X.509-Certificate(TSA-Key, TSA-Flag)
-~~~~
-{:pseudo #cert-token2 title="TUDA-Cert element for TPM 2.0"}
-
-### Synchronization Token
-
-The synchronization token uses a different TPM command, TPM2 GetTime() instead of TPM TickStampBlob().  The TPM2 GetTime() command contains the clock and time information of the TPM. The clock information is the equivalent of TUDA v1's tickSession information.
-
-~~~~ pseudo
-TUDA-SyncToken = [
-  left_GetTime = sig(AIK-Key,
-                     TimeInfo = [
-                       time,
-                       resetCount,
-                       restartCount
-                     ]
-                    ),
-  middle_TimeStamp = sig(TSA-Key,
-                         hash(left_TickStampBlob),
-                         UTC-localtime
-                        ),
-  right_TickStampBlob = sig(AIK-Key,
-                            hash(middle_TimeStamp),
-                            TimeInfo = [
-                              time,
-                              resetCount,
-                              restartCount
-                            ]
-                           )
-]
-~~~~
-{:pseudo #sync-token2 title="TUDA-Sync element for TPM 2.0"}
-
-### Measurement Log
-
-The creation procedure is identical to {mlog}.
-
-~~~~ pseudo
-Measurement-Log = [ 
-  * [ EventName,
-      PCR-Num,
-      Event-Hash ]
-]
-~~~~
-{:pseudo #log-token2 title="TUDA-Log element for TPM 2.0"}
-
-### Explicit time-based Attestation
-
-The TUDA attestation token consists of the result of TPM2_Quote() or a set of TPM2_PCR_READ followed by a TPM2_GetSessionAuditDigest. It proves that --- at a certain point-in-time with respect to the TPM's internal clock --- a certain configuration of PCRs was present, as denoted in the keys restriction information.
-
-~~~~ pseudo
-TUDA-AttestationToken = TUDA-AttestationToken_quote / TUDA-AttestationToken_audit
-
-TUDA-AttestationToken_quote = sig(AIK-Key,
-                                  TimeInfo = [
-                                    time,
-                                    resetCount,
-                                    restartCount
-                                  ],
-                                  PCR-Selection = [ * PCR],
-                                  PCR-Digest := PCRDigest
-                                 )
-
-TUDA-AttestationToken_audit = sig(AIK-key,
-                                  TimeInfo = [
-                                    time,
-                                    resetCount,
-                                    restartCount
-                                  ],
-                                  Session-Digest := PCRDigest
-                                 )
-~~~~
-{:pseudo #attest-token2 title="TUDA-Attest element for TPM 2.0"}
-
-### Sync Proof
-
-In order to proof to the Verifier that the TPM's clock was not 'fast-forwarded' the result of a TPM2_GetTime() is sent after the TUDA-AttestationToken.
-
-~~~~ pseudo
-TUDA-SyncProof = sig(AIK-Key,
-                     TimeInfo = [
-                       time,
-                       resetCount,
-                       restartCount
-                     ]
-                    ),
-~~~~
-{:pseudo #prrof-token2 title="TUDA-Proof element for TPM 2.0"}
-
 ## IE Generation Procedures for TPM 1.2 {#tpm12} 
 
 ### AIK and AIK Certificate {#aik}
@@ -1390,85 +1276,117 @@ the corresponding code listings need to be re-executed.
 
 ## IE Generation Procedures for TPM 2.0 {#tpm2}
 
-### AIK and AIK Certificate
+The pseudo code below includes general operations that are conducted as specific TPM commands:
 
+* hash() : description TBD
+* sig() : description TBD
+* X.509-Certificate() : description TBD
+
+These represent the output structure of that command in the form of a byte string value.
+
+### AIK and AIK Certificate {#aik2}
+
+Attestations are based upon a cryptographic signature performed by the TPM using
+a so-called Attestation Identity Key (AIK). An AIK has the properties that it cannot
+be exported from a TPM and is used for attestations. Trust in the AIK is established
+by an X.509 Certificate emitted by a Certificate Authority. The AIK certificate is
+either provided directly or via a so-called PrivacyCA {{AIK-Enrollment}}.
+
+This element consists of the AIK certificate that includes the AIK's public key used
+during verification as well as the certificate chain up to the Root CA for validation
+of the AIK certificate itself.
+
+~~~~ pseudo
+TUDA-Cert = [AIK-Cert, TSA-Cert]; maybe split into two for SNMP
+AIK-Certificate = X.509-Certificate(AIK-Key,Restricted-Flag)
+TSA-Certificate = X.509-Certificate(TSA-Key, TSA-Flag)
 ~~~~
-AIK-Certificate := X.509-Certificate(AIK-Key,Restricted-Flag)
-TSA-Certificate := X.509-Certificate(TSA-Key, TSA-Flag)
-~~~~
+{:pseudo #cert-token2 title="TUDA-Cert element for TPM 2.0"}
 
 ### Synchronization Token
 
-The synchronization token
-uses a different TPM command, TPM2 GetTime() instead
-of TPM TickStampBlob(). The TPM2 GetTime() command
-contains the clock and time information of the TPM. The
-clock information is the equivalent of TUDA v1’s tickSession
-information.
+The synchronization token uses a different TPM command, TPM2 GetTime() instead of TPM TickStampBlob().  The TPM2 GetTime() command contains the clock and time information of the TPM. The clock information is the equivalent of TUDA v1's tickSession information.
 
+~~~~ pseudo
+TUDA-SyncToken = [
+  left_GetTime = sig(AIK-Key,
+                     TimeInfo = [
+                       time,
+                       resetCount,
+                       restartCount
+                     ]
+                    ),
+  middle_TimeStamp = sig(TSA-Key,
+                         hash(left_TickStampBlob),
+                         UTC-localtime
+                        ),
+  right_TickStampBlob = sig(AIK-Key,
+                            hash(middle_TimeStamp),
+                            TimeInfo = [
+                              time,
+                              resetCount,
+                              restartCount
+                            ]
+                           )
+]
 ~~~~
-SyncToken := {
-   left_GetTime := sig(AIK-Key,
-                       TimeInfo := {time,
-                                    resetCount,
-                                    restartCount}),
-   middle_TimeStamp := sig(TSA-Key,
-                            h(left_TickStampBlob),
-                            UTC),
-   right_TickStampBlob := sig(AIK-Key,
-                              h(middle_TimeStamp),
-                              TimeInfo := {time,
-                                           resetCount,
-                                           restartCount})
-}
-~~~~
-
-### RestrictionInfo
-
-The restriction
-to certain PCR values is defined as a policy state-
-ment containing a TPM2 PolicyPCR element referencing the
-according PCR selection and values. The digest of this policy
-statement is registered in the public area of the key during key
-creation. In order to provide proof of this PCR restriction, the
-command TPM2 Certify() is used. The restriction information
-accordingly consists of the PolicyPCR-information, KeyPublic-
-information and the certificate of this key.
-
-~~~~
-Restriction-Token := {
-   pcr-restriction := {PCR-Selection,
-                       PCR-Values},
-   key-certificate := sig(AIK-Key,
-                          Restricted-PubKey,
-                          PolicyPCRdigest(pcr-restriction)
-})
-~~~~
+{:pseudo #sync-token2 title="TUDA-Sync element for TPM 2.0"}
 
 ### Measurement Log
 
 The creation procedure is identical to {mlog}.
 
+~~~~ pseudo
+Measurement-Log = [ 
+  * [ EventName,
+      PCR-Num,
+      Event-Hash ]
+]
 ~~~~
-Measurement-Log := List(EventName,
-                        PCR-Num,
-                        Event-Hash)
-~~~~
+{:pseudo #log-token2 title="TUDA-Log element for TPM 2.0"}
 
-### Implicit Attestation
+### Explicit time-based Attestation
 
-The attestation token consists of
-the result of TPM2 GetTime(). It proofs that at a
-certain point-in-time with respect to the TPM’s internal clock, a certain
-configuration of PCRs was present, as denoted in the keys
-restriction information.
+The TUDA attestation token consists of the result of TPM2_Quote() or a set of TPM2_PCR_READ followed by a TPM2_GetSessionAuditDigest. It proves that --- at a certain point-in-time with respect to the TPM's internal clock --- a certain configuration of PCRs was present, as denoted in the keys restriction information.
 
+~~~~ pseudo
+TUDA-AttestationToken = TUDA-AttestationToken_quote / TUDA-AttestationToken_audit
+
+TUDA-AttestationToken_quote = sig(AIK-Key,
+                                  TimeInfo = [
+                                    time,
+                                    resetCount,
+                                    restartCount
+                                  ],
+                                  PCR-Selection = [ * PCR],
+                                  PCR-Digest := PCRDigest
+                                 )
+
+TUDA-AttestationToken_audit = sig(AIK-key,
+                                  TimeInfo = [
+                                    time,
+                                    resetCount,
+                                    restartCount
+                                  ],
+                                  Session-Digest := PCRDigest
+                                 )
 ~~~~
-TUDA-Verifytoken := sig(Restricted-Key,
-                    TimeInfo := {time,
-                                 resetCount,
-                                 restartCount})
+{:pseudo #attest-token2 title="TUDA-Attest element for TPM 2.0"}
+
+### Sync Proof
+
+In order to proof to the Verifier that the TPM's clock was not 'fast-forwarded' the result of a TPM2_GetTime() is sent after the TUDA-AttestationToken.
+
+~~~~ pseudo
+TUDA-SyncProof = sig(AIK-Key,
+                     TimeInfo = [
+                       time,
+                       resetCount,
+                       restartCount
+                     ]
+                    ),
 ~~~~
+{:pseudo #prrof-token2 title="TUDA-Proof element for TPM 2.0"}
 
 #  Acknowledgements
 {: numbered="no"}
