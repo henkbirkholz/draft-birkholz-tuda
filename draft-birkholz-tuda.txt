@@ -115,25 +115,19 @@ Internet-Draft                    tuda                          May 2018
 
 
        D.1.4.  CertifyInfo . . . . . . . . . . . . . . . . . . . . .  56
-     D.2.  IE Generation Procedures for TPM 2.0  . . . . . . . . . .  56
+     D.2.  IE Generation Procedures for TPM 1.2  . . . . . . . . . .  56
        D.2.1.  AIK and AIK Certificate . . . . . . . . . . . . . . .  56
        D.2.2.  Synchronization Token . . . . . . . . . . . . . . . .  57
-       D.2.3.  Measurement Log . . . . . . . . . . . . . . . . . . .  57
-       D.2.4.  Explicit time-based Attestation . . . . . . . . . . .  57
-       D.2.5.  Sync Proof  . . . . . . . . . . . . . . . . . . . . .  58
-     D.3.  IE Generation Procedures for TPM 1.2  . . . . . . . . . .  58
-       D.3.1.  AIK and AIK Certificate . . . . . . . . . . . . . . .  59
-       D.3.2.  Synchronization Token . . . . . . . . . . . . . . . .  60
-       D.3.3.  RestrictionInfo . . . . . . . . . . . . . . . . . . .  61
-       D.3.4.  Measurement Log . . . . . . . . . . . . . . . . . . .  63
-       D.3.5.  Implicit Attestation  . . . . . . . . . . . . . . . .  64
-       D.3.6.  Attestation Verification Approach . . . . . . . . . .  65
-     D.4.  IE Generation Procedures for TPM 2.0  . . . . . . . . . .  67
-       D.4.1.  AIK and AIK Certificate . . . . . . . . . . . . . . .  67
-       D.4.2.  Synchronization Token . . . . . . . . . . . . . . . .  67
-       D.4.3.  RestrictionInfo . . . . . . . . . . . . . . . . . . .  68
-       D.4.4.  Measurement Log . . . . . . . . . . . . . . . . . . .  68
-       D.4.5.  Implicit Attestation  . . . . . . . . . . . . . . . .  68
+       D.2.3.  RestrictionInfo . . . . . . . . . . . . . . . . . . .  59
+       D.2.4.  Measurement Log . . . . . . . . . . . . . . . . . . .  61
+       D.2.5.  Implicit Attestation  . . . . . . . . . . . . . . . .  62
+       D.2.6.  Attestation Verification Approach . . . . . . . . . .  63
+     D.3.  IE Generation Procedures for TPM 2.0  . . . . . . . . . .  65
+       D.3.1.  AIK and AIK Certificate . . . . . . . . . . . . . . .  65
+       D.3.2.  Synchronization Token . . . . . . . . . . . . . . . .  66
+       D.3.3.  Measurement Log . . . . . . . . . . . . . . . . . . .  66
+       D.3.4.  Explicit time-based Attestation . . . . . . . . . . .  67
+       D.3.5.  Sync Proof  . . . . . . . . . . . . . . . . . . . . .  67
    Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  68
    Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  68
 
@@ -162,6 +156,12 @@ Internet-Draft                    tuda                          May 2018
    Forward Authenticity (FA):  A property of secure communication
       protocols, in which later compromise of the long-term keys of a
       data origin does not compromise past authentication of data from
+      that origin. FA is achieved by timely recording of assessments of
+      the authenticity from entities (via "audit logs" during "audit
+      sessions") that are authorized for this purpose, in a time frame
+      much shorter than that expected for the compromise of the long-
+      term keys.
+
 
 
 
@@ -169,12 +169,6 @@ Fuchs, et al.           Expires November 3, 2018                [Page 3]
 
 Internet-Draft                    tuda                          May 2018
 
-
-      that origin. FA is achieved by timely recording of assessments of
-      the authenticity from entities (via "audit logs" during "audit
-      sessions") that are authorized for this purpose, in a time frame
-      much shorter than that expected for the compromise of the long-
-      term keys.
 
    Forward Authenticity enables new level of guarantee and can be
    included in the basically every protocol, such as ssh, router
@@ -219,16 +213,18 @@ Internet-Draft                    tuda                          May 2018
    o  remote attestation for Attestors that might not always be able to
       reach the Internet by enabling the verification of past states,
 
+   o  secure audit logs by combining the evidence created via TUDA with
+      integrity measurement logs that represent a detailed record of
+      corresponding past states,
+
+
+
 
 
 Fuchs, et al.           Expires November 3, 2018                [Page 4]
 
 Internet-Draft                    tuda                          May 2018
 
-
-   o  secure audit logs by combining the evidence created via TUDA with
-      integrity measurement logs that represent a detailed record of
-      corresponding past states,
 
    o  an uni-directional interaction model that can traverse "diode-
       like" network security functions (NSF) or can be leveraged in
@@ -273,6 +269,10 @@ Internet-Draft                    tuda                          May 2018
    covered by this document.  Instead, the requirements on operations
    and the information elements that are the input and output to these
    operations are illustrated using pseudo code in [FIXME Appendix foo].
+
+
+
+
 
 
 
@@ -472,9 +472,9 @@ Internet-Draft                    tuda                          May 2018
    Appendix C contains a corresponding YANG module that supports both
    RESTCONF and CoMI.
 
-   Appendix D.3 contains a realization of TUDA using TPM 1.2 primitives.
+   Appendix D.2 contains a realization of TUDA using TPM 1.2 primitives.
 
-   Appendix D.4 contains a realization of TUDA using TPM 2.0 primitives.
+   Appendix D.3 contains a realization of TUDA using TPM 2.0 primitives.
 
 3.  Terminology
 
@@ -619,7 +619,7 @@ Internet-Draft                    tuda                          May 2018
 
 
       identity property.  ([AIK-Credential], [AIK-Enrollment]; see
-      Appendix D.3.1.)
+      Appendix D.2.1.)
 
    Synchronization Token:  The reference for attestations are the
       relative timestanps provided by the hardware RoT.  In order to put
@@ -3093,164 +3093,9 @@ D.1.4.  CertifyInfo
    key creation.  This way, a third party can be assured about the fact
    that a key is only usable if the PCRs are in a certain state.
 
-D.2.  IE Generation Procedures for TPM 2.0
-
-   The pseudo code below includes general operations that are conducted
-   as specific TPM commands:
-
-   o  hash() : description TBD
-
-   o  sig() : description TBD
-
-   o  X.509-Certificate() : description TBD
-
-   These represent the output structure of that command in the form of a
-   byte string value.
+D.2.  IE Generation Procedures for TPM 1.2
 
 D.2.1.  AIK and AIK Certificate
-
-   Attestations are based upon a cryptographic signature performed by
-   the TPM using a so-called Attestation Identity Key (AIK).  An AIK has
-   the properties that it cannot be exported from a TPM and is used for
-   attestations.  Trust in the AIK is established by an X.509
-   Certificate emitted by a Certificate Authority.  The AIK certificate
-   is either provided directly or via a so-called PrivacyCA
-   [AIK-Enrollment].
-
-   This element consists of the AIK certificate that includes the AIK's
-   public key used during verification as well as the certificate chain
-   up to the Root CA for validation of the AIK certificate itself.
-
-   TUDA-Cert = [AIK-Cert, TSA-Cert]; maybe split into two for SNMP
-   AIK-Certificate = X.509-Certificate(AIK-Key,Restricted-Flag)
-   TSA-Certificate = X.509-Certificate(TSA-Key, TSA-Flag)
-
-                  Figure 2: TUDA-Cert element for TPM 2.0
-
-
-
-
-
-
-
-Fuchs, et al.           Expires November 3, 2018               [Page 56]
-
-Internet-Draft                    tuda                          May 2018
-
-
-D.2.2.  Synchronization Token
-
-   The synchronization token uses a different TPM command, TPM2
-   GetTime() instead of TPM TickStampBlob().  The TPM2 GetTime() command
-   contains the clock and time information of the TPM.  The clock
-   information is the equivalent of TUDA v1's tickSession information.
-
-   TUDA-SyncToken = [
-     left_GetTime = sig(AIK-Key,
-                        TimeInfo = [
-                          time,
-                          resetCount,
-                          restartCount
-                        ]
-                       ),
-     middle_TimeStamp = sig(TSA-Key,
-                            hash(left_TickStampBlob),
-                            UTC-localtime
-                           ),
-     right_TickStampBlob = sig(AIK-Key,
-                               hash(middle_TimeStamp),
-                               TimeInfo = [
-                                 time,
-                                 resetCount,
-                                 restartCount
-                               ]
-                              )
-   ]
-
-                  Figure 3: TUDA-Sync element for TPM 2.0
-
-D.2.3.  Measurement Log
-
-   The creation procedure is identical to {mlog}.
-
-   Measurement-Log = [
-     * [ EventName,
-         PCR-Num,
-         Event-Hash ]
-   ]
-
-                  Figure 4: TUDA-Log element for TPM 2.0
-
-D.2.4.  Explicit time-based Attestation
-
-   The TUDA attestation token consists of the result of TPM2_Quote() or
-   a set of TPM2_PCR_READ followed by a TPM2_GetSessionAuditDigest.  It
-   proves that -- at a certain point-in-time with respect to the TPM's
-
-
-
-Fuchs, et al.           Expires November 3, 2018               [Page 57]
-
-Internet-Draft                    tuda                          May 2018
-
-
-   internal clock -- a certain configuration of PCRs was present, as
-   denoted in the keys restriction information.
-
-TUDA-AttestationToken = TUDA-AttestationToken_quote / TUDA-AttestationToken_audit
-
-TUDA-AttestationToken_quote = sig(AIK-Key,
-                                  TimeInfo = [
-                                    time,
-                                    resetCount,
-                                    restartCount
-                                  ],
-                                  PCR-Selection = [ * PCR],
-                                  PCR-Digest := PCRDigest
-                                 )
-
-TUDA-AttestationToken_audit = sig(AIK-key,
-                                  TimeInfo = [
-                                    time,
-                                    resetCount,
-                                    restartCount
-                                  ],
-                                  Session-Digest := PCRDigest
-                                 )
-
-                 Figure 5: TUDA-Attest element for TPM 2.0
-
-D.2.5.  Sync Proof
-
-   In order to proof to the Verifier that the TPM's clock was not 'fast-
-   forwarded' the result of a TPM2_GetTime() is sent after the TUDA-
-   AttestationToken.
-
-   TUDA-SyncProof = sig(AIK-Key,
-                        TimeInfo = [
-                          time,
-                          resetCount,
-                          restartCount
-                        ]
-                       ),
-
-                 Figure 6: TUDA-Proof element for TPM 2.0
-
-D.3.  IE Generation Procedures for TPM 1.2
-
-
-
-
-
-
-
-
-Fuchs, et al.           Expires November 3, 2018               [Page 58]
-
-Internet-Draft                    tuda                          May 2018
-
-
-D.3.1.  AIK and AIK Certificate
 
    Attestations are based upon a cryptographic signature performed by
    the TPM using a so-called Attestation Identity Key (AIK).  An AIK has
@@ -3268,19 +3113,30 @@ D.3.1.  AIK and AIK Certificate
    AIK-Cert = Cert
    TSA-Cert = Cert
 
-                    Figure 7: TUDA-Cert element in CDDL
+                    Figure 2: TUDA-Cert element in CDDL
 
    The TSA-Cert is a standard certificate of the TSA.
 
    The AIK-Cert may be provisioned in a secure environment using
-   standard means or it may follow the PrivacyCA protocols.  Figure 8
+   standard means or it may follow the PrivacyCA protocols.  Figure 3
    gives a rough sketch of this protocol.  See [AIK-Enrollment] for more
    information.
 
    The X.509 Certificate is built from the AIK public key and the
-   corresponding PKCS #7 certificate chain, as shown in Figure 8.
+   corresponding PKCS #7 certificate chain, as shown in Figure 3.
 
    Required TPM functions:
+
+
+
+
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 56]
+
+Internet-Draft                    tuda                          May 2018
+
 
    | create_AIK_Cert(...) = {
    |   AIK = TPM_MakeIdentity()
@@ -3296,17 +3152,9 @@ D.3.1.  AIK and AIK Certificate
    |   AIK-Cert = Call(AIK-CA, AIK.pubkey)
    | }
 
-                 Figure 8: Creating the TUDA-Cert element
+                 Figure 3: Creating the TUDA-Cert element
 
-
-
-
-Fuchs, et al.           Expires November 3, 2018               [Page 59]
-
-Internet-Draft                    tuda                          May 2018
-
-
-D.3.2.  Synchronization Token
+D.2.2.  Synchronization Token
 
    The reference for Attestations are the Tick-Sessions of the TPM.  In
    order to put Attestations into relation with a Real Time Clock (RTC),
@@ -3327,6 +3175,24 @@ D.3.2.  Synchronization Token
 
    These three elements, with the TSA's certificate factored out, form
    the synchronization token
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 57]
+
+Internet-Draft                    tuda                          May 2018
+
 
    TUDA-Synctoken = [
      left: TickStampBlob-Output,
@@ -3353,16 +3219,36 @@ D.3.2.  Synchronization Token
 
    TPM-NONCE = bytes .size 20
 
-                    Figure 9: TUDA-Sync element in CDDL
+                    Figure 4: TUDA-Sync element in CDDL
+
+   Required TPM functions:
 
 
 
-Fuchs, et al.           Expires November 3, 2018               [Page 60]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 58]
 
 Internet-Draft                    tuda                          May 2018
 
-
-   Required TPM functions:
 
    | dummyDigest = h'0000000000000000000000000000000000000000'
    | dummyNonce = dummyDigest
@@ -3386,9 +3272,9 @@ Internet-Draft                    tuda                          May 2018
    | }
 
 
-                Figure 10: Creating the Sync-Token element
+                 Figure 5: Creating the Sync-Token element
 
-D.3.3.  RestrictionInfo
+D.2.3.  RestrictionInfo
 
    The attestation relies on the capability of the TPM to operate on
    restricted keys.  Whenever the PCR values for the machine to be
@@ -3410,16 +3296,15 @@ D.3.3.  RestrictionInfo
    o  the certificate.
 
  TUDA-RestrictionInfo = [Composite,
+                         restrictedKey_Pub: Pubkey,
+                         CertifyInfo]
 
 
 
-Fuchs, et al.           Expires November 3, 2018               [Page 61]
+Fuchs, et al.           Expires November 3, 2018               [Page 59]
 
 Internet-Draft                    tuda                          May 2018
 
-
-                         restrictedKey_Pub: Pubkey,
-                         CertifyInfo]
 
  PCRSelection = bytes .size (2..4) ; used as bit string
 
@@ -3466,23 +3351,23 @@ Internet-Draft                    tuda                          May 2018
    ; "size of the RSA key in bits":
    keyLength: uint
    ; "number of prime factors used by this RSA key":
+   numPrimes: uint
+   ; "This SHALL be the size of the exponent":
+   exponentSize: null / uint / biguint
 
 
 
-Fuchs, et al.           Expires November 3, 2018               [Page 62]
+Fuchs, et al.           Expires November 3, 2018               [Page 60]
 
 Internet-Draft                    tuda                          May 2018
 
 
-   numPrimes: uint
-   ; "This SHALL be the size of the exponent":
-   exponentSize: null / uint / biguint
    ; "If the key is using the default exponent then the exponentSize
    ; MUST be 0" -> we represent this case as null
  ]
 
 
-                    Figure 11: TUDA-Key element in CDDL
+                    Figure 6: TUDA-Key element in CDDL
 
    Required TPM functions:
 
@@ -3511,9 +3396,9 @@ Internet-Draft                    tuda                          May 2018
    |   /* Remove those values that are not needed */
    | }
 
-                      Figure 12: Creating the pubkey
+                       Figure 7: Creating the pubkey
 
-D.3.4.  Measurement Log
+D.2.4.  Measurement Log
 
    Similarly to regular attestations, the Verifier needs a way to
    reconstruct the PCRs' values in order to estimate the trustworthiness
@@ -3525,7 +3410,10 @@ D.3.4.  Measurement Log
 
 
 
-Fuchs, et al.           Expires November 3, 2018               [Page 63]
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 61]
 
 Internet-Draft                    tuda                          May 2018
 
@@ -3550,7 +3438,7 @@ Internet-Draft                    tuda                          May 2018
    tagged-hash /= [sha1: 0, bytes .size 20]
    tagged-hash /= [sha256: 1, bytes .size 32]
 
-D.3.5.  Implicit Attestation
+D.2.5.  Implicit Attestation
 
    The actual attestation is then based upon a TickStampBlob using the
    restricted temporary key that was certified in the steps above.  The
@@ -3564,7 +3452,7 @@ D.3.5.  Implicit Attestation
 
    TUDA-Verifytoken = TickStampBlob-Output
 
-                  Figure 13: TUDA-Verify element in CDDL
+                   Figure 8: TUDA-Verify element in CDDL
 
    Required TPM functions:
 
@@ -3575,18 +3463,18 @@ D.3.5.  Implicit Attestation
    |
    | VerifyToken = imp_att
 
-                   Figure 14: Creating the Verify Token
+                    Figure 9: Creating the Verify Token
 
 
 
 
 
-Fuchs, et al.           Expires November 3, 2018               [Page 64]
+Fuchs, et al.           Expires November 3, 2018               [Page 62]
 
 Internet-Draft                    tuda                          May 2018
 
 
-D.3.6.  Attestation Verification Approach
+D.2.6.  Attestation Verification Approach
 
    The seven TUDA information elements transport the essential content
    that is required to enable verification of the attestation statement
@@ -3599,7 +3487,7 @@ D.3.6.  Attestation Verification Approach
    | TSA_pub = verifyCert(TSA-CA, Cert.TSA-Cert)
    | AIK_pub = verifyCert(AIK-CA, Cert.AIK-Cert)
 
-                  Figure 15: Verification of Certificates
+                  Figure 10: Verification of Certificates
 
   | ts_left = Synctoken.left
   | ts_right = Synctoken.right
@@ -3622,7 +3510,7 @@ D.3.6.  Attestation Verification Approach
   | delta_right = timestamp.time -
   |     ticks_right.currentTicks * ticks_right.tickRate / 1000
 
-             Figure 16: Verification of Synchronization Token
+             Figure 11: Verification of Synchronization Token
 
 
 
@@ -3637,7 +3525,7 @@ D.3.6.  Attestation Verification Approach
 
 
 
-Fuchs, et al.           Expires November 3, 2018               [Page 65]
+Fuchs, et al.           Expires November 3, 2018               [Page 63]
 
 Internet-Draft                    tuda                          May 2018
 
@@ -3656,7 +3544,7 @@ Internet-Draft                    tuda                          May 2018
    |
    | verifySig(AIK_pub, dummyNonce || certInfo)
 
-                Figure 17: Verification of Restriction Info
+                Figure 12: Verification of Restriction Info
 
    | for event in Measurement-Log:
    |     if event.pcr not in ExpectedPCRBitmask:
@@ -3680,7 +3568,7 @@ Internet-Draft                    tuda                          May 2018
    | for pcr in ExpectedPCRBitmask:
    |     assert(virtPCR[pcr] == Composite.values[i++]
 
-                Figure 18: Verification of Measurement Log
+                Figure 13: Verification of Measurement Log
 
 
 
@@ -3693,7 +3581,7 @@ Internet-Draft                    tuda                          May 2018
 
 
 
-Fuchs, et al.           Expires November 3, 2018               [Page 66]
+Fuchs, et al.           Expires November 3, 2018               [Page 64]
 
 Internet-Draft                    tuda                          May 2018
 
@@ -3713,37 +3601,149 @@ Internet-Draft                    tuda                          May 2018
   |
   | [time_left, time_right]
 
-               Figure 19: Verification of Attestation Token
+               Figure 14: Verification of Attestation Token
 
-D.4.  IE Generation Procedures for TPM 2.0
+D.3.  IE Generation Procedures for TPM 2.0
 
-D.4.1.  AIK and AIK Certificate
+   The pseudo code below includes general operations that are conducted
+   as specific TPM commands:
 
-   AIK-Certificate := X.509-Certificate(AIK-Key,Restricted-Flag)
-   TSA-Certificate := X.509-Certificate(TSA-Key, TSA-Flag)
+   o  hash() : description TBD
 
-D.4.2.  Synchronization Token
+   o  sig() : description TBD
+
+   o  X.509-Certificate() : description TBD
+
+   These represent the output structure of that command in the form of a
+   byte string value.
+
+D.3.1.  AIK and AIK Certificate
+
+   Attestations are based upon a cryptographic signature performed by
+   the TPM using a so-called Attestation Identity Key (AIK).  An AIK has
+   the properties that it cannot be exported from a TPM and is used for
+   attestations.  Trust in the AIK is established by an X.509
+   Certificate emitted by a Certificate Authority.  The AIK certificate
+   is either provided directly or via a so-called PrivacyCA
+   [AIK-Enrollment].
+
+   This element consists of the AIK certificate that includes the AIK's
+   public key used during verification as well as the certificate chain
+   up to the Root CA for validation of the AIK certificate itself.
+
+
+
+
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 65]
+
+Internet-Draft                    tuda                          May 2018
+
+
+   TUDA-Cert = [AIK-Cert, TSA-Cert]; maybe split into two for SNMP
+   AIK-Certificate = X.509-Certificate(AIK-Key,Restricted-Flag)
+   TSA-Certificate = X.509-Certificate(TSA-Key, TSA-Flag)
+
+                 Figure 15: TUDA-Cert element for TPM 2.0
+
+D.3.2.  Synchronization Token
 
    The synchronization token uses a different TPM command, TPM2
    GetTime() instead of TPM TickStampBlob().  The TPM2 GetTime() command
    contains the clock and time information of the TPM.  The clock
    information is the equivalent of TUDA v1's tickSession information.
 
-   SyncToken := {
-      left_GetTime := sig(AIK-Key,
-                          TimeInfo := {time,
-                                       resetCount,
-                                       restartCount}),
-      middle_TimeStamp := sig(TSA-Key,
-                               h(left_TickStampBlob),
-                               UTC),
-      right_TickStampBlob := sig(AIK-Key,
-                                 h(middle_TimeStamp),
-                                 TimeInfo := {time,
-                                              resetCount,
-                                              restartCount})
-   }
+   TUDA-SyncToken = [
+     left_GetTime = sig(AIK-Key,
+                        TimeInfo = [
+                          time,
+                          resetCount,
+                          restartCount
+                        ]
+                       ),
+     middle_TimeStamp = sig(TSA-Key,
+                            hash(left_TickStampBlob),
+                            UTC-localtime
+                           ),
+     right_TickStampBlob = sig(AIK-Key,
+                               hash(middle_TimeStamp),
+                               TimeInfo = [
+                                 time,
+                                 resetCount,
+                                 restartCount
+                               ]
+                              )
+   ]
 
+                 Figure 16: TUDA-Sync element for TPM 2.0
+
+D.3.3.  Measurement Log
+
+   The creation procedure is identical to {mlog}.
+
+   Measurement-Log = [
+     * [ EventName,
+         PCR-Num,
+         Event-Hash ]
+   ]
+
+                  Figure 17: TUDA-Log element for TPM 2.0
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 66]
+
+Internet-Draft                    tuda                          May 2018
+
+
+D.3.4.  Explicit time-based Attestation
+
+   The TUDA attestation token consists of the result of TPM2_Quote() or
+   a set of TPM2_PCR_READ followed by a TPM2_GetSessionAuditDigest.  It
+   proves that -- at a certain point-in-time with respect to the TPM's
+   internal clock -- a certain configuration of PCRs was present, as
+   denoted in the keys restriction information.
+
+TUDA-AttestationToken = TUDA-AttestationToken_quote / TUDA-AttestationToken_audit
+
+TUDA-AttestationToken_quote = sig(AIK-Key,
+                                  TimeInfo = [
+                                    time,
+                                    resetCount,
+                                    restartCount
+                                  ],
+                                  PCR-Selection = [ * PCR],
+                                  PCR-Digest := PCRDigest
+                                 )
+
+TUDA-AttestationToken_audit = sig(AIK-key,
+                                  TimeInfo = [
+                                    time,
+                                    resetCount,
+                                    restartCount
+                                  ],
+                                  Session-Digest := PCRDigest
+                                 )
+
+                Figure 18: TUDA-Attest element for TPM 2.0
+
+D.3.5.  Sync Proof
+
+   In order to proof to the Verifier that the TPM's clock was not 'fast-
+   forwarded' the result of a TPM2_GetTime() is sent after the TUDA-
+   AttestationToken.
+
+   TUDA-SyncProof = sig(AIK-Key,
+                        TimeInfo = [
+                          time,
+                          resetCount,
+                          restartCount
+                        ]
+                       ),
+
+                 Figure 19: TUDA-Proof element for TPM 2.0
 
 
 
@@ -3754,61 +3754,9 @@ Fuchs, et al.           Expires November 3, 2018               [Page 67]
 Internet-Draft                    tuda                          May 2018
 
 
-D.4.3.  RestrictionInfo
-
-   The restriction to certain PCR values is defined as a policy state-
-   ment containing a TPM2 PolicyPCR element referencing the according
-   PCR selection and values.  The digest of this policy statement is
-   registered in the public area of the key during key creation.  In
-   order to provide proof of this PCR restriction, the command TPM2
-   Certify() is used.  The restriction information accordingly consists
-   of the PolicyPCR-information, KeyPublic- information and the
-   certificate of this key.
-
-   Restriction-Token := {
-      pcr-restriction := {PCR-Selection,
-                          PCR-Values},
-      key-certificate := sig(AIK-Key,
-                             Restricted-PubKey,
-                             PolicyPCRdigest(pcr-restriction)
-   })
-
-D.4.4.  Measurement Log
-
-   The creation procedure is identical to {mlog}.
-
-   Measurement-Log := List(EventName,
-                           PCR-Num,
-                           Event-Hash)
-
-D.4.5.  Implicit Attestation
-
-   The attestation token consists of the result of TPM2 GetTime().  It
-   proofs that at a certain point-in-time with respect to the TPM's
-   internal clock, a certain configuration of PCRs was present, as
-   denoted in the keys restriction information.
-
-   TUDA-Verifytoken := sig(Restricted-Key,
-                       TimeInfo := {time,
-                                    resetCount,
-                                    restartCount})
-
 Acknowledgements
 
 Authors' Addresses
-
-
-
-
-
-
-
-
-
-Fuchs, et al.           Expires November 3, 2018               [Page 68]
-
-Internet-Draft                    tuda                          May 2018
-
 
    Andreas Fuchs
    Fraunhofer Institute for Secure Information Technology
@@ -3857,8 +3805,4 @@ Internet-Draft                    tuda                          May 2018
 
 
 
-
-
-
-
-Fuchs, et al.           Expires November 3, 2018               [Page 69]
+Fuchs, et al.           Expires November 3, 2018               [Page 68]
