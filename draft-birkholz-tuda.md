@@ -132,7 +132,6 @@ informative:
   TPM2:
     title: >
       Trusted Platform Module Library Specification, Family 2.0, Level 00, Revision 01.16 ed.,
-     
       Trusted Computing Group
     date: 2014
   TEE:
@@ -348,7 +347,7 @@ Attestation Identity Key (AIK):
 
 Claim:
 
-: A piece of information asserted about a subject {{RFC4949}}. A claim is represented as a name/value pair consisting of a Claim Name and a Claim Value {{-jwt}}
+: A piece of information asserted about a subject {{RFC4949}}. A claim is represented as a name/value pair consisting of a Claim Name and a Claim Value {{-jwt}}.
 
 : In the context of SACM, a claim is also specialized as an attribute/value pair that is intended to be related to a statement {{-sacmterm}}.
 
