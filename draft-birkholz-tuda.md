@@ -206,9 +206,9 @@ This memo documents the method and bindings used to conduct time-based uni-direc
 
 # Introduction
 
-Remote attestation describes the attempt to determine and appraise properties, such as integrity and trustworthiness, of an endpoint --- the Attestor --- over a network to another endpoint --- the Verifier --- without direct access. Typically, this kind of appraisal is based on integrity measurements of software components right before they are loaded as software instances on the Attestor. In general, attestation procedures are utilizing a hardware root of trust (RoT). The TUDA protocol family uses hash values of all started software components that are stored (extended into) a Trust-Anchor (the Rot) implemented as a Hardware Security Module (e.g. a Trusted Platform Module or similar) and are reported via a signature over those measurements.
+Remote attestation (RA) describes the attempt to determine and appraise properties, such as integrity and trustworthiness, of an endpoint --- the Attestor --- over a network to another endpoint --- the Verifier --- without direct access. Typically, this kind of appraisal is based on integrity measurements of software components right before they are loaded as software instances on the Attestor. In general, attestation procedures are utilizing a hardware root of trust (RoT). The TUDA protocol family uses hash values of all started software components that are stored (extended into) a Trust-Anchor (the RoT) implemented as a Hardware Security Module (e.g. a Trusted Platform Module or similar) and are reported via a signature over those measurements.
 
-This draft introduces the concept of including the exchange of evidence (created via a hardware root of trust containing an shielded secret that is unknown to the user in order to increase the confidence that a communication peer is a Trusted System {{RFC4949}}. In consequnce, this document introduces the term forward authenticity.
+This draft introduces the concept of including the exchange of evidence --- created via a hardware RoT containing a shielded secret that is inaccessible to the user --- in order to increase the confidence in a communication peer that is supposed to be a Trusted System {{RFC4949}}. In consequence, this document introduces the term forward authenticity.
 
 Forward Authenticity (FA):
 
@@ -1334,7 +1334,7 @@ TUDA-SyncToken = [
 
 ### Measurement Log
 
-The creation procedure is identical to {mlog}.
+The creation procedure is identical to {{mlog}}.
 
 ~~~~ pseudo
 Measurement-Log = [ 
