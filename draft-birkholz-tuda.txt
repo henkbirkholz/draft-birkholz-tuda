@@ -5,15 +5,15 @@
 Network Working Group                                           A. Fuchs
 Internet-Draft                                               H. Birkholz
 Intended status: Informational                            Fraunhofer SIT
-Expires: September 14, 2017                                  I. McDonald
+Expires: November 3, 2018                                    I. McDonald
                                                           High North Inc
                                                               C. Bormann
                                                  Universitaet Bremen TZI
-                                                          March 13, 2017
+                                                            May 02, 2018
 
 
                  Time-Based Uni-Directional Attestation
-                       draft-birkholz-tuda-latest
+                    draft-birkholz-i2nsf-tuda-latest
 
 Abstract
 
@@ -29,23 +29,23 @@ Status of This Memo
    Internet-Drafts are working documents of the Internet Engineering
    Task Force (IETF).  Note that other groups may also distribute
    working documents as Internet-Drafts.  The list of current Internet-
-   Drafts is at http://datatracker.ietf.org/drafts/current/.
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
 
    Internet-Drafts are draft documents valid for a maximum of six months
    and may be updated, replaced, or obsoleted by other documents at any
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on September 14, 2017.
+   This Internet-Draft will expire on November 3, 2018.
 
 Copyright Notice
 
-   Copyright (c) 2017 IETF Trust and the persons identified as the
+   Copyright (c) 2018 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
    Provisions Relating to IETF Documents
-   (http://trustee.ietf.org/license-info) in effect on the date of
+   (https://trustee.ietf.org/license-info) in effect on the date of
    publication of this document.  Please review these documents
    carefully, as they describe your rights and restrictions with respect
    to this document.  Code Components extracted from this document must
@@ -53,9 +53,9 @@ Copyright Notice
 
 
 
-Fuchs, et al.          Expires September 14, 2017               [Page 1]
+Fuchs, et al.           Expires November 3, 2018                [Page 1]
 
-Internet-Draft                    tuda                        March 2017
+Internet-Draft                    tuda                          May 2018
 
 
    the Trust Legal Provisions and are provided without warranty as
@@ -64,97 +64,128 @@ Internet-Draft                    tuda                        March 2017
 Table of Contents
 
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   3
-     1.1.  Remote Attestation  . . . . . . . . . . . . . . . . . . .   3
-     1.2.  Attestation and Verification  . . . . . . . . . . . . . .   4
-     1.3.  Information Elements and Conveyance . . . . . . . . . . .   5
-     1.4.  TUDA Objectives . . . . . . . . . . . . . . . . . . . . .   6
-     1.5.  Hardware Dependencies . . . . . . . . . . . . . . . . . .   6
-     1.6.  Requirements Notation . . . . . . . . . . . . . . . . . .   6
-   2.  TUDA Core Concept . . . . . . . . . . . . . . . . . . . . . .   6
-     2.1.  Terminology . . . . . . . . . . . . . . . . . . . . . . .   8
-       2.1.1.  Universal Terms . . . . . . . . . . . . . . . . . . .   8
-       2.1.2.  Roles . . . . . . . . . . . . . . . . . . . . . . . .   9
-       2.1.3.  General Types . . . . . . . . . . . . . . . . . . . .  10
-       2.1.4.  RoT specific terms  . . . . . . . . . . . . . . . . .  10
-       2.1.5.  Certificates  . . . . . . . . . . . . . . . . . . . .  10
-   3.  Time-Based Uni-Directional Attestation  . . . . . . . . . . .  10
-     3.1.  TUDA Information Elements Update Cycles . . . . . . . . .  12
-   4.  Sync Base Protocol  . . . . . . . . . . . . . . . . . . . . .  14
-   5.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  15
-   6.  Security Considerations . . . . . . . . . . . . . . . . . . .  15
-   7.  Change Log  . . . . . . . . . . . . . . . . . . . . . . . . .  15
-   8.  Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  16
-   9.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  16
-     9.1.  Normative References  . . . . . . . . . . . . . . . . . .  16
-     9.2.  Informative References  . . . . . . . . . . . . . . . . .  16
-   Appendix A.  REST Realization . . . . . . . . . . . . . . . . . .  20
-   Appendix B.  SNMP Realization . . . . . . . . . . . . . . . . . .  20
-     B.1.  Structure of TUDA MIB . . . . . . . . . . . . . . . . . .  21
-       B.1.1.  Cycle Index . . . . . . . . . . . . . . . . . . . . .  21
-       B.1.2.  Instance Index  . . . . . . . . . . . . . . . . . . .  21
-       B.1.3.  Fragment Index  . . . . . . . . . . . . . . . . . . .  21
-     B.2.  Relationship to Host Resources MIB  . . . . . . . . . . .  22
-     B.3.  Relationship to Entity MIB  . . . . . . . . . . . . . . .  22
-     B.4.  Relationship to Other MIBs  . . . . . . . . . . . . . . .  22
-     B.5.  Definition of TUDA MIB  . . . . . . . . . . . . . . . . .  22
-   Appendix C.  YANG Realization . . . . . . . . . . . . . . . . . .  38
-   Appendix D.  Realization with TPM functions . . . . . . . . . . .  52
-     D.1.  TPM Functions . . . . . . . . . . . . . . . . . . . . . .  52
-       D.1.1.  Tick-Session and Tick-Stamp . . . . . . . . . . . . .  52
-       D.1.2.  Platform Configuration Registers (PCRs) . . . . . . .  53
-       D.1.3.  PCR restricted Keys . . . . . . . . . . . . . . . . .  53
-       D.1.4.  CertifyInfo . . . . . . . . . . . . . . . . . . . . .  54
-     D.2.  IE Generation Procedures for TPM 1.2  . . . . . . . . . .  54
-       D.2.1.  AIK and AIK Certificate . . . . . . . . . . . . . . .  54
+     1.1.  Remote Attestation  . . . . . . . . . . . . . . . . . . .   4
+     1.2.  Evidence Creation . . . . . . . . . . . . . . . . . . . .   5
+     1.3.  Evidence Appraisal  . . . . . . . . . . . . . . . . . . .   5
+     1.4.  Activities and Actions  . . . . . . . . . . . . . . . . .   5
+     1.5.  Attestation and Verification  . . . . . . . . . . . . . .   6
+     1.6.  Information Elements and Conveyance . . . . . . . . . . .   6
+     1.7.  TUDA Objectives . . . . . . . . . . . . . . . . . . . . .   7
+     1.8.  Hardware Dependencies . . . . . . . . . . . . . . . . . .   7
+     1.9.  Requirements Notation . . . . . . . . . . . . . . . . . .   7
+   2.  TUDA Core Concept . . . . . . . . . . . . . . . . . . . . . .   8
+   3.  Terminology . . . . . . . . . . . . . . . . . . . . . . . . .   9
+     3.1.  Universal Terms . . . . . . . . . . . . . . . . . . . . .   9
+     3.2.  Roles . . . . . . . . . . . . . . . . . . . . . . . . . .  10
+       3.2.1.  General Types . . . . . . . . . . . . . . . . . . . .  11
+       3.2.2.  RoT specific terms  . . . . . . . . . . . . . . . . .  11
+     3.3.  Certificates  . . . . . . . . . . . . . . . . . . . . . .  11
+   4.  Time-Based Uni-Directional Attestation  . . . . . . . . . . .  11
+     4.1.  TUDA Information Elements Update Cycles . . . . . . . . .  13
+   5.  Sync Base Protocol  . . . . . . . . . . . . . . . . . . . . .  15
+   6.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  16
+   7.  Security Considerations . . . . . . . . . . . . . . . . . . .  16
+   8.  Change Log  . . . . . . . . . . . . . . . . . . . . . . . . .  16
+   9.  Contributors  . . . . . . . . . . . . . . . . . . . . . . . .  17
+   10. References  . . . . . . . . . . . . . . . . . . . . . . . . .  17
+     10.1.  Normative References . . . . . . . . . . . . . . . . . .  17
+     10.2.  Informative References . . . . . . . . . . . . . . . . .  17
+   Appendix A.  REST Realization . . . . . . . . . . . . . . . . . .  21
+   Appendix B.  SNMP Realization . . . . . . . . . . . . . . . . . .  21
+     B.1.  Structure of TUDA MIB . . . . . . . . . . . . . . . . . .  22
+       B.1.1.  Cycle Index . . . . . . . . . . . . . . . . . . . . .  22
+       B.1.2.  Instance Index  . . . . . . . . . . . . . . . . . . .  22
+       B.1.3.  Fragment Index  . . . . . . . . . . . . . . . . . . .  23
+     B.2.  Relationship to Host Resources MIB  . . . . . . . . . . .  23
+     B.3.  Relationship to Entity MIB  . . . . . . . . . . . . . . .  23
+     B.4.  Relationship to Other MIBs  . . . . . . . . . . . . . . .  23
+     B.5.  Definition of TUDA MIB  . . . . . . . . . . . . . . . . .  24
+   Appendix C.  YANG Realization . . . . . . . . . . . . . . . . . .  39
+   Appendix D.  Realization with TPM functions . . . . . . . . . . .  54
+     D.1.  TPM Functions . . . . . . . . . . . . . . . . . . . . . .  54
+       D.1.1.  Tick-Session and Tick-Stamp . . . . . . . . . . . . .  54
+       D.1.2.  Platform Configuration Registers (PCRs) . . . . . . .  55
+       D.1.3.  PCR restricted Keys . . . . . . . . . . . . . . . . .  55
 
 
 
-Fuchs, et al.          Expires September 14, 2017               [Page 2]
+Fuchs, et al.           Expires November 3, 2018                [Page 2]
 
-Internet-Draft                    tuda                        March 2017
+Internet-Draft                    tuda                          May 2018
 
 
-       D.2.2.  Synchronization Token . . . . . . . . . . . . . . . .  55
-       D.2.3.  RestrictionInfo . . . . . . . . . . . . . . . . . . .  57
-       D.2.4.  Measurement Log . . . . . . . . . . . . . . . . . . .  59
-       D.2.5.  Implicit Attestation  . . . . . . . . . . . . . . . .  60
-       D.2.6.  Attestation Verification Approach . . . . . . . . . .  61
-     D.3.  IE Generation Procedures for TPM 2.0  . . . . . . . . . .  63
-       D.3.1.  AIK and AIK Certificate . . . . . . . . . . . . . . .  63
-       D.3.2.  Synchronization Token . . . . . . . . . . . . . . . .  63
-       D.3.3.  RestrictionInfo . . . . . . . . . . . . . . . . . . .  64
-       D.3.4.  Measurement Log . . . . . . . . . . . . . . . . . . .  64
-       D.3.5.  Implicit Attestation  . . . . . . . . . . . . . . . .  64
-   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  64
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  64
+       D.1.4.  CertifyInfo . . . . . . . . . . . . . . . . . . . . .  56
+     D.2.  IE Generation Procedures for TPM 1.2  . . . . . . . . . .  56
+       D.2.1.  AIK and AIK Certificate . . . . . . . . . . . . . . .  56
+       D.2.2.  Synchronization Token . . . . . . . . . . . . . . . .  57
+       D.2.3.  RestrictionInfo . . . . . . . . . . . . . . . . . . .  59
+       D.2.4.  Measurement Log . . . . . . . . . . . . . . . . . . .  61
+       D.2.5.  Implicit Attestation  . . . . . . . . . . . . . . . .  62
+       D.2.6.  Attestation Verification Approach . . . . . . . . . .  63
+     D.3.  IE Generation Procedures for TPM 2.0  . . . . . . . . . .  65
+       D.3.1.  AIK and AIK Certificate . . . . . . . . . . . . . . .  65
+       D.3.2.  Synchronization Token . . . . . . . . . . . . . . . .  65
+       D.3.3.  RestrictionInfo . . . . . . . . . . . . . . . . . . .  66
+       D.3.4.  Measurement Log . . . . . . . . . . . . . . . . . . .  66
+       D.3.5.  Implicit Attestation  . . . . . . . . . . . . . . . .  66
+   Acknowledgements  . . . . . . . . . . . . . . . . . . . . . . . .  66
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  66
 
 1.  Introduction
 
    Remote attestation describes the attempt to determine and appraise
    properties, such as integrity and trustworthiness, of an endpoint --
-   the attestee -- over a network to another endpoint -- the verifier --
+   the Attestor -- over a network to another endpoint -- the Verifier --
    without direct access.  Typically, this kind of appraisal is based on
    integrity measurements of software components right before they are
-   loaded as software instances on the attestee.  In general,
+   loaded as software instances on the Attestor.  In general,
    attestation procedures are utilizing a hardware root of trust (RoT).
    The TUDA protocol family uses hash values of all started software
-   components that are stored (extended into) a Trust-Anchor (the RoT)
+   components that are stored (extended into) a Trust-Anchor (the Rot)
    implemented as a Hardware Security Module (e.g. a Trusted Platform
    Module or similar) and are reported via a signature over those
    measurements.
 
+   This draft introduces the concept of including the exchange of
+   evidence (created via a hardware root of trust containing an shielded
+   secret that is unknown to the user in order to increase the
+   confidence that a communication peer is a Trusted System [RFC4949].
+   In consequnce, this document introduces the term forward
+   authenticity.
+
+   Forward Authenticity (FA):  A property of secure communication
+      protocols, in which later compromise of the long-term keys of a
+      data origin does not compromise past authentication of data from
+      that origin. FA is achieved by timely recording of assessments of
+      the authenticity from entities (via "audit logs" during "audit
+      sessions") that are authorized for this purpose, in a time frame
+      much shorter than that expected for the compromise of the long-
+      term keys.
+
+
+
+
+Fuchs, et al.           Expires November 3, 2018                [Page 3]
+
+Internet-Draft                    tuda                          May 2018
+
+
+   Forward Authenticity enables new level of guarantee and can be
+   included in the basically every protocol, such as ssh, router
+   advertisements, link layer neighbor discover, or even ICMP echo.
+
 1.1.  Remote Attestation
 
-   In essence, remote attestation is composed of three activities.  The
-   following definitions are derived from the definitions presented in
-   [PRIRA] and [TCGGLOSS].
+   In essence, remote attestation (RA) is composed of three activities.
+   The following definitions are derived from the definitions presented
+   in [PRIRA] and [TCGGLOSS].
 
    Attestation:  The creation of one ore more claims about the
-      properties of an attestee, such that the claims can be used as
+      properties of an Attestor, such that the claims can be used as
       evidence.
 
-   Conveyance:  The transfer of evidence from the attestee to the
-      verifier via an interconnect.
+   Conveyance:  The transfer of evidence from the Attestor to the
+      Verifier via an interconnect.
 
    Verification:  The appraisal of evidence by evaluating it against
       declarative guidance.
@@ -162,90 +193,121 @@ Internet-Draft                    tuda                        March 2017
    With TUDA, the claims that compose the evidence are signatures over
    trustworthy integrity measurements created by leveraging a hardware
    RoT.  The evidence is appraised via corresponding signatures over
-
-
-
-Fuchs, et al.          Expires September 14, 2017               [Page 3]
-
-Internet-Draft                    tuda                        March 2017
-
-
    reference integrity measurements (RIM, represented, for example via
    [I-D.ietf-sacm-coswid]).
 
    Protocols that facilitate Trust-Anchor based signatures in order to
-   provide remote attestation are usually bi-directional challenge/
-   response protocols, such as the Platform Trust Service protocol [PTS]
-   or CAVES [PRIRA], where one entity sends a challenge that is included
-   inside the response to ensure the recentness -- the freshness (see
-   fresh in [RFC4949]) -- of the attestation information.  The
-   corresponding interaction model tightly couples the three activities
-   of creating, transferring and appraising evidence.
+   provide RATS are usually bi-directional challenge/response protocols,
+   such as the Platform Trust Service protocol [PTS] or CAVES [PRIRA],
+   where one entity sends a challenge that is included inside the
+   response to prove the recentness -- the freshness (see fresh in
+   [RFC4949]) -- of the attestation information.  The corresponding
+   interaction model tightly couples the three activities of creating,
+   transferring and appraising evidence.
 
    The Time-Based Uni-directional Attestation family of protocols --
    TUDA -- described in this document can decouple the three activities
-   remote attestation is composed of.  As a result, TUDA provides
-   additional capabilities, such as:
+   RATS are composed of.  As a result, TUDA provides additional
+   capabilities, such as:
 
-   o  remote attestation for attestees that might not always be able to
+   o  remote attestation for Attestors that might not always be able to
       reach the Internet by enabling the verification of past states,
 
    o  secure audit logs by combining the evidence created via TUDA with
       integrity measurement logs that represent a detailed record of
       corresponding past states,
 
+
+
+
+
+Fuchs, et al.           Expires November 3, 2018                [Page 4]
+
+Internet-Draft                    tuda                          May 2018
+
+
    o  an uni-directional interaction model that can traverse "diode-
       like" network security functions (NSF) or can be leveraged in
       RESTful architectures (e.g.  CoAP [RFC7252]), analogously.
 
-1.2.  Attestation and Verification
+1.2.  Evidence Creation
 
-   TUDA is a family of protocols that package results from specific
-   attestation and verification activities.  The attestation activities
-   of TUDA are based on a hardware root of trust that provides the
-   following capabilities:
+   TUDA is a family of protocols that bundles results from specific
+   attestation activities.  The attestation activities of TUDA are based
+   on a hardware Root of Trust that provides the following capabilities:
 
-   o  platform Configuration Registers (PCR) that store measurements
-      consecutively and represent the chain of measurements as a single
-      measurement value,
+   o  Platform Configuration Registers (PCR) that store measurements
+      consecutively (corresponding terminology: "to extend a PCR") and
+      represent the chain of measurements as a single measurement value
+      ("PCR value"),
 
-   o  restricted signing keys that are can only be accessed if a
+   o  Restricted Signing Keys (RSK) that can only be accessed, if a
       specific signature about measurements can be provided as
       authentication, and
 
-   o  a source of relative time (for example, a tick counter).
+   o  a dedicated source of (relative) time, e.g. a tick counter.
+
+1.3.  Evidence Appraisal
+
+   To appraise the evidence created by an Attestor, the Verifier
+   requires corresponding Reference Integrity Measurements (RIM).
+   Typically, a set of RIM are bundled in a RIM-Manifest (RIMM).  The
+   scope of a manifest encompasses, e.g., a platform, a device, a
+   computing context, or a virtualised function.  In order to be
+   comparable, the hashing algorithms used by the Attestor to create the
+   integrity measurements have to match the hashing algorithms used to
+   create the corresponding RIM that are used by the Verifier to
+   appraise the integrity evidence.
+
+1.4.  Activities and Actions
+
+   Depending on the platform (i.e. one or more computing contexts
+   including a dedicated hardware RoT), a generic RA activity results in
+   platform-specific actions that have to be conducted.  In consequence,
+   there are multiple specific operations and data models (defining the
+   input and output of operations).  Hence, specific actions are are not
+   covered by this document.  Instead, the requirements on operations
+   and the information elements that are the input and output to these
+   operations are illustrated using pseudo code in [FIXME Appendix foo].
+
+
+
+
+
+
+
+
+Fuchs, et al.           Expires November 3, 2018                [Page 5]
+
+Internet-Draft                    tuda                          May 2018
+
+
+1.5.  Attestation and Verification
 
    Both the attestation and the verification activity of TUDA also
    require a trusted Time Stamp Authority (TSA) as an additional third
-   party next to the attestee and the verifier.  The protocol uses a
-
-
-
-Fuchs, et al.          Expires September 14, 2017               [Page 4]
-
-Internet-Draft                    tuda                        March 2017
-
-
+   party next to the Attestor and the Verifier.  The protocol uses a
    Time Stamp Authority based on [RFC3161].  The combination of the
    local source of time provided by the hardware RoT (located on the
-   attestee) and the Time Stamp Tokens provided by the TSA (to both the
-   attestee and the verifier) enable the attestation and verification of
-   an appropriate freshness of the evidence conveyed by the attestee --
+   Attestor) and the Time Stamp Tokens provided by the TSA (to both the
+   Attestor and the Verifier) enable the attestation and verification of
+   an appropriate freshness of the evidence conveyed by the Attestor --
    without requiring a challenge/response interaction model that uses a
    nonce to ensure the freshness.
 
-   The verification activity can also use declarative guidance
+   Typically, the verification activity requires declarative guidance
    (representing desired or compliant endpoint characteristics in the
-   form of RIM) to appraise the individual integrity measurements the
-   conveyed evidence is based on.  The acquisition or representation of
-   declarative guidance as well as the corresponding evaluation methods
-   are out of the scope of this document.
+   form of RIM, see above) to appraise the individual integrity
+   measurements the conveyed evidence is composed on.  The acquisition
+   or representation (data models) of declarative guidance as well as
+   the corresponding evaluation methods are out of the scope of this
+   document.
 
-1.3.  Information Elements and Conveyance
+1.6.  Information Elements and Conveyance
 
    TUDA defines a set of information elements (IE) that are created and
-   stored on the attestee and are intended to be transferred to the
-   verifier in order to enable appraisal.  Each TUDA IE:
+   stored on the Attestor and are intended to be transferred to the
+   Verifier in order to enable appraisal.  Each TUDA IE:
 
    o  is encoded in the Concise Binary Object Representation (CBOR
       [RFC7049]) to minimize the volume of data in motion.  In this
@@ -255,9 +317,9 @@ Internet-Draft                    tuda                        March 2017
 
    o  that requires a certain freshness is only created/updated when
       out-dated, which reduces the overall resources required from the
-      attestee, including the utilization of the hardware root of trust.
+      Attestor, including the utilization of the hardware root of trust.
       The IE that have to be created are determined by their age or by
-      specific state changes on the attestee (e.g. state changes due to
+      specific state changes on the Attestor (e.g. state changes due to
       a reboot-cycle)
 
    o  is only transferred when required, which reduces the amount of
@@ -267,22 +329,19 @@ Internet-Draft                    tuda                        March 2017
 
    o  that requires a certain freshness can be reused for multiple
       remote attestation procedures in the limits of its corresponding
-      freshness-window, further reducing the load imposed on the
-      attestee and its corresponding hardware RoT.
 
 
 
 
-
-
-
-
-Fuchs, et al.          Expires September 14, 2017               [Page 5]
+Fuchs, et al.           Expires November 3, 2018                [Page 6]
 
-Internet-Draft                    tuda                        March 2017
+Internet-Draft                    tuda                          May 2018
 
 
-1.4.  TUDA Objectives
+      freshness-window, further reducing the load imposed on the
+      Attestor and its corresponding hardware RoT.
+
+1.7.  TUDA Objectives
 
    The Time-Based Uni-directional Attestation family of protocols is
    designed to:
@@ -305,39 +364,41 @@ Internet-Draft                    tuda                        March 2017
 
    o  provide trustworthy audit logs of past endpoint states.
 
-1.5.  Hardware Dependencies
+1.8.  Hardware Dependencies
 
    The binding of the attestation scheme used by TUDA to generate the
-   TUDA IE is specific to the methods provided by the hardware RoT used.
-   As a reference, this document includes pseudo-code that illustrates
-   the production of TUDA IE using a TPM 1.2 and TPM 2.0 as well as the
-   corresponding TPM commands specified in [TPM12] and [TPM2] as an
-   example.  The references to TPM commands and corresponding pseudo-
-   code only serve as guidance to enable a better understanding of the
-   attestation scheme and is intended to encourages the use of any
-   appropriate hardware RoT or equivalent set of functions stored in a
-   Trusted Execution Environment [TEE].
+   TUDA IE is specific to the methods provided by the hardware RoT used
+   (see above).  In this document,expositional text and pseudo-code that
+   is provided as a reference to instantiate the TUDA IE is based on TPM
+   1.2 and TPM 2.0 operations.  The corresponding TPM commands are
+   specified in [TPM12] and [TPM2].  The references to TPM commands and
+   corresponding pseudo-code only serve as guidance to enable a better
+   understanding of the attestation scheme and is intended to encourage
+   the use of any appropriate hardware RoT or equivalent set of
+   functions available to a CPU or Trusted Execution Environment [TEE].
 
-1.6.  Requirements Notation
+1.9.  Requirements Notation
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
    "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
    "OPTIONAL" in this document are to be interpreted as described in RFC
    2119, BCP 14 [RFC2119].
 
+
+
+
+
+
+Fuchs, et al.           Expires November 3, 2018                [Page 7]
+
+Internet-Draft                    tuda                          May 2018
+
+
 2.  TUDA Core Concept
 
    There are significant differences between conventional bi-directional
    attestation and TUDA regarding both the information elements conveyed
-   between attestee and verifier and the time-frame, in which an
-
-
-
-Fuchs, et al.          Expires September 14, 2017               [Page 6]
-
-Internet-Draft                    tuda                        March 2017
-
-
+   between Attestor and Verifier and the time-frame, in which an
    attestation can be considered to be fresh (and therefore
    trustworthy).
 
@@ -348,25 +409,26 @@ Internet-Draft                    tuda                        March 2017
    TPM_Quote command in order to prove the freshness of the attestation
    response, see e.g.  [PTS].
 
-   In contrast, the TUDA protocol would use a combination output of
+   In contrast, the TUDA protocol uses the combined output of
    TPM_CertifyInfo and TPM_TickStampBlob.  The former provides a proof
-   about the platform's state by attesting that a certain key is bound
-   to said state.  The latter provides proof that the platform was in
-   the specified state by using the bound key in a time operation.  This
-   combination enables a time-based attestation scheme.  This approach
-   is based on the concepts introduced in [SCALE] and [SFKE2008].
+   about the platform's state by creating evidence that a certain key is
+   bound to that state.  The latter provides proof that the platform was
+   in the specified state by using the bound key in a time operation.
+   This combination enables a time-based attestation scheme.  The
+   approach is based on the concepts introduced in [SCALE] and
+   [SFKE2008].
 
-   The payload of information elements transmitted is based on different
-   methods, because the time-frame, in which an attestation is
-   considered to be fresh (and therefore trustworthy), is defined
-   differently.
+   Each TUDA IE has an individual time-frame, in which it is considered
+   to be fresh (and therefore trustworthy).  In consequence, each TUDA
+   IE that composes data in motion is based on different methods of
+   creation.
 
    The freshness properties of a challenge-response based protocol
    define the point-of-time of attestation between:
 
    o  the time of transmission of the nonce, and
 
-   o  the reception of the response
+   o  the reception of the corresponding response.
 
    Given the time-based attestation scheme, the freshness property of
    TUDA is equivalent to that of bi-directional challenge response
@@ -374,32 +436,33 @@ Internet-Draft                    tuda                        March 2017
 
    o  the transmission of a TUDA time-synchronization token, and
 
-   o  the typical round-trip time between the verifier and the attestee,
+   o  the typical round-trip time between the Verifier and the Attestor.
 
-   The accuracy of this time-frame is defined by two factors:
+   The accuracy [FIXME IEEE PTP terminology ref] of this time-frame is
+   defined by two factors:
 
-   o  the time-synchronization between the attestee and the TSA.  The
+
+
+
+
+Fuchs, et al.           Expires November 3, 2018                [Page 8]
+
+Internet-Draft                    tuda                          May 2018
+
+
+   o  the time-synchronization between the Attestor and the TSA.  The
       time between the two tickstamps acquired via the hardware RoT
       define the scope of the maximum drift ("left" and "right" in
       respect to the timeline) to the TSA timestamp, and
 
    o  the drift of clocks included in the hardware RoT.
 
-
-
-
-
-Fuchs, et al.          Expires September 14, 2017               [Page 7]
-
-Internet-Draft                    tuda                        March 2017
-
-
-   Since TUDA attestations do not rely upon a verifier provided value
-   (i.e. the nonce), the security guarantees of the protocol only
-   incorporate the TSA and the hardware RoT.  In consequence, TUDA
-   attestations can even serve as proof of integrity in audit logs with
-   precise point-in-time guarantees, in contrast to classical
-   attestations.
+   Since the conveyance of TUDA evidence does not rely upon a Verifier
+   provided value (i.e. the nonce), the security guarantees of the
+   protocol only incorporate the TSA and the hardware RoT.  In
+   consequence, TUDA evidence can even serve as proof of integrity in
+   audit logs with precise point-in-time guarantees, in contrast to
+   classical attestations.
 
    Appendix A contains guidance on how to utilize a REST architecture.
 
@@ -413,14 +476,14 @@ Internet-Draft                    tuda                        March 2017
 
    Appendix D.3 contains a realization of TUDA using TPM 2.0 primitives.
 
-2.1.  Terminology
+3.  Terminology
 
    This document introduces roles, information elements and types
    required to conduct TUDA and uses terminology (e.g. specific
    certificate names) typically seen in the context of attestation or
    hardware security modules.
 
-2.1.1.  Universal Terms
+3.1.  Universal Terms
 
    Attestation Identity Key (AIK):  a special purpose signature
       (therefore asymmetric) key that supports identity related
@@ -434,21 +497,23 @@ Internet-Draft                    tuda                        March 2017
       claim is represented as a name/value pair consisting of a Claim
       Name and a Claim Value [RFC7519].
 
+
+
+
+
+Fuchs, et al.           Expires November 3, 2018                [Page 9]
+
+Internet-Draft                    tuda                          May 2018
+
+
       In the context of SACM, a claim is also specialized as an
       attribute/value pair that is intended to be related to a statement
       [I-D.ietf-sacm-terminology].
 
-   Endpoint Attestation:  the creation of evidence on the attestee that
+   Endpoint Attestation:  the creation of evidence on the Attestor that
       provides proof of a set of the endpoints's integrity measurements.
       This is done by digitally signing a set of PCRs using an AIK
       shielded by the hardware RoT.
-
-
-
-Fuchs, et al.          Expires September 14, 2017               [Page 8]
-
-Internet-Draft                    tuda                        March 2017
-
 
    Endpoint Characteristics:  the context, composition, configuration,
       state, and behavior of an endpoint.
@@ -484,35 +549,31 @@ Internet-Draft                    tuda                        March 2017
       Trustworthy Statement: evidence that is trustworthy conveyed by an
       endpoint that is not necessarily trustworthy.
 
-2.1.2.  Roles
+3.2.  Roles
 
-   Attestee:  the endpoint that is the subject of the attestation to
+   Attestor:  the endpoint that is the subject of the attestation to
       another endpoint.
+
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 10]
+
+Internet-Draft                    tuda                          May 2018
+
 
    Verifier:  the endpoint that consumes the attestation of another
       endpoint to conduct a verification.
 
    TSA:  a Time Stamp Authority [RFC3161]
 
-
-
-
-
-
-
-
-Fuchs, et al.          Expires September 14, 2017               [Page 9]
-
-Internet-Draft                    tuda                        March 2017
-
-
-2.1.3.  General Types
+3.2.1.  General Types
 
    Byte:  the now customary synonym for octet
 
    Cert:  an X.509 certificate represented as a byte-string
 
-2.1.4.  RoT specific terms
+3.2.2.  RoT specific terms
 
    PCR:  a Platform Configuration Register that is part of a hardware
       root of trust and is used to securely store and report
@@ -522,7 +583,7 @@ Internet-Draft                    tuda                        March 2017
       in a TPM PCR (e.g. regarding running software instances)
       represented as a byte-string
 
-2.1.5.  Certificates
+3.3.  Certificates
 
    TSA-CA:  the Certificate Authority that provides the certificate for
       the TSA represented as a Cert
@@ -535,11 +596,11 @@ Internet-Draft                    tuda                        March 2017
       protocols are out of scope for this document, see also
       [AIK-Enrollment] and [IEEE802.1AR].
 
-3.  Time-Based Uni-Directional Attestation
+4.  Time-Based Uni-Directional Attestation
 
    A Time-Based Uni-Directional Attestation (TUDA) consists of the
    following seven information elements.  They are used to gain
-   assurance of the Attestee's platform configuration at a certain point
+   assurance of the Attestor's platform configuration at a certain point
    in time:
 
    TSA Certificate:  The certificate of the Time Stamp Authority that is
@@ -549,23 +610,23 @@ Internet-Draft                    tuda                        March 2017
    AIK Certificate:  A certificate about the Attestation Identity Key
       (AIK) used.  This may or may not also be an [IEEE802.1AR] IDevID
       or LDevID, depending on their setting of the corresponding
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 11]
+
+Internet-Draft                    tuda                          May 2018
+
+
       identity property.  ([AIK-Credential], [AIK-Enrollment]; see
       Appendix D.2.1.)
 
    Synchronization Token:  The reference for attestations are the
       relative timestanps provided by the hardware RoT.  In order to put
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 10]
-
-Internet-Draft                    tuda                        March 2017
-
-
       attestations into relation with a Real Time Clock (RTC), it is
       necessary to provide a cryptographic synchronization between these
       trusted relative timestamps and the regular RTC that is a hardware
-      component of the attestee.  To do so, a synchronization protocol
+      component of the Attestor.  To do so, a synchronization protocol
       is run with a Time Stamp Authority (TSA).
 
    Restriction Info:  The attestation relies on the capability of the
@@ -586,7 +647,7 @@ Internet-Draft                    tuda                        March 2017
       elements that were extended into the PCRs is reported.  Note
       though that for certain environments, this step may be optional if
       a list of valid PCR configurations (in the form of RIM available
-      to the verifier) exists and no measurement log is required.
+      to the Verifier) exists and no measurement log is required.
 
    Implicit Attestation:  The actual attestation is then based upon a
       signed timestamp provided by the hardware RoT using the restricted
@@ -599,24 +660,24 @@ Internet-Draft                    tuda                        March 2017
       real-time clock.
 
    Concise SWID tags:  As an option to better assess the trustworthiness
-      of an Attestee, a Verifier can request the reference hashes (RIM,
+      of an Attestor, a Verifier can request the reference hashes (RIM,
       which are often referred to as golden measurements) of all started
       software components to compare them with the entries in the
       measurement log.  References hashes regarding installed (and
       therefore running) software can be provided by the manufacturer
-      via SWID tags.  SWID tags are provided by the attestee using the
+      via SWID tags.  SWID tags are provided by the Attestor using the
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 12]
+
+Internet-Draft                    tuda                          May 2018
+
+
       Concise SWID representation [I-D.ietf-sacm-coswid] and bundled
       into a CBOR array (a RIM Manifest).  Ideally, the reference hashes
       include a signature created by the manufacturer of the software to
       prove their integrity.
-
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 11]
-
-Internet-Draft                    tuda                        March 2017
-
 
    These information elements could be sent en bloc, but it is
    recommended to retrieve them separately to save bandwidth, since
@@ -625,13 +686,13 @@ Internet-Draft                    tuda                        March 2017
    unnecessary redundancy.
 
    Furthermore, in some scenarios it might be feasible not to store all
-   elements on the Attestee endpoint, but instead they could be
+   elements on the Attestor endpoint, but instead they could be
    retrieved from another location or be pre-deployed to the Verifier.
    It is also feasible to only store public keys on the Verifier and
    skip the whole certificate provisioning completely in order to save
    bandwidth and computation time for certificate verification.
 
-3.1.  TUDA Information Elements Update Cycles
+4.1.  TUDA Information Elements Update Cycles
 
    An endpoint can be in various states and have various information
    associated with it during its life cycle.  For TUDA, a subset of the
@@ -657,29 +718,30 @@ Internet-Draft                    tuda                        March 2017
    Depending on this "lifetime of state", data has to be transported
    over the wire, or not.  E.g. information that does not change due to
    a reboot typically has to be transported only once between the
-   Attestee and the Verifier.
+   Attestor and the Verifier.
 
    There are three kinds of events that require a renewed attestation:
 
-   o  The Attestee completes a boot-cycle
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 13]
+
+Internet-Draft                    tuda                          May 2018
+
+
+   o  The Attestor completes a boot-cycle
 
    o  A relevant PCR changes
 
    o  Too much time has passed since the last attestation statement
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 12]
-
-Internet-Draft                    tuda                        March 2017
-
 
    The third event listed above is variable per application use case and
    also depends on the precision of the clock included in the hardware
    RoT.  For usage scenarios, in which the device would periodically
    push information to be used in an audit-log, a time-frame of
    approximately one update per minute should be sufficient in most
-   cases.  For those usage scenarios, where verifiers request (pull) a
+   cases.  For those usage scenarios, where Verifiers request (pull) a
    fresh attestation statement, an implementation could use the hardware
    RoT continuously to always present the most freshly created results.
    To save some utilization of the hardware RoT for other purposes,
@@ -687,7 +749,7 @@ Internet-Draft                    tuda                        March 2017
    would typically leave about 80% of utilization for other
    applications.
 
-   Attestee                                                 Verifier
+   Attestor                                                 Verifier
       |                                                         |
     Boot                                                        |
       |                                                         |
@@ -716,20 +778,20 @@ Internet-Draft                    tuda                        March 2017
     Certify Restricted Key                                      |
       |                                                         |
       | Certify-Info -----------------------------------------> |
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 14]
+
+Internet-Draft                    tuda                          May 2018
+
+
       | Measurement Log --------------------------------------> |
       | Attestation ------------------------------------------> |
       |                                           Verify Attestation
       |                                                         |
     Boot                                                        |
       |                                                         |
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 13]
-
-Internet-Draft                    tuda                        March 2017
-
-
     Create Sync-Token                                           |
       |                                                         |
     Create Restricted Key                                       |
@@ -749,7 +811,7 @@ Internet-Draft                    tuda                        March 2017
 
                    Figure 1: Example sequence of events
 
-4.  Sync Base Protocol
+5.  Sync Base Protocol
 
    The uni-directional approach of TUDA requires evidence on how the TPM
    time represented in ticks (relative time since boot of the TPM)
@@ -771,20 +833,20 @@ Internet-Draft                    tuda                        March 2017
       signed tickstamp counter value is acquired from the hardware RoT
       again, using a hash of the signed TSA timestamp as a nonce.
 
+
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 15]
+
+Internet-Draft                    tuda                          May 2018
+
+
    The three time-related values -- the relative timestamps provided by
    the hardware RoT ("left" and "right") and the TSA timestamp -- and
    their corresponding signatures are aggregated in order to create a
    corresponding Sync Token to be used as a TUDA Information Element
-   that can be conveyed as evidence to a verifier.
-
-
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 14]
-
-Internet-Draft                    tuda                        March 2017
-
+   that can be conveyed as evidence to a Verifier.
 
    The drift of a clock incorporated in the hardware RoT that drives the
    increments of the tick counter constitutes one of the triggers that
@@ -793,26 +855,29 @@ Internet-Draft                    tuda                        March 2017
 
    content TBD
 
-5.  IANA Considerations
+6.  IANA Considerations
 
    This memo includes requests to IANA, including registrations for
    media type definitions.
 
    TBD
 
-6.  Security Considerations
+7.  Security Considerations
 
    There are Security Considerations.  TBD
 
-7.  Change Log
+8.  Change Log
 
    Changes from version 04 to I2NSF related document version 00: *
+   Refactored main document to be more technology agnostic * Added first
+   draft of procedures for TPM 2.0 * Improved content consistency and
+   structure of all sections
 
    Changes from version 03 to version 04:
 
    o  Refactoring of Introduction, intend, scope and audience
 
-   o  Added first draft of Sync Base Prootol section illustrated
+   o  Added first draft of Sync Base Prootoll section illustrated
       background for interaction with TSA
 
    o  Added YANG module
@@ -823,24 +888,22 @@ Internet-Draft                    tuda                        March 2017
 
    o  Moved base concept out of Introduction
 
-   o  First refactoring of Inttroduction and Concept
+   o  First refactoring of Introduction and Concept
 
-   o  Firrst restructuring of Appendices and improved references
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 16]
+
+Internet-Draft                    tuda                          May 2018
+
+
+   o  First restructuring of Appendices and improved references
 
    Changes from version 01 to version 02:
 
    o  Restructuring of Introduction, highlighting conceptual
       prerequisites
-
-
-
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 15]
-
-Internet-Draft                    tuda                        March 2017
-
 
    o  Restructuring of Concept to better illustrate differences to hand-
       shake based attestation and deciding factors regarding freshness
@@ -859,25 +922,37 @@ Internet-Draft                    tuda                        March 2017
    profile Reference Hashes that provides additional information to be
    compared with the measurement logs.
 
-8.  Contributors
+9.  Contributors
 
    TBD
 
-9.  References
+10.  References
 
-9.1.  Normative References
+10.1.  Normative References
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
-              <http://www.rfc-editor.org/info/rfc2119>.
+              <https://www.rfc-editor.org/info/rfc2119>.
 
-9.2.  Informative References
+10.2.  Informative References
 
    [AIK-Credential]
               TCG Infrastructure Working Group, "TCG Credential
               Profile", 2007, <https://www.trustedcomputinggroup.org/wp-
               content/uploads/IWG-Credential_Profiles_V1_R1_14.pdf>.
+
+
+
+
+
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 17]
+
+Internet-Draft                    tuda                          May 2018
+
 
    [AIK-Enrollment]
               TCG Infrastructure Working Group, "A CMC Profile for AIK
@@ -886,33 +961,26 @@ Internet-Draft                    tuda                        March 2017
               IWG_CMC_Profile_Cert_Enrollment_v1_r7.pdf>.
 
    [I-D.greevenbosch-appsawg-cbor-cddl]
-              Birkholz, H., Vigano, C., and C. Bormann, "CBOR data
+              Birkholz, H., Vigano, C., and C. Bormann, "Concise data
               definition language (CDDL): a notational convention to
               express CBOR data structures", draft-greevenbosch-appsawg-
-              cbor-cddl-10 (work in progress), March 2017.
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 16]
-
-Internet-Draft                    tuda                        March 2017
-
+              cbor-cddl-11 (work in progress), July 2017.
 
    [I-D.ietf-core-comi]
-              Stok, P., Bierman, A., Veillette, M., and A. Pelov, "CoAP
-              Management Interface", draft-ietf-core-comi-00 (work in
-              progress), January 2017.
+              Veillette, M., Stok, P., Pelov, A., and A. Bierman, "CoAP
+              Management Interface", draft-ietf-core-comi-02 (work in
+              progress), December 2017.
 
    [I-D.ietf-sacm-coswid]
               Birkholz, H., Fitzgerald-McKay, J., Schmidt, C., and D.
               Waltermire, "Concise Software Identifiers", draft-ietf-
-              sacm-coswid-01 (work in progress), February 2017.
+              sacm-coswid-05 (work in progress), March 2018.
 
    [I-D.ietf-sacm-terminology]
-              Birkholz, H., Lu, J., Strassner, J., and N. Cam-Winget,
-              "Security Automation and Continuous Monitoring (SACM)
-              Terminology", draft-ietf-sacm-terminology-12 (work in
-              progress), March 2017.
+              Birkholz, H., Lu, J., Strassner, J., Cam-Winget, N., and
+              A. Montville, "Security Automation and Continuous
+              Monitoring (SACM) Terminology", draft-ietf-sacm-
+              terminology-14 (work in progress), December 2017.
 
    [IEEE1609]
               IEEE Computer Society, "1609.4-2016 - IEEE Standard for
@@ -931,6 +999,17 @@ Internet-Draft                    tuda                        March 2017
               Vol. 10, pp. 63-81, DOI 10.1007/s10207-011-0124-7, April
               2011.
 
+
+
+
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 18]
+
+Internet-Draft                    tuda                          May 2018
+
+
    [PTS]      TCG TNC Working Group, "TCG Attestation PTS Protocol
               Binding to TNC IF-M", 2011,
               <https://www.trustedcomputinggroup.org/wp-content/uploads/
@@ -945,87 +1024,78 @@ Internet-Draft                    tuda                        March 2017
    [RFC1213]  McCloghrie, K. and M. Rose, "Management Information Base
               for Network Management of TCP/IP-based internets: MIB-II",
               STD 17, RFC 1213, DOI 10.17487/RFC1213, March 1991,
-              <http://www.rfc-editor.org/info/rfc1213>.
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 17]
-
-Internet-Draft                    tuda                        March 2017
-
+              <https://www.rfc-editor.org/info/rfc1213>.
 
    [RFC2790]  Waldbusser, S. and P. Grillo, "Host Resources MIB",
               RFC 2790, DOI 10.17487/RFC2790, March 2000,
-              <http://www.rfc-editor.org/info/rfc2790>.
+              <https://www.rfc-editor.org/info/rfc2790>.
 
    [RFC3161]  Adams, C., Cain, P., Pinkas, D., and R. Zuccherato,
               "Internet X.509 Public Key Infrastructure Time-Stamp
               Protocol (TSP)", RFC 3161, DOI 10.17487/RFC3161, August
-              2001, <http://www.rfc-editor.org/info/rfc3161>.
+              2001, <https://www.rfc-editor.org/info/rfc3161>.
 
    [RFC3411]  Harrington, D., Presuhn, R., and B. Wijnen, "An
               Architecture for Describing Simple Network Management
               Protocol (SNMP) Management Frameworks", STD 62, RFC 3411,
               DOI 10.17487/RFC3411, December 2002,
-              <http://www.rfc-editor.org/info/rfc3411>.
+              <https://www.rfc-editor.org/info/rfc3411>.
 
    [RFC3418]  Presuhn, R., Ed., "Management Information Base (MIB) for
               the Simple Network Management Protocol (SNMP)", STD 62,
               RFC 3418, DOI 10.17487/RFC3418, December 2002,
-              <http://www.rfc-editor.org/info/rfc3418>.
+              <https://www.rfc-editor.org/info/rfc3418>.
 
    [RFC4949]  Shirey, R., "Internet Security Glossary, Version 2",
               FYI 36, RFC 4949, DOI 10.17487/RFC4949, August 2007,
-              <http://www.rfc-editor.org/info/rfc4949>.
+              <https://www.rfc-editor.org/info/rfc4949>.
 
    [RFC6690]  Shelby, Z., "Constrained RESTful Environments (CoRE) Link
               Format", RFC 6690, DOI 10.17487/RFC6690, August 2012,
-              <http://www.rfc-editor.org/info/rfc6690>.
+              <https://www.rfc-editor.org/info/rfc6690>.
 
    [RFC6933]  Bierman, A., Romascanu, D., Quittek, J., and M.
               Chandramouli, "Entity MIB (Version 4)", RFC 6933,
               DOI 10.17487/RFC6933, May 2013,
-              <http://www.rfc-editor.org/info/rfc6933>.
+              <https://www.rfc-editor.org/info/rfc6933>.
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 19]
+
+Internet-Draft                    tuda                          May 2018
+
 
    [RFC7049]  Bormann, C. and P. Hoffman, "Concise Binary Object
               Representation (CBOR)", RFC 7049, DOI 10.17487/RFC7049,
-              October 2013, <http://www.rfc-editor.org/info/rfc7049>.
+              October 2013, <https://www.rfc-editor.org/info/rfc7049>.
 
    [RFC7230]  Fielding, R., Ed. and J. Reschke, Ed., "Hypertext Transfer
               Protocol (HTTP/1.1): Message Syntax and Routing",
               RFC 7230, DOI 10.17487/RFC7230, June 2014,
-              <http://www.rfc-editor.org/info/rfc7230>.
+              <https://www.rfc-editor.org/info/rfc7230>.
 
    [RFC7252]  Shelby, Z., Hartke, K., and C. Bormann, "The Constrained
               Application Protocol (CoAP)", RFC 7252,
               DOI 10.17487/RFC7252, June 2014,
-              <http://www.rfc-editor.org/info/rfc7252>.
-
-
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 18]
-
-Internet-Draft                    tuda                        March 2017
-
+              <https://www.rfc-editor.org/info/rfc7252>.
 
    [RFC7320]  Nottingham, M., "URI Design and Ownership", BCP 190,
               RFC 7320, DOI 10.17487/RFC7320, July 2014,
-              <http://www.rfc-editor.org/info/rfc7320>.
+              <https://www.rfc-editor.org/info/rfc7320>.
 
    [RFC7519]  Jones, M., Bradley, J., and N. Sakimura, "JSON Web Token
               (JWT)", RFC 7519, DOI 10.17487/RFC7519, May 2015,
-              <http://www.rfc-editor.org/info/rfc7519>.
+              <https://www.rfc-editor.org/info/rfc7519>.
 
    [RFC7540]  Belshe, M., Peon, R., and M. Thomson, Ed., "Hypertext
               Transfer Protocol Version 2 (HTTP/2)", RFC 7540,
               DOI 10.17487/RFC7540, May 2015,
-              <http://www.rfc-editor.org/info/rfc7540>.
+              <https://www.rfc-editor.org/info/rfc7540>.
 
    [RFC8040]  Bierman, A., Bjorklund, M., and K. Watsen, "RESTCONF
               Protocol", RFC 8040, DOI 10.17487/RFC8040, January 2017,
-              <http://www.rfc-editor.org/info/rfc8040>.
+              <https://www.rfc-editor.org/info/rfc8040>.
 
    [SCALE]    Fuchs, A., "Improving Scalability for Remote Attestation",
               Master Thesis (Diplomarbeit), Technische Universitaet
@@ -1040,6 +1110,17 @@ Internet-Draft                    tuda                        March 2017
 
    [STD62]    "Internet Standard 62", STD 62, RFCs 3411 to 3418,
               December 2002.
+
+
+
+
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 20]
+
+Internet-Draft                    tuda                          May 2018
+
 
    [TCGGLOSS]
               TCG, "TCG Glossary", 2012,
@@ -1056,19 +1137,9 @@ Internet-Draft                    tuda                        March 2017
               2.0, Level 00, Revision 01.16 ed., Trusted Computing
               Group", 2014.
 
-
-
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 19]
-
-Internet-Draft                    tuda                        March 2017
-
-
 Appendix A.  REST Realization
 
-   Each of the seven data items is defined as a media type (Section 5).
+   Each of the seven data items is defined as a media type (Section 6).
    Representations of resources for each of these media types can be
    retrieved from URIs that are defined by the respective servers
    [RFC7320].  As can be derived from the URI, the actual retrieval is
@@ -1100,6 +1171,13 @@ Appendix B.  SNMP Realization
        disambiguates the transition from one attestation cycle to the
        next.
 
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 21]
+
+Internet-Draft                    tuda                          May 2018
+
+
    2.  Over time, the measurement log information (for example) may grow
        large.  Therefore, read-only cycle counter scalar objects in all
        TUDA MIB object groups facilitate more efficient access with SNMP
@@ -1110,17 +1188,6 @@ Appendix B.  SNMP Realization
        attestation cycle has occurred (e.g., synchronization data,
        measurement log, etc. have been updated by adding new rows and
        possibly deleting old rows).
-
-
-
-
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 20]
-
-Internet-Draft                    tuda                        March 2017
-
 
 B.1.  Structure of TUDA MIB
 
@@ -1158,6 +1225,15 @@ B.1.2.  Instance Index
 
    A tudaV1<Group>InstanceIndex is the:
 
+
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 22]
+
+Internet-Draft                    tuda                          May 2018
+
+
    1.  second index of a row (element instance or element fragment) in
        the tudaV1<Group>Table; except for
 
@@ -1170,13 +1246,6 @@ B.1.3.  Fragment Index
 
    1.  last index of a row (always an element fragment) in the
        tudaV1<Group>Table; and
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 21]
-
-Internet-Draft                    tuda                        March 2017
-
 
    2.  accomodation for SNMP transport mapping restrictions for large
        string elements that require fragmentation.
@@ -1211,6 +1280,16 @@ B.4.  Relationship to Other MIBs
    MIB-II [RFC1213] and the System group in the SNMPv2 MIB [RFC3418] and
    provides context information for the TUDA attestation process.
 
+
+
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 23]
+
+Internet-Draft                    tuda                          May 2018
+
+
 B.5.  Definition of TUDA MIB
 
    <CODE BEGINS>
@@ -1226,15 +1305,7 @@ B.5.  Definition of TUDA MIB
            FROM SNMP-FRAMEWORK-MIB;        -- RFC 3411
 
    tudaV1MIB MODULE-IDENTITY
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 22]
-
-Internet-Draft                    tuda                        March 2017
-
-
-       LAST-UPDATED    "201701090000Z" -- 09 Januar 2017
+       LAST-UPDATED    "201710300000Z" -- 30 October 2017
        ORGANIZATION
            "Fraunhofer SIT"
        CONTACT-INFO
@@ -1261,9 +1332,21 @@ Internet-Draft                    tuda                        March 2017
 
            Copyright (C) High North Inc (2017)."
 
+       REVISION "201710300000Z" -- 30 October 2017
+       DESCRIPTION
+           "Fifth version, published as draft-birkholz-tuda-05."
+
        REVISION "201701090000Z" -- 09 January 2017
-           DESCRIPTION
-           "Fourth version, published as draft-birkholz-tuda-03."
+       DESCRIPTION
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 24]
+
+Internet-Draft                    tuda                          May 2018
+
+
+           "Fourth version, published as draft-birkholz-tuda-04."
 
        REVISION "201607080000Z" -- 08 July 2016
        DESCRIPTION
@@ -1282,13 +1365,6 @@ Internet-Draft                    tuda                        March 2017
    tudaV1MIBNotifications      OBJECT IDENTIFIER ::= { tudaV1MIB 0 }
    tudaV1MIBObjects            OBJECT IDENTIFIER ::= { tudaV1MIB 1 }
    tudaV1MIBConformance        OBJECT IDENTIFIER ::= { tudaV1MIB 2 }
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 23]
-
-Internet-Draft                    tuda                        March 2017
-
 
    --
    --  General
@@ -1318,6 +1394,14 @@ Internet-Draft                    tuda                        March 2017
        DEFVAL      { "" }
        ::= { tudaV1General 2 }
 
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 25]
+
+Internet-Draft                    tuda                          May 2018
+
+
    --
    --  AIK Cert
    --
@@ -1338,14 +1422,6 @@ Internet-Draft                    tuda                        March 2017
        SYNTAX      SEQUENCE OF TudaV1AIKCertEntry
        MAX-ACCESS  not-accessible
        STATUS      current
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 24]
-
-Internet-Draft                    tuda                        March 2017
-
-
        DESCRIPTION
            "A table of fragments of AIK Certificate data."
        ::= { tudaV1AIKCert 2 }
@@ -1374,6 +1450,14 @@ Internet-Draft                    tuda                        March 2017
        MAX-ACCESS  not-accessible
        STATUS      current
        DESCRIPTION
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 26]
+
+Internet-Draft                    tuda                          May 2018
+
+
            "High-order index of this AIK Certificate fragment.
            Index of an AIK Certificate chain update cycle that has
            occurred (bounded by the value of tudaV1AIKCertCycles).
@@ -1393,14 +1477,6 @@ Internet-Draft                    tuda                        March 2017
 
            DEFVAL intentionally omitted - index object."
        ::= { tudaV1AIKCertEntry 2 }
-
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 25]
-
-Internet-Draft                    tuda                        March 2017
-
 
    tudaV1AIKCertFragmentIndex OBJECT-TYPE
        SYNTAX      Integer32 (1..2147483647)
@@ -1430,6 +1506,14 @@ Internet-Draft                    tuda                        March 2017
        SYNTAX      Counter32
        MAX-ACCESS  read-only
        STATUS      current
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 27]
+
+Internet-Draft                    tuda                          May 2018
+
+
        DESCRIPTION
            "Count of TSA Certificate chain update cycles that have
            occurred.
@@ -1450,14 +1534,6 @@ Internet-Draft                    tuda                        March 2017
        MAX-ACCESS  not-accessible
        STATUS      current
        DESCRIPTION
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 26]
-
-Internet-Draft                    tuda                        March 2017
-
-
            "An entry for one fragment of TSA Certificate data."
        INDEX       { tudaV1TSACertCycleIndex,
                      tudaV1TSACertInstanceIndex,
@@ -1486,6 +1562,14 @@ Internet-Draft                    tuda                        March 2017
 
    tudaV1TSACertInstanceIndex OBJECT-TYPE
        SYNTAX      Integer32 (1..2147483647)
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 28]
+
+Internet-Draft                    tuda                          May 2018
+
+
        MAX-ACCESS  not-accessible
        STATUS      current
        DESCRIPTION
@@ -1506,13 +1590,6 @@ Internet-Draft                    tuda                        March 2017
 
            DEFVAL intentionally omitted - index object."
        ::= { tudaV1TSACertEntry 3 }
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 27]
-
-Internet-Draft                    tuda                        March 2017
-
 
    tudaV1TSACertData OBJECT-TYPE
        SYNTAX      OCTET STRING (SIZE(0..1024))
@@ -1541,6 +1618,14 @@ Internet-Draft                    tuda                        March 2017
 
    tudaV1SyncTokenInstances OBJECT-TYPE
        SYNTAX      Counter32
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 29]
+
+Internet-Draft                    tuda                          May 2018
+
+
        MAX-ACCESS  read-only
        STATUS      current
        DESCRIPTION
@@ -1562,14 +1647,6 @@ Internet-Draft                    tuda                        March 2017
        SYNTAX      TudaV1SyncTokenEntry
        MAX-ACCESS  not-accessible
        STATUS      current
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 28]
-
-Internet-Draft                    tuda                        March 2017
-
-
        DESCRIPTION
            "An entry for one fragment of Sync Token data."
        INDEX       { tudaV1SyncTokenCycleIndex,
@@ -1597,6 +1674,14 @@ Internet-Draft                    tuda                        March 2017
            DEFVAL intentionally omitted - index object."
        ::= { tudaV1SyncTokenEntry 1 }
 
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 30]
+
+Internet-Draft                    tuda                          May 2018
+
+
    tudaV1SyncTokenInstanceIndex OBJECT-TYPE
        SYNTAX      Integer32 (1..2147483647)
        MAX-ACCESS  not-accessible
@@ -1618,13 +1703,6 @@ Internet-Draft                    tuda                        March 2017
 
            DEFVAL intentionally omitted - index object."
        ::= { tudaV1SyncTokenEntry 3 }
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 29]
-
-Internet-Draft                    tuda                        March 2017
-
 
    tudaV1SyncTokenData OBJECT-TYPE
        SYNTAX      OCTET STRING (SIZE(0..1024))
@@ -1652,6 +1730,14 @@ Internet-Draft                    tuda                        March 2017
        ::= { tudaV1Restrict 1 }
 
    tudaV1RestrictTable OBJECT-TYPE
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 31]
+
+Internet-Draft                    tuda                          May 2018
+
+
        SYNTAX      SEQUENCE OF TudaV1RestrictEntry
        MAX-ACCESS  not-accessible
        STATUS      current
@@ -1673,14 +1759,6 @@ Internet-Draft                    tuda                        March 2017
            tudaV1RestrictCycleIndex        Integer32,
            tudaV1RestrictData              OCTET STRING
        }
-
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 30]
-
-Internet-Draft                    tuda                        March 2017
-
 
    tudaV1RestrictCycleIndex OBJECT-TYPE
        SYNTAX      Integer32 (1..2147483647)
@@ -1709,6 +1787,13 @@ Internet-Draft                    tuda                        March 2017
    --
    tudaV1Measure           OBJECT IDENTIFIER ::= { tudaV1MIBObjects 6 }
 
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 32]
+
+Internet-Draft                    tuda                          May 2018
+
+
    tudaV1MeasureCycles OBJECT-TYPE
        SYNTAX      Counter32
        MAX-ACCESS  read-only
@@ -1730,13 +1815,6 @@ Internet-Draft                    tuda                        March 2017
 
            DEFVAL intentionally omitted - counter object."
        ::= { tudaV1Measure 2 }
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 31]
-
-Internet-Draft                    tuda                        March 2017
-
 
    tudaV1MeasureTable OBJECT-TYPE
        SYNTAX      SEQUENCE OF TudaV1MeasureEntry
@@ -1764,6 +1842,14 @@ Internet-Draft                    tuda                        March 2017
        }
 
    tudaV1MeasureCycleIndex OBJECT-TYPE
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 33]
+
+Internet-Draft                    tuda                          May 2018
+
+
        SYNTAX      Integer32 (1..2147483647)
        MAX-ACCESS  not-accessible
        STATUS      current
@@ -1786,13 +1872,6 @@ Internet-Draft                    tuda                        March 2017
 
            DEFVAL intentionally omitted - index object."
        ::= { tudaV1MeasureEntry 2 }
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 32]
-
-Internet-Draft                    tuda                        March 2017
-
 
    tudaV1MeasureData OBJECT-TYPE
        SYNTAX      OCTET STRING (SIZE(0..1024))
@@ -1819,6 +1898,14 @@ Internet-Draft                    tuda                        March 2017
            DEFVAL intentionally omitted - counter object."
        ::= { tudaV1VerifyToken 1 }
 
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 34]
+
+Internet-Draft                    tuda                          May 2018
+
+
    tudaV1VerifyTokenTable OBJECT-TYPE
        SYNTAX      SEQUENCE OF TudaV1VerifyTokenEntry
        MAX-ACCESS  not-accessible
@@ -1841,14 +1928,6 @@ Internet-Draft                    tuda                        March 2017
            tudaV1VerifyTokenCycleIndex     Integer32,
            tudaV1VerifyTokenData           OCTET STRING
        }
-
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 33]
-
-Internet-Draft                    tuda                        March 2017
-
 
    tudaV1VerifyTokenCycleIndex OBJECT-TYPE
        SYNTAX      Integer32 (1..2147483647)
@@ -1876,6 +1955,13 @@ Internet-Draft                    tuda                        March 2017
    --
    tudaV1SWIDTag           OBJECT IDENTIFIER ::= { tudaV1MIBObjects 8 }
 
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 35]
+
+Internet-Draft                    tuda                          May 2018
+
+
    tudaV1SWIDTagCycles OBJECT-TYPE
        SYNTAX      Counter32
        MAX-ACCESS  read-only
@@ -1898,14 +1984,6 @@ Internet-Draft                    tuda                        March 2017
        SYNTAX      TudaV1SWIDTagEntry
        MAX-ACCESS  not-accessible
        STATUS      current
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 34]
-
-Internet-Draft                    tuda                        March 2017
-
-
        DESCRIPTION
            "An entry for one fragment of SWID Tag data."
        INDEX       { tudaV1SWIDTagCycleIndex,
@@ -1933,6 +2011,13 @@ Internet-Draft                    tuda                        March 2017
            DEFVAL intentionally omitted - index object."
        ::= { tudaV1SWIDTagEntry 1 }
 
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 36]
+
+Internet-Draft                    tuda                          May 2018
+
+
    tudaV1SWIDTagInstanceIndex OBJECT-TYPE
        SYNTAX      Integer32 (1..2147483647)
        MAX-ACCESS  not-accessible
@@ -1953,14 +2038,6 @@ Internet-Draft                    tuda                        March 2017
 
            DEFVAL intentionally omitted - index object."
        ::= { tudaV1SWIDTagEntry 3 }
-
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 35]
-
-Internet-Draft                    tuda                        March 2017
-
 
    tudaV1SWIDTagData OBJECT-TYPE
        SYNTAX      OCTET STRING (SIZE(0..1024))
@@ -1989,6 +2066,14 @@ Internet-Draft                    tuda                        March 2017
        }
        STATUS  current
        DESCRIPTION
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 37]
+
+Internet-Draft                    tuda                          May 2018
+
+
            "This trap is sent when the value of any cycle or instance
            counter changes (i.e., one or more tables are updated).
 
@@ -2010,14 +2095,6 @@ Internet-Draft                    tuda                        March 2017
 
    --
    --  Compliance Statements
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 36]
-
-Internet-Draft                    tuda                        March 2017
-
-
    --
    tudaV1BasicCompliance MODULE-COMPLIANCE
        STATUS  current
@@ -2045,6 +2122,14 @@ Internet-Draft                    tuda                        March 2017
    tudaV1BasicGroup OBJECT-GROUP
        OBJECTS {
            tudaV1GeneralCycles,
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 38]
+
+Internet-Draft                    tuda                          May 2018
+
+
            tudaV1GeneralVersionInfo,
            tudaV1SyncTokenCycles,
            tudaV1SyncTokenInstances,
@@ -2066,14 +2151,6 @@ Internet-Draft                    tuda                        March 2017
            tudaV1TSACertCycles,
            tudaV1TSACertData,
            tudaV1MeasureCycles,
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 37]
-
-Internet-Draft                    tuda                        March 2017
-
-
            tudaV1MeasureInstances,
            tudaV1MeasureData,
            tudaV1SWIDTagCycles,
@@ -2097,38 +2174,23 @@ Internet-Draft                    tuda                        March 2017
 Appendix C.  YANG Realization
 
 <CODE BEGINS>
-/*
- * This module has been generated by smidump 0.4.8:
- *
- *      smidump -f yang TUDA-V1-ATTESTATION-MIB
- *
- * Do not edit. Edit the source file instead!
- */
-
 module TUDA-V1-ATTESTATION-MIB {
-
-  /*** NAMESPACE / PREFIX DEFINITION ***/
 
   namespace "urn:ietf:params:xml:ns:yang:smiv2:TUDA-V1-ATTESTATION-MIB";
   prefix "tuda-v1";
 
-  /*** LINKAGE (IMPORTS / INCLUDES) ***/
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 39]
+
+Internet-Draft                    tuda                          May 2018
+
 
   import SNMP-FRAMEWORK-MIB { prefix "snmp-framework"; }
   import yang-types         { prefix "yang"; }
 
-  /*** META INFORMATION ***/
-
   organization
    "Fraunhofer SIT";
-
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 38]
-
-Internet-Draft                    tuda                        March 2017
-
 
   contact
    "Andreas Fuchs
@@ -2154,38 +2216,54 @@ Internet-Draft                    tuda                        March 2017
 
     Copyright (C) High North Inc (2017).";
 
+  revision "2017-10-30" {
+    description
+     "Fifth version, published as draft-birkholz-tuda-04.";
+    reference
+     "draft-birkholz-tuda-04";
+  }
   revision "2017-01-09" {
     description
      "Fourth version, published as draft-birkholz-tuda-03.";
+    reference
+     "draft-birkholz-tuda-03";
   }
   revision "2016-07-08" {
     description
      "Third version, published as draft-birkholz-tuda-02.";
+    reference
+     "draft-birkholz-tuda-02";
   }
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 40]
+
+Internet-Draft                    tuda                          May 2018
+
+
   revision "2016-03-21" {
     description
      "Second version, published as draft-birkholz-tuda-01.";
+    reference
+     "draft-birkholz-tuda-01";
   }
   revision "2015-10-18" {
     description
      "Initial version, published as draft-birkholz-tuda-00.";
+    reference
+     "draft-birkholz-tuda-00";
   }
 
   container tudaV1General {
+  description
+    "TBD";
 
     leaf tudaV1GeneralCycles {
       type yang:counter32;
       config false;
       description
        "Count of TUDA update cycles that have occurred, i.e.,
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 39]
-
-Internet-Draft                    tuda                        March 2017
-
-
         sum of all the individual group cycle counters.
 
         DEFVAL intentionally omitted - counter object.";
@@ -2205,11 +2283,21 @@ Internet-Draft                    tuda                        March 2017
   }
 
   container tudaV1AIKCert {
+  description
+    "TBD";
 
     leaf tudaV1AIKCertCycles {
       type yang:counter32;
       config false;
       description
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 41]
+
+Internet-Draft                    tuda                          May 2018
+
+
        "Count of AIK Certificate chain update cycles that have
         occurred.
 
@@ -2234,14 +2322,6 @@ Internet-Draft                    tuda                        March 2017
         }
         config false;
         description
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 40]
-
-Internet-Draft                    tuda                        March 2017
-
-
          "High-order index of this AIK Certificate fragment.
           Index of an AIK Certificate chain update cycle that has
           occurred (bounded by the value of tudaV1AIKCertCycles).
@@ -2266,6 +2346,14 @@ Internet-Draft                    tuda                        March 2017
       leaf tudaV1AIKCertFragmentIndex {
         type int32 {
           range "1..2147483647";
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 42]
+
+Internet-Draft                    tuda                          May 2018
+
+
         }
         config false;
         description
@@ -2286,18 +2374,12 @@ Internet-Draft                    tuda                        March 2017
   }
 
   container tudaV1TSACert {
+  description
+    "TBD";
 
     leaf tudaV1TSACertCycles {
       type yang:counter32;
       config false;
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 41]
-
-Internet-Draft                    tuda                        March 2017
-
-
       description
        "Count of TSA Certificate chain update cycles that have
         occurred.
@@ -2320,6 +2402,14 @@ Internet-Draft                    tuda                        March 2017
       leaf tudaV1TSACertCycleIndex {
         type int32 {
           range "1..2147483647";
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 43]
+
+Internet-Draft                    tuda                          May 2018
+
+
         }
         config false;
         description
@@ -2346,14 +2436,6 @@ Internet-Draft                    tuda                        March 2017
 
       leaf tudaV1TSACertFragmentIndex {
         type int32 {
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 42]
-
-Internet-Draft                    tuda                        March 2017
-
-
           range "1..2147483647";
         }
         config false;
@@ -2375,6 +2457,16 @@ Internet-Draft                    tuda                        March 2017
   }
 
   container tudaV1SyncToken {
+  description
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 44]
+
+Internet-Draft                    tuda                          May 2018
+
+
+    "TBD";
 
     leaf tudaV1SyncTokenCycles {
       type yang:counter32;
@@ -2396,20 +2488,9 @@ Internet-Draft                    tuda                        March 2017
         DEFVAL intentionally omitted - counter object.";
     }
 
-
-    /* XXX table comments here XXX */
-
     list tudaV1SyncTokenEntry {
 
       key "tudaV1SyncTokenCycleIndex
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 43]
-
-Internet-Draft                    tuda                        March 2017
-
-
            tudaV1SyncTokenInstanceIndex
            tudaV1SyncTokenFragmentIndex";
       config false;
@@ -2433,6 +2514,14 @@ Internet-Draft                    tuda                        March 2017
       leaf tudaV1SyncTokenInstanceIndex {
         type int32 {
           range "1..2147483647";
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 45]
+
+Internet-Draft                    tuda                          May 2018
+
+
         }
         config false;
         description
@@ -2458,14 +2547,6 @@ Internet-Draft                    tuda                        March 2017
         type binary {
           length "0..1024";
         }
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 44]
-
-Internet-Draft                    tuda                        March 2017
-
-
         config false;
         description
          "A fragment of CBOR encoded Sync Token data.";
@@ -2474,6 +2555,8 @@ Internet-Draft                    tuda                        March 2017
   }
 
   container tudaV1Restrict {
+  description
+    "TBD";
 
     leaf tudaV1RestrictCycles {
       type yang:counter32;
@@ -2487,6 +2570,13 @@ Internet-Draft                    tuda                        March 2017
 
 
     /* XXX table comments here XXX */
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 46]
+
+Internet-Draft                    tuda                          May 2018
+
 
     list tudaV1RestrictEntry {
 
@@ -2514,14 +2604,6 @@ Internet-Draft                    tuda                        March 2017
           length "0..1024";
         }
         config false;
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 45]
-
-Internet-Draft                    tuda                        March 2017
-
-
         description
          "An instance of CBOR encoded Restriction Info data.";
       }
@@ -2529,6 +2611,8 @@ Internet-Draft                    tuda                        March 2017
   }
 
   container tudaV1Measure {
+  description
+    "TBD";
 
     leaf tudaV1MeasureCycles {
       type yang:counter32;
@@ -2542,6 +2626,14 @@ Internet-Draft                    tuda                        March 2017
 
     leaf tudaV1MeasureInstances {
       type yang:counter32;
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 47]
+
+Internet-Draft                    tuda                          May 2018
+
+
       config false;
       description
        "Count of Measurement Log instance entries that have
@@ -2549,9 +2641,6 @@ Internet-Draft                    tuda                        March 2017
 
         DEFVAL intentionally omitted - counter object.";
     }
-
-
-    /* XXX table comments here XXX */
 
     list tudaV1MeasureEntry {
 
@@ -2570,13 +2659,6 @@ Internet-Draft                    tuda                        March 2017
          "High-order index of this Measurement Log entry.
           Index of a Measurement Log update cycle that has
           occurred (bounded by the value of tudaV1MeasureCycles).
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 46]
-
-Internet-Draft                    tuda                        March 2017
-
 
           DEFVAL intentionally omitted - index object.";
       }
@@ -2600,12 +2682,22 @@ Internet-Draft                    tuda                        March 2017
         }
         config false;
         description
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 48]
+
+Internet-Draft                    tuda                          May 2018
+
+
          "A instance of CBOR encoded Measurement Log data.";
       }
     }
   }
 
   container tudaV1VerifyToken {
+  description
+    "TBD";
 
     leaf tudaV1VerifyTokenCycles {
       type yang:counter32;
@@ -2628,12 +2720,6 @@ Internet-Draft                    tuda                        March 2017
        "An entry for one instance of Verify Token data.";
 
 
-
-Fuchs, et al.          Expires September 14, 2017              [Page 47]
-
-Internet-Draft                    tuda                        March 2017
-
-
       leaf tudaV1VerifyTokenCycleIndex {
         type int32 {
           range "1..2147483647";
@@ -2652,13 +2738,23 @@ Internet-Draft                    tuda                        March 2017
           length "0..1024";
         }
         config false;
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 49]
+
+Internet-Draft                    tuda                          May 2018
+
+
         description
-         "A instance of CBOR encoded Verify Token data.";
+         "A instanc-V1-ATTESTATION-MIB.yang
       }
     }
   }
 
   container tudaV1SWIDTag {
+  description
+    "see CoSWID and YANG SIWD module for now"
 
     leaf tudaV1SWIDTagCycles {
       type yang:counter32;
@@ -2668,9 +2764,6 @@ Internet-Draft                    tuda                        March 2017
 
         DEFVAL intentionally omitted - counter object.";
     }
-
-
-    /* XXX table comments here XXX */
 
     list tudaV1SWIDTagEntry {
 
@@ -2682,14 +2775,6 @@ Internet-Draft                    tuda                        March 2017
 
 
       leaf tudaV1SWIDTagCycleIndex {
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 48]
-
-Internet-Draft                    tuda                        March 2017
-
-
         type int32 {
           range "1..2147483647";
         }
@@ -2709,6 +2794,14 @@ Internet-Draft                    tuda                        March 2017
         config false;
         description
          "Middle index of this SWID Tag fragment.
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 50]
+
+Internet-Draft                    tuda                          May 2018
+
+
           Ordinal of this SWID Tag instance in this update cycle.
 
           DEFVAL intentionally omitted - index object.";
@@ -2738,14 +2831,6 @@ Internet-Draft                    tuda                        March 2017
 
   notification tudaV1TrapV2Cycles {
     description
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 49]
-
-Internet-Draft                    tuda                        March 2017
-
-
      "This trap is sent when the value of any cycle or instance
       counter changes (i.e., one or more tables are updated).
 
@@ -2753,6 +2838,8 @@ Internet-Draft                    tuda                        March 2017
       always included in SNMPv2 traps, per RFC 3416.";
 
     container tudaV1TrapV2Cycles-tudaV1GeneralCycles {
+      description
+       "TPD"
       leaf tudaV1GeneralCycles {
         type yang:counter32;
         description
@@ -2763,7 +2850,17 @@ Internet-Draft                    tuda                        March 2017
       }
     }
 
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 51]
+
+Internet-Draft                    tuda                          May 2018
+
+
     container tudaV1TrapV2Cycles-tudaV1AIKCertCycles {
+      description
+       "TPD"
       leaf tudaV1AIKCertCycles {
         type yang:counter32;
         description
@@ -2775,6 +2872,8 @@ Internet-Draft                    tuda                        March 2017
     }
 
     container tudaV1TrapV2Cycles-tudaV1TSACertCycles {
+      description
+       "TPD"
       leaf tudaV1TSACertCycles {
         type yang:counter32;
         description
@@ -2786,6 +2885,8 @@ Internet-Draft                    tuda                        March 2017
     }
 
     container tudaV1TrapV2Cycles-tudaV1SyncTokenCycles {
+      description
+       "TPD"
       leaf tudaV1SyncTokenCycles {
         type yang:counter32;
         description
@@ -2794,28 +2895,32 @@ Internet-Draft                    tuda                        March 2017
 
           DEFVAL intentionally omitted - counter object.";
       }
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 50]
-
-Internet-Draft                    tuda                        March 2017
-
-
     }
 
     container tudaV1TrapV2Cycles-tudaV1SyncTokenInstances {
+      description
+       "TPD"
       leaf tudaV1SyncTokenInstances {
         type yang:counter32;
         description
          "Count of Sync Token instance entries that have
           been recorded (some entries MAY have been pruned).
 
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 52]
+
+Internet-Draft                    tuda                          May 2018
+
+
           DEFVAL intentionally omitted - counter object.";
       }
     }
 
     container tudaV1TrapV2Cycles-tudaV1RestrictCycles {
+      description
+       "TPD"
       leaf tudaV1RestrictCycles {
         type yang:counter32;
         description
@@ -2827,6 +2932,8 @@ Internet-Draft                    tuda                        March 2017
     }
 
     container tudaV1TrapV2Cycles-tudaV1MeasureCycles {
+      description
+       "TPD"
       leaf tudaV1MeasureCycles {
         type yang:counter32;
         description
@@ -2838,6 +2945,8 @@ Internet-Draft                    tuda                        March 2017
     }
 
     container tudaV1TrapV2Cycles-tudaV1MeasureInstances {
+      description
+       "TPD"
       leaf tudaV1MeasureInstances {
         type yang:counter32;
         description
@@ -2849,16 +2958,18 @@ Internet-Draft                    tuda                        March 2017
     }
 
     container tudaV1TrapV2Cycles-tudaV1VerifyTokenCycles {
+      description
+       "TPD"
       leaf tudaV1VerifyTokenCycles {
-
-
-
-Fuchs, et al.          Expires September 14, 2017              [Page 51]
-
-Internet-Draft                    tuda                        March 2017
-
-
         type yang:counter32;
+
+
+
+Fuchs, et al.           Expires November 3, 2018               [Page 53]
+
+Internet-Draft                    tuda                          May 2018
+
+
         description
          "Count of Verify Token update cycles that have
           occurred.
@@ -2868,6 +2979,8 @@ Internet-Draft                    tuda                        March 2017
     }
 
     container tudaV1TrapV2Cycles-tudaV1SWIDTagCycles {
+      description
+       "TPD"
       leaf tudaV1SWIDTagCycles {
         type yang:counter32;
         description
@@ -2878,7 +2991,7 @@ Internet-Draft                    tuda                        March 2017
     }
 
   }
-} /* end of module TUDA-V1-ATTESTATION-MIB */
+}
 <CODE ENDS>
 
 Appendix D.  Realization with TPM functions
@@ -2908,10 +3021,9 @@ D.1.1.  Tick-Session and Tick-Stamp
 
 
 
-
-Fuchs, et al.          Expires September 14, 2017              [Page 52]
+Fuchs, et al.           Expires November 3, 2018               [Page 54]
 
-Internet-Draft                    tuda                        March 2017
+Internet-Draft                    tuda                          May 2018
 
 
    The TPM offers the function TPM_TickStampBlob, which allows the TPM
@@ -2965,9 +3077,9 @@ D.1.3.  PCR restricted Keys
 
 
 
-Fuchs, et al.          Expires September 14, 2017              [Page 53]
+Fuchs, et al.           Expires November 3, 2018               [Page 55]
 
-Internet-Draft                    tuda                        March 2017
+Internet-Draft                    tuda                          May 2018
 
 
    are in the correct state.  Otherwise the operation is denied by the
@@ -3021,9 +3133,9 @@ D.2.1.  AIK and AIK Certificate
 
 
 
-Fuchs, et al.          Expires September 14, 2017              [Page 54]
+Fuchs, et al.           Expires November 3, 2018               [Page 56]
 
-Internet-Draft                    tuda                        March 2017
+Internet-Draft                    tuda                          May 2018
 
 
    | create_AIK_Cert(...) = {
@@ -3077,9 +3189,9 @@ D.2.2.  Synchronization Token
 
 
 
-Fuchs, et al.          Expires September 14, 2017              [Page 55]
+Fuchs, et al.           Expires November 3, 2018               [Page 57]
 
-Internet-Draft                    tuda                        March 2017
+Internet-Draft                    tuda                          May 2018
 
 
    TUDA-Synctoken = [
@@ -3133,9 +3245,9 @@ Internet-Draft                    tuda                        March 2017
 
 
 
-Fuchs, et al.          Expires September 14, 2017              [Page 56]
+Fuchs, et al.           Expires November 3, 2018               [Page 58]
 
-Internet-Draft                    tuda                        March 2017
+Internet-Draft                    tuda                          May 2018
 
 
    | dummyDigest = h'0000000000000000000000000000000000000000'
@@ -3189,9 +3301,9 @@ D.2.3.  RestrictionInfo
 
 
 
-Fuchs, et al.          Expires September 14, 2017              [Page 57]
+Fuchs, et al.           Expires November 3, 2018               [Page 59]
 
-Internet-Draft                    tuda                        March 2017
+Internet-Draft                    tuda                          May 2018
 
 
  PCRSelection = bytes .size (2..4) ; used as bit string
@@ -3245,9 +3357,9 @@ Internet-Draft                    tuda                        March 2017
 
 
 
-Fuchs, et al.          Expires September 14, 2017              [Page 58]
+Fuchs, et al.           Expires November 3, 2018               [Page 60]
 
-Internet-Draft                    tuda                        March 2017
+Internet-Draft                    tuda                          May 2018
 
 
    ; "If the key is using the default exponent then the exponentSize
@@ -3301,9 +3413,9 @@ D.2.4.  Measurement Log
 
 
 
-Fuchs, et al.          Expires September 14, 2017              [Page 59]
+Fuchs, et al.           Expires November 3, 2018               [Page 61]
 
-Internet-Draft                    tuda                        March 2017
+Internet-Draft                    tuda                          May 2018
 
 
    TUDA-Measurement-Log = [*PCR-Event]
@@ -3357,9 +3469,9 @@ D.2.5.  Implicit Attestation
 
 
 
-Fuchs, et al.          Expires September 14, 2017              [Page 60]
+Fuchs, et al.           Expires November 3, 2018               [Page 62]
 
-Internet-Draft                    tuda                        March 2017
+Internet-Draft                    tuda                          May 2018
 
 
 D.2.6.  Attestation Verification Approach
@@ -3369,7 +3481,7 @@ D.2.6.  Attestation Verification Approach
    at the Verifier.  The following listings illustrate the verification
    algorithm to be used at the Verifier in pseudocode.  The pseudocode
    provided covers the entire verification task.  If only a subset of
-   TUDA elements changed (see Section 3.1), only the corresponding code
+   TUDA elements changed (see Section 4.1), only the corresponding code
    listings need to be re-executed.
 
    | TSA_pub = verifyCert(TSA-CA, Cert.TSA-Cert)
@@ -3413,9 +3525,9 @@ D.2.6.  Attestation Verification Approach
 
 
 
-Fuchs, et al.          Expires September 14, 2017              [Page 61]
+Fuchs, et al.           Expires November 3, 2018               [Page 63]
 
-Internet-Draft                    tuda                        March 2017
+Internet-Draft                    tuda                          May 2018
 
 
    | compositeHash = hash_init()
@@ -3469,9 +3581,9 @@ Internet-Draft                    tuda                        March 2017
 
 
 
-Fuchs, et al.          Expires September 14, 2017              [Page 62]
+Fuchs, et al.           Expires November 3, 2018               [Page 64]
 
-Internet-Draft                    tuda                        March 2017
+Internet-Draft                    tuda                          May 2018
 
 
   | ts = Verifytoken
@@ -3525,9 +3637,9 @@ D.3.2.  Synchronization Token
 
 
 
-Fuchs, et al.          Expires September 14, 2017              [Page 63]
+Fuchs, et al.           Expires November 3, 2018               [Page 65]
 
-Internet-Draft                    tuda                        March 2017
+Internet-Draft                    tuda                          May 2018
 
 
 D.3.3.  RestrictionInfo
@@ -3581,9 +3693,9 @@ Authors' Addresses
 
 
 
-Fuchs, et al.          Expires September 14, 2017              [Page 64]
+Fuchs, et al.           Expires November 3, 2018               [Page 66]
 
-Internet-Draft                    tuda                        March 2017
+Internet-Draft                    tuda                          May 2018
 
 
    Andreas Fuchs
@@ -3637,4 +3749,4 @@ Internet-Draft                    tuda                        March 2017
 
 
 
-Fuchs, et al.          Expires September 14, 2017              [Page 65]
+Fuchs, et al.           Expires November 3, 2018               [Page 67]
