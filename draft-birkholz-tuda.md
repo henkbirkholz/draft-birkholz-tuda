@@ -1,10 +1,10 @@
 ---
 title: 'Time-Based Uni-Directional Attestation'
 abbrev: tuda
-docname: draft-birkholz-tuda-latest
-date: 2017-03-13
+docname: draft-birkholz-i2nsf-tuda-latest
+date: 2018-05-02
 stand_alone: true
-coding: us-ascii
+#coding: us-ascii
 ipr: trust200902
 area: ''
 wg: ''
@@ -207,19 +207,27 @@ This memo documents the method and bindings used to conduct time-based uni-direc
 
 # Introduction
 
-Remote attestation describes the attempt to determine and appraise properties, such as integrity and trustworthiness, of an endpoint --- the attestee --- over a network to another endpoint --- the verifier --- without direct access. Typically, this kind of appraisal is based on integrity measurements of software components right before they are loaded as software instances on the attestee. In general, attestation procedures are utilizing a hardware root of trust (RoT). The TUDA protocol family uses hash values of all started software components that are stored (extended into) a Trust-Anchor (the Rot) implemented as a Hardware Security Module (e.g. a Trusted Platform Module or similar) and are reported via a signature over those measurements.
+Remote attestation describes the attempt to determine and appraise properties, such as integrity and trustworthiness, of an endpoint --- the Attestor --- over a network to another endpoint --- the Verifier --- without direct access. Typically, this kind of appraisal is based on integrity measurements of software components right before they are loaded as software instances on the Attestor. In general, attestation procedures are utilizing a hardware root of trust (RoT). The TUDA protocol family uses hash values of all started software components that are stored (extended into) a Trust-Anchor (the Rot) implemented as a Hardware Security Module (e.g. a Trusted Platform Module or similar) and are reported via a signature over those measurements.
+
+This draft introduces the concept of including the exchange of evidence (created via a hardware root of trust containing an shielded secret that is unknown to the user in order to increase the confidence that a communication peer is a Trusted System {{RFC4949}}. In consequnce, this document introduces the term forward authenticity.
+
+Forward Authenticity (FA):
+
+: A property of secure communication protocols, in which later compromise of the long-term keys of a data origin does not compromise past authentication of data from that origin. FA is achieved by timely recording of assessments of the authenticity from entities (via "audit logs" during "audit sessions") that are authorized for this purpose, in a time frame much shorter than that expected for the compromise of the long-term keys.
+
+Forward Authenticity enables new level of guarantee and can be included in the basically every protocol, such as ssh, router advertisements, link layer neighbor discover, or even ICMP echo.
 
 ## Remote Attestation
 
-In essence, remote attestation is composed of three activities. The following definitions are derived from the definitions presented in {{PRIRA}} and {{TCGGLOSS}}.
+In essence, remote attestation (RA) is composed of three activities. The following definitions are derived from the definitions presented in {{PRIRA}} and {{TCGGLOSS}}.
 
 Attestation:
 
-: The creation of one ore more claims about the properties of an attestee, such that the claims can be used as evidence.
+: The creation of one ore more claims about the properties of an Attestor, such that the claims can be used as evidence.
 
 Conveyance:
 
-: The transfer of evidence from the attestee to the verifier via an interconnect. 
+: The transfer of evidence from the Attestor to the Verifier via an interconnect. 
 
 Verification: 
 
@@ -228,35 +236,45 @@ Verification:
 With TUDA, the claims that compose the evidence are signatures over trustworthy integrity measurements created by leveraging a hardware RoT. The evidence is appraised via corresponding signatures over reference integrity measurements (RIM, represented, for example via {{-coswid}}).
 
 Protocols that facilitate Trust-Anchor based signatures in order to provide
-remote attestation are usually bi-directional challenge/response protocols, such as the Platform Trust Service protocol {{PTS}} or CAVES {{PRIRA}}, where one entity sends a challenge that is included inside the response to ensure the recentness --- the freshness (see fresh in {{RFC4949}}) --- of the attestation information. The corresponding interaction model tightly couples the three activities of creating, transferring and appraising evidence.
+RATS are usually bi-directional challenge/response protocols, such as the Platform Trust Service protocol {{PTS}} or CAVES {{PRIRA}}, where one entity sends a challenge that is included inside the response to prove the recentness --- the freshness (see fresh in {{RFC4949}}) --- of the attestation information. The corresponding interaction model tightly couples the three activities of creating, transferring and appraising evidence.
 
-The Time-Based Uni-directional Attestation family of protocols --- TUDA --- described in this document can decouple the three activities remote attestation is composed of. As a result, TUDA provides additional capabilities, such as:
+The Time-Based Uni-directional Attestation family of protocols --- TUDA --- described in this document can decouple the three activities RATS are composed of. As a result, TUDA provides additional capabilities, such as:
 
-* remote attestation for attestees that might not always be able to reach the Internet by enabling the verification of past states,
+* remote attestation for Attestors that might not always be able to reach the Internet by enabling the verification of past states,
 * secure audit logs by combining the evidence created via TUDA with integrity measurement logs that represent a detailed record of corresponding past states,
 * an uni-directional interaction model that can traverse "diode-like" network security functions (NSF) or can be leveraged in RESTful architectures (e.g. CoAP {{-coap}}), analogously.
 
+## Evidence Creation
+
+TUDA is a family of protocols that bundles results from specific attestation activities. The attestation activities of TUDA are based on a hardware Root of Trust that provides the following capabilities:
+
+* Platform Configuration Registers (PCR) that store measurements consecutively (corresponding terminology: "to extend a PCR") and represent the chain of measurements as a single measurement value ("PCR value"),
+* Restricted Signing Keys (RSK) that can only be accessed, if a specific signature about measurements can be provided as authentication, and
+* a dedicated source of (relative) time, e.g. a tick counter.
+
+## Evidence Appraisal
+
+To appraise the evidence created by an Attestor, the Verifier requires corresponding Reference Integrity Measurements (RIM). Typically, a set of RIM are bundled in a RIM-Manifest (RIMM). The scope of a manifest encompasses, e.g., a platform, a device, a computing context, or a virtualised function. In order to be comparable, the hashing algorithms used by the Attestor to create the integrity measurements have to match the hashing algorithms used to create the corresponding RIM that are used by the Verifier to appraise the integrity evidence.
+
+## Activities and Actions
+
+Depending on the platform (i.e. one or more computing contexts including a dedicated hardware RoT), a generic RA activity results in platform-specific actions that have to be conducted. In consequence, there are multiple specific operations and data models (defining the input and output of operations). Hence, specific actions are are not covered by this document. Instead, the requirements on operations and the information elements that are the input and output to these operations are illustrated using pseudo code in [FIXME Appendix foo].
+
 ## Attestation and Verification
 
-TUDA is a family of protocols that packages results from specific attestation and verification activities. The attestation activities of TUDA are based on a hardware root of trust that provides the following capabilities:
+Both the attestation and the verification activity of TUDA also require a trusted Time Stamp Authority (TSA) as an additional third party next to the Attestor and the Verifier.
+The protocol uses a Time Stamp Authority based on {{RFC3161}}. The combination of the local source of time provided by the hardware RoT (located on the Attestor) and the Time Stamp Tokens provided by the TSA (to both the Attestor and the Verifier) enable the attestation and verification of an appropriate freshness of the evidence conveyed by the Attestor --- without requiring a challenge/response interaction model that uses a nonce to ensure the freshness.
 
-* platform Configuration Registers (PCR) that store measurements consecutively and represent the chain of measurements as a single measurement value,
-* restricted signing keys that are can only be accessed if a specific signature about measurements can be provided as authentication, and
-* a source of relative time (for example, a tick counter).
-
-Both the attestation and the verification activity of TUDA also require a trusted Time Stamp Authority (TSA) as an additional third party next to the attestee and the verifier.
-The protocol uses a Time Stamp Authority based on {{RFC3161}}. The combination of the local source of time provided by the hardware RoT (located on the attestee) and the Time Stamp Tokens provided by the TSA (to both the attestee and the verifier) enable the attestation and verification of an appropriate freshness of the evidence conveyed by the attestee --- without requiring a challenge/response interaction model that uses a nonce to ensure the freshness.
-
-The verification activity can also use declarative guidance (representing desired or compliant endpoint characteristics in the form of RIM) to appraise the individual integrity measurements the conveyed evidence is based on. The acquisition or representation of declarative guidance as well as the corresponding evaluation methods are out of the scope of this document.
+Typically, the verification activity requires declarative guidance (representing desired or compliant endpoint characteristics in the form of RIM, see above) to appraise the individual integrity measurements the conveyed evidence is composed on. The acquisition or representation (data models) of declarative guidance as well as the corresponding evaluation methods are out of the scope of this document.
 
 ## Information Elements and Conveyance
 
-TUDA defines a set of information elements (IE) that are created and stored on the attestee and are intended to be transferred to the verifier in order to enable appraisal. Each TUDA IE:
+TUDA defines a set of information elements (IE) that are created and stored on the Attestor and are intended to be transferred to the Verifier in order to enable appraisal. Each TUDA IE:
 
 * is encoded in the Concise Binary Object Representation (CBOR {{-cbor}}) to minimize the volume of data in motion. In this document, the composition of the CBOR data items that represent IE is described using the Concise Data Definition Language, CDDL {{-cddl}}
-* that requires a certain freshness is only created/updated when out-dated, which reduces the overall resources required from the attestee, including the utilization of the hardware root of trust. The IE that have to be created are determined by their age or by specific state changes on the attestee (e.g. state changes due to a reboot-cycle)
+* that requires a certain freshness is only created/updated when out-dated, which reduces the overall resources required from the Attestor, including the utilization of the hardware root of trust. The IE that have to be created are determined by their age or by specific state changes on the Attestor (e.g. state changes due to a reboot-cycle)
 * is only transferred when required, which reduces the amount of data in motion necessary to conduct remote attestation significantly. Only IE that have changed since their last conveyance have to be transferred
-* that requires a certain freshness can be reused for multiple remote attestation procedures in the limits of its corresponding freshness-window, further reducing the load imposed on the attestee and its corresponding hardware RoT.
+* that requires a certain freshness can be reused for multiple remote attestation procedures in the limits of its corresponding freshness-window, further reducing the load imposed on the Attestor and its corresponding hardware RoT.
 
 ## TUDA Objectives
 
@@ -272,7 +290,7 @@ The Time-Based Uni-directional Attestation family of protocols is designed to:
 
 ## Hardware Dependencies
 
-The binding of the attestation scheme used by TUDA to generate the TUDA IE is specific to the methods provided by the hardware RoT used. As a reference, this document includes pseudo-code that illustrates the production of TUDA IE using a TPM 1.2 and TPM 2.0 as well as the corresponding TPM commands specified in {{TPM12}} and {{TPM2}} as an example. The references to TPM commands and corresponding pseudo-code only serve as guidance to enable a better understanding of the attestation scheme and is intended to encourages the use of any appropriate hardware RoT or equivalent set of functions stored in a Trusted Execution Environment {{TEE}}.
+The binding of the attestation scheme used by TUDA to generate the TUDA IE is specific to the methods provided by the hardware RoT used (see above). In this document,expositional text and pseudo-code that is provided as a reference to instantiate the TUDA IE is based on TPM 1.2 and TPM 2.0 operations. The corresponding TPM commands are specified in {{TPM12}} and {{TPM2}}. The references to TPM commands and corresponding pseudo-code only serve as guidance to enable a better understanding of the attestation scheme and is intended to encourage the use of any appropriate hardware RoT or equivalent set of functions available to a CPU or Trusted Execution Environment {{TEE}}.
 
 ## Requirements Notation
 
@@ -283,31 +301,30 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
 
 # TUDA Core Concept
 
-There are significant differences between conventional bi-directional attestation and TUDA regarding both the information elements conveyed between attestee and verifier and the time-frame, in which an attestation can be considered to be fresh (and therefore trustworthy).
+There are significant differences between conventional bi-directional attestation and TUDA regarding both the information elements conveyed between Attestor and Verifier and the time-frame, in which an attestation can be considered to be fresh (and therefore trustworthy).
 
 In general, remote attestation using a bi-directional communication scheme includes sending a nonce-challenge within a signed attestation token. Using the TPM 1.2 as an example, a corresponding nonce-challenge would be included within the signature created by the TPM_Quote command in order to prove the freshness of the attestation response, see e.g. {{PTS}}.
 
-In contrast, the TUDA protocol would use a combination output of TPM_CertifyInfo and
-TPM_TickStampBlob. The former provides a proof about the platform's state by attesting that a certain key is bound to said state. The latter provides proof that the platform was in the specified state by using the bound key in a time operation. This combination enables a time-based attestation scheme. This approach is based on the concepts introduced in {{SCALE}} and {{SFKE2008}}.
+In contrast, the TUDA protocol uses the combined output of TPM_CertifyInfo and TPM_TickStampBlob. The former provides a proof about the platform's state by creating evidence that a certain key is bound to that state. The latter provides proof that the platform was in the specified state by using the bound key in a time operation. This combination enables a time-based attestation scheme. The approach is based on the concepts introduced in {{SCALE}} and {{SFKE2008}}.
 
-The payload of information elements transmitted is based on different methods, because the time-frame, in which an attestation is considered to be fresh (and therefore trustworthy), is defined differently.
+Each TUDA IE has an individual time-frame, in which it is considered to be fresh (and therefore trustworthy). In consequence, each TUDA IE that composes data in motion is based on different methods of creation.
 
 The freshness properties of a challenge-response based protocol define the point-of-time of attestation between:
 
 * the time of transmission of the nonce, and
-* the reception of the response
+* the reception of the corresponding response.
 
 Given the time-based attestation scheme, the freshness property of TUDA is equivalent to that of bi-directional challenge response attestation, if the point-in-time of attestation lies between:
 
 * the transmission of a TUDA time-synchronization token, and
-* the typical round-trip time between the verifier and the attestee,
+* the typical round-trip time between the Verifier and the Attestor.
 
-The accuracy of this time-frame is defined by two factors: 
+The accuracy [FIXME IEEE PTP terminology ref] of this time-frame is defined by two factors: 
 
-* the time-synchronization between the attestee and the TSA. The time between the two tickstamps acquired via the hardware RoT define the scope of the maximum drift ("left" and "right" in respect to the timeline) to the TSA timestamp, and
+* the time-synchronization between the Attestor and the TSA. The time between the two tickstamps acquired via the hardware RoT define the scope of the maximum drift ("left" and "right" in respect to the timeline) to the TSA timestamp, and
 * the drift of clocks included in the hardware RoT.
 
-Since TUDA attestations do not rely upon a verifier provided value (i.e. the nonce), the security guarantees of the protocol only incorporate the TSA and the hardware RoT. In consequence, TUDA attestations can even serve as proof of integrity in audit logs with precise point-in-time guarantees, in contrast to classical attestations.
+Since the conveyance of TUDA evidence does not rely upon a Verifier provided value (i.e. the nonce), the security guarantees of the protocol only incorporate the TSA and the hardware RoT. In consequence, TUDA evidence can even serve as proof of integrity in audit logs with precise point-in-time guarantees, in contrast to classical attestations.
 
 {{rest}} contains guidance on how to utilize a REST architecture.
 
@@ -319,11 +336,11 @@ Since TUDA attestations do not rely upon a verifier provided value (i.e. the non
 
 {{tpm2}} contains a realization of TUDA using TPM 2.0 primitives.
 
-## Terminology
+# Terminology
 
 This document introduces roles, information elements and types required to conduct TUDA and uses terminology (e.g. specific certificate names) typically seen in the context of attestation or hardware security modules.
 
-### Universal Terms
+## Universal Terms
 
 Attestation Identity Key (AIK):
 
@@ -337,7 +354,7 @@ Claim:
 
 Endpoint Attestation:
 
-: the creation of evidence on the attestee that provides proof of a set of the endpoints's integrity measurements. This is done by digitally signing a set of PCRs using an AIK shielded by the hardware RoT.
+: the creation of evidence on the Attestor that provides proof of a set of the endpoints's integrity measurements. This is done by digitally signing a set of PCRs using an AIK shielded by the hardware RoT.
 
 Endpoint Characteristics:
 
@@ -371,9 +388,9 @@ Trustworthiness is not an absolute property but defined with respect to an entit
 
 : Trustworthy Statement: evidence that is trustworthy conveyed by an endpoint that is not necessarily trustworthy.
 
-### Roles
+## Roles
 
-Attestee:
+Attestor:
 : the endpoint that is the subject of the attestation to another endpoint.
 
 Verifier:
@@ -398,7 +415,7 @@ PCR:
 PCR-Hash:
 : a hash value of the security posture measurements stored in a TPM PCR (e.g. regarding running software instances) represented as a byte-string
 
-### Certificates
+## Certificates
 
 TSA-CA:
 : the Certificate Authority that provides the certificate for the TSA represented as a Cert
@@ -409,7 +426,7 @@ AIK-CA:
 # Time-Based Uni-Directional Attestation
 
 A Time-Based Uni-Directional Attestation (TUDA) consists of the
-following seven information elements. They are used to gain assurance of the Attestee's
+following seven information elements. They are used to gain assurance of the Attestor's
 platform configuration at a certain point in time:
 
 TSA Certificate:
@@ -428,7 +445,7 @@ Synchronization Token:
 : The reference for attestations are the relative timestanps provided by the hardware RoT. In
   order to put attestations into relation with a Real Time Clock
   (RTC), it is necessary to provide a cryptographic synchronization
-  between these trusted relative timestamps and the regular RTC that is a hardware component of the attestee. To do so, a synchronization
+  between these trusted relative timestamps and the regular RTC that is a hardware component of the Attestor. To do so, a synchronization
   protocol is run with a Time Stamp Authority (TSA).
 
 Restriction Info:
@@ -448,7 +465,7 @@ Measurement Log:
   values in order to estimate the trustworthiness of the device. As such, a list of
   those elements that were extended into the PCRs is reported. Note though that for
   certain environments, this step may be optional if a list of valid PCR configurations
-  (in the form of RIM available to the verifier) exists and no measurement log is required.
+  (in the form of RIM available to the Verifier) exists and no measurement log is required.
 
 Implicit Attestation:
 
@@ -460,11 +477,11 @@ Implicit Attestation:
 
 Concise SWID tags:
 
-: As an option to better assess the trustworthiness of an Attestee, a Verifier can request the
+: As an option to better assess the trustworthiness of an Attestor, a Verifier can request the
   reference hashes (RIM, which are often referred to as golden measurements) of all started software components
   to compare them with the entries in the measurement log. References hashes regarding installed
   (and therefore running) software can be provided by the manufacturer via SWID tags. SWID tags are
-  provided by the attestee using the Concise SWID representation {{-coswid}} and bundled into a CBOR array (a RIM Manifest). 
+  provided by the Attestor using the Concise SWID representation {{-coswid}} and bundled into a CBOR array (a RIM Manifest). 
   Ideally, the reference hashes include a signature created by the manufacturer of the software to prove their integrity.
 
 
@@ -474,7 +491,7 @@ elements have different update cycles. In most cases, retransmitting
 all seven information elements would result in unnecessary redundancy.
 
 Furthermore, in some scenarios it might be feasible not to store all
-elements on the Attestee endpoint, but instead they could be retrieved
+elements on the Attestor endpoint, but instead they could be retrieved
 from another location or be pre-deployed to the Verifier.
 It is also feasible to only store public keys on the Verifier and skip the whole
 certificate provisioning completely in order to save bandwidth and computation
@@ -501,11 +518,11 @@ An endpoint can be in various states and have various information associated
 
 Depending on this "lifetime of state", data has to be transported over the wire,
  or not. E.g. information that does not change due to a reboot typically
- has to be transported only once between the Attestee and the Verifier.
+ has to be transported only once between the Attestor and the Verifier.
 
 There are three kinds of events that require a renewed attestation:
 
-* The Attestee completes a boot-cycle
+* The Attestor completes a boot-cycle
 * A relevant PCR changes
 * Too much time has passed since the last attestation statement
 
@@ -513,7 +530,7 @@ The third event listed above is variable per application use case and also depen
 For usage scenarios, in which the device would periodically
 push information to be used in an audit-log, a time-frame of approximately one update
 per minute should be sufficient in most cases. For those usage scenarios, where
-verifiers request (pull) a fresh attestation statement, an implementation could use the hardware RoT
+Verifiers request (pull) a fresh attestation statement, an implementation could use the hardware RoT
 continuously to always present the most freshly created results. To save some
 utilization of the hardware RoT for other purposes, however, a time-frame of once per ten
 seconds is recommended, which would typically leave about 80% of utilization for other applications.
@@ -533,7 +550,7 @@ Implicit Attestation for each time that an attestation is needed
 -->
 
 ~~~~~~~~~~~
-Attestee                                                 Verifier
+Attestor                                                 Verifier
    |                                                         |
  Boot                                                        |
    |                                                         |
@@ -596,7 +613,7 @@ The Sync Base Protocol (SBP) creates evidence that binds the TPM tick time to th
 * The corresponding response includes a data-structure incorporating the trusted timestamp token and its signature created by the TSA.
 * At the point-in-time the response arrives (called "right"), a signed tickstamp counter value is acquired from the hardware RoT again, using a hash of the signed TSA timestamp as a nonce.
 
-The three time-related values --- the relative timestamps provided by the hardware RoT ("left" and "right") and the TSA timestamp --- and their corresponding signatures are aggregated in order to create a corresponding Sync Token to be used as a TUDA Information Element that can be conveyed as evidence to a verifier.
+The three time-related values --- the relative timestamps provided by the hardware RoT ("left" and "right") and the TSA timestamp --- and their corresponding signatures are aggregated in order to create a corresponding Sync Token to be used as a TUDA Information Element that can be conveyed as evidence to a Verifier.
 
 The drift of a clock incorporated in the hardware RoT that drives the increments of the tick counter constitutes one of the triggers that can initiate a TUDA Information Element Update Cycle in respect to the freshness of the available Sync Token. 
 
@@ -620,20 +637,22 @@ There are Security Considerations. TBD
 #  Change Log
 
 Changes from version 04 to I2NSF related document version 00:
-* 
+* Refactored main document to be more technology agnostic
+* Added first draft of procedures for TPM 2.0
+* Improved content consistency and structure of all sections
 
 Changes from version 03 to version 04:
 
 * Refactoring of Introduction, intend, scope and audience
-* Added first draft of Sync Base Prootol section illustrated background for interaction with TSA
+* Added first draft of Sync Base Prootoll section illustrated background for interaction with TSA
 * Added YANG module
 * Added missing changelog entry
 
 Changes from version 02 to version 03:
 
 * Moved base concept out of Introduction
-* First refactoring of Inttroduction and Concept
-* Firrst restructuring of Appendices and improved references
+* First refactoring of Introduction and Concept
+* First restructuring of Appendices and improved references
 
 Changes from version 01 to version 02:
 
@@ -1341,11 +1360,11 @@ TUDA-Verifytoken := sig(Restricted-Key,
 #  Acknowledgements
 {: numbered="no"}
 
-<!--  LocalWords:  TPM AIK TUDA uptime PCR Verifier Attestee CoRE RTC
+<!--  LocalWords:  TPM AIK TUDA uptime PCR Verifier Attestor CoRE RTC
  -->
 <!--  LocalWords:  RESTCONF pseudocode disambiguates TSA PCRs
  -->
-<!--  LocalWords:  Attestee's retransmitting verifiers Timestamp
+<!--  LocalWords:  Attestor's retransmitting Verifiers Timestamp
  -->
 <!--  LocalWords:  TickStampBlob
  -->

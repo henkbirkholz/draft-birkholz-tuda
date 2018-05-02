@@ -10,7 +10,7 @@ IMPORTS
         FROM SNMP-FRAMEWORK-MIB;        -- RFC 3411
 
 tudaV1MIB MODULE-IDENTITY
-    LAST-UPDATED    "201701090000Z" -- 09 Januar 2017
+    LAST-UPDATED    "201710300000Z" -- 30 October 2017
     ORGANIZATION
         "Fraunhofer SIT"
     CONTACT-INFO
@@ -37,9 +37,13 @@ tudaV1MIB MODULE-IDENTITY
 
         Copyright (C) High North Inc (2017)."
 
+    REVISION "201710300000Z" -- 30 October 2017
+    DESCRIPTION
+        "Fifth version, published as draft-birkholz-tuda-05."
+
     REVISION "201701090000Z" -- 09 January 2017
-        DESCRIPTION
-        "Fourth version, published as draft-birkholz-tuda-03."
+    DESCRIPTION
+        "Fourth version, published as draft-birkholz-tuda-04."
 
     REVISION "201607080000Z" -- 08 July 2016
     DESCRIPTION
