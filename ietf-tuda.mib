@@ -10,7 +10,7 @@ IMPORTS
         FROM SNMP-FRAMEWORK-MIB;        -- RFC 3411
 
 tudaV1MIB MODULE-IDENTITY
-    LAST-UPDATED    "201710300000Z" -- 30 October 2017
+    LAST-UPDATED    "201903120000Z" --  12 March 2019
     ORGANIZATION
         "Fraunhofer SIT"
     CONTACT-INFO
@@ -35,15 +35,27 @@ tudaV1MIB MODULE-IDENTITY
         attestation information from a network endpoint system,
         based on the Trusted Computing Group TPM 1.2 definition.
 
-        Copyright (C) High North Inc (2017)."
+        Copyright (C) High North Inc (2019)."
+
+    REVISION "201903120000Z" -- 12 March 2019
+    DESCRIPTION
+        "Eighth version, published as draft-birkholz-rats-tuda-00."
+
+    REVISION "201805030000Z" -- 03 May 2018
+    DESCRIPTION
+        "Seventh version, published as draft-birkholz-i2nsf-tuda-03."
+
+    REVISION "201805020000Z" -- 02 May 2018
+    DESCRIPTION
+        "Sixth version, published as draft-birkholz-i2nsf-tuda-02."
 
     REVISION "201710300000Z" -- 30 October 2017
     DESCRIPTION
-        "Fifth version, published as draft-birkholz-tuda-05."
+        "Fifth version, published as draft-birkholz-i2nsf-tuda-01."
 
     REVISION "201701090000Z" -- 09 January 2017
     DESCRIPTION
-        "Fourth version, published as draft-birkholz-tuda-04."
+        "Fourth version, published as draft-birkholz-i2nsf-tuda-00."
 
     REVISION "201607080000Z" -- 08 July 2016
     DESCRIPTION
