@@ -1,15 +1,19 @@
 ---
 title: 'Time-Based Uni-Directional Attestation'
-abbrev: tuda
-docname: draft-birkholz-i2nsf-tuda-latest
+abbrev: TUDA
+docname: draft-birkholz-rats-tuda-latest
 stand_alone: true
-#coding: us-ascii
 ipr: trust200902
-area: ''
-wg: ''
+area: Security
+wg: RATS Working Group
 kw: Internet-Draft
-cat: info
-pi: [toc, sortrefs, symrefs, comments]
+cat: std
+pi:
+  toc: yes
+  sortrefs: yes
+  symrefs: yes
+  comments: yes
+
 author:
 - ins: A. Fuchs
   name: Andreas Fuchs
@@ -50,6 +54,10 @@ author:
   email: cabo@tzi.org
 normative:
   RFC2119:
+  RFC8174:
+  RFC8641:
+  RFC8640:
+  RFC8639:
   I-D.birkholz-rats-architecture: rats
 
 informative:
@@ -67,10 +75,11 @@ informative:
       STD: 62
       RFCs: 3411 to 3418
     date: 2002-12
-  I-D.ietf-cbor-cddl: cddl
+  RFC8610: cddl
   I-D.ietf-sacm-terminology: sacmterm
   I-D.ietf-core-comi: comi
   I-D.ietf-sacm-coswid: coswid
+  I-D.birkholz-rats-reference-interaction-model: charra
   SCALE:
     title: Improving Scalability for Remote Attestation
     author:
@@ -200,66 +209,115 @@ informative:
 
 --- abstract
 
-This memo documents the method and bindings used to conduct time-based uni-directional attestation between distinguishable endpoints over the network.
+This documents defines the method and bindings used to conduct Time-based Uni-Directional Attestation (TUDA) between two RATS (Remote ATtestation procedureS) Principals over the Internet.
+TUDA does not require a challenge-response handshake and thereby does not rely on the conveyance of a nonce to prove freshness of remote attestation Evidence.
+Conversely, TUDA enables the creation of Secure Audit Logs that can constitute Evidence about current and past operational states of an Attester.
+As a prerequisite for TUDA, every RATS Principal requires access to a trusted and synchronized time-source.
+Per default, in TUDA this is a Time Stamp Authority (TSA) issuing signed Time Stamp Tokens (TST).
 
 --- middle
 
 # Introduction
 
-Remote attestation (RA) describes the attempt to determine and appraise properties, such as integrity and trustworthiness, of a communication partner --- the Attester --- over the Internet to another communication parter --- the Verifier --- without direct access.
-A prominent example is the conveyance of evidence based on integrity measurements of software components right before they are loaded as software instances on the Attester - in order to be appraised.
-In general, remote attestation procedures {{-rats}} are utilizing Roots of Trust (RoT). [FIXME NIST/GP ROT here]
-The TUDA protocol family uses hash values of all started software components that are stored (extended into trusted chain of hashes).
-The storage of these measurements is facilitated by a Root of Trust for Storage (to extend the hash chain) that is also a Root of Trust for Reporting (to provide a trustworthy/signed quote of the resulting hash value).
+Remote ATtestation procedureS (RATS) describe the attempt to determine and appraise properties, such as integrity and trustworthiness, of a communication partner -- the Attester -- over the Internet to another communication parter -- the Verifier -- without direct access.
+TUDA uses the architectural constituents of the RATS Architecture {{-rats}} that defines the Roles Attester and Verifier in detail.
+The RATS Architecture also defines Role Messages.
+TUDA creates and conveys a specific type of Role Message called Evidence, a composition of trustwrthiness Claims provided by an Attester and consumed by a Verifier (potentially relayed by another RATS Role that is a Relying Party).
+TUDA -- in contrast to traditional bi-directional challenge-response protocols {{-charra}} -- enables a uni-directional conveyance of attestation Evidence that allows for providing attestation information without solicitation (e.g. as beacons or push data via YANG Push {{RFC8641}}, {{RFC8640}}, {{RFC8639}}).
 
-This document includes the concept of exchanging of evidence as presented in {{-rats}}.
-In this case the evidence is created via a hardware RoT containing a shielded secret that is inaccessible to the user --- in order to increase the confidence of a communication partner that the evidence presented originates from a Trusted System {{RFC4949}}.
 As a result, this document introduces the term Forward Authenticity.
 
 Forward Authenticity (FA):
 
-: A property of secure communication protocols, in which later compromise of the long-term keys of a data origin does not compromise past authentication of data from that origin. FA is achieved by timely recording of assessments of the authenticity from system components (via "audit logs" during "audit sessions") that are authorized for this purpose and trustworthy (endorsed RoT), in a time frame much shorter than that expected for the compromise of the long-term keys.
+: A property of secure communication protocols, in which later compromise of the long-term keys of a data origin does not compromise past authentication of data from that origin.
+FA is achieved by timely recording of assessments of the authenticity from system components (via "audit logs" during "audit sessions") that are authorized for this purpose and trustworthy (e.g via endorsed roots of trust), in a time frame much shorter than that expected for the compromise of the long-term keys.
 
-: Forward Authenticity enables new levels of guarantee and can be included in basically every protocol, such as ssh, router advertisements, link layer neighbor discovery, or even ICMP echo.
+: Forward Authenticity enables new levels of assurance and can be included in basically every protocol, such as ssh, YANG Push, router advertisements, link layer neighbor discovery, or even ICMP echo.
 
-## Remote Attestation
+## Requirements Notation
 
-In essence, remote attestation (RA) is composed of three activities. The following definitions are derived from the definitions presented in {{PRIRA}} and {{TCGGLOSS}}.
+{::boilerplate bcp14}
+
+## Evidence
+
+Remote attestation Evidence is basically a set of trustworthiness claims (assertions about the Attester and its system characteristics including security posture and protection characteristics) that are accompanied by a proof of their veracity -- typically a signature based on shielded, private and potentially restricted key material.
+As key material alone is typically not self-descriptive with respect to its intended use (its semantics), the remote attestation Evidence created via TUDA is accompanied by two kinds of certificates that are cryptographically associated with a Trust Anchor (TA) {{RFC4949}} via a certification path:
+
+* an Attestation Key (AK) Certificate (AK-Cert) that represents the attestation provenance of the created Evidence, and
+* an Endorsement Key (EK) Certificate (EK-Cert) that represents the protection characteristics of the system components the AK is stored in.
+
+If a Verifier decides to trust both the TA of an AK-Cert and an EK-Cert presented by an Attester -- and the included assertions about the system characteristics describing the Attester, the attestation Evidence created via TUDA by the Attester is considered believable.
+Ultimately, believable Evidence is appraised by a Verifier in order to assess the trustworthiness of the corresponding Attester.
+
+## Creating Evidence about Software Component Integrity
+
+The TUDA protocol mechanism uses hash values of all started software components as a basis to provide and create Evidence about the integrity of the software components of an Attester.
+This section defines the processed data items, the required system components, and corresponding operations to enable the creation of Evidence about software component integrity for TUDA.
+
+### Data Items
+ 
+The hash value of a software component created before it is executed is referred to as a "measurement" in the remainder of this document.
+Measurements are chained using a rolling hash function.
+Each measurement added to the sequence of all measurements results in a new current hash value that is referred to as a "digest" in the remainder of this document.
+
+### System Components
+
+The function to store these measurements via a rolling hash function is provided by a root of trust for storage -- a system component that MUST be a component of the attester.
+
+With respect to the boot sequence of an Attester, the very first measurements of software components (e.g. the BIOS, or a sometimes a bootloader) have to be conducted by a root of trust for measurement that is implemented in hardware and MUST be a system component of the Attester.
+
+All measurements retained in the root of trust for measurements are handed over to the root of trust for storage when it becomes available during the boot procedure of the Attester.
+During that hand-over the sequence of measurements retained in the root of trust for measurement are processed by the rolling hash function of the root of trust for storage.
+
+The function of retrieving the current output value of the rolling hash function, including a signature to provide a proof of veracity, is provided by a root of trust for reporting and MUST be a system component of the Attester.
+
+Typically, a root of trust for storage and a root of trust for reporting are tightly coupled.
+Analogously, a root of trust for measurement is typically independent from the root of trust for storage, but has to be able to interact with root of trust for storage at some point of the boot sequence of the Attester to hand over the retained measurements.
+
+### Operations
+
+The operation of processing a measurement and adding it to the sequence of measurements via the rolling hash function is called "extend" and is provided by the root of trust for storage.
+
+The operation of retrieving the current available hash value that is the result of the rolling hash function including a signature based on an Attestation Key is called "quote" and is provided by the corresponding root of trust for reporting.
+
+## Remote Attestation Principles
+
+In essence, RATS are composed of three base activities. The following definitions are derived from the definitions presented in {{PRIRA}} and {{TCGGLOSS}}, and are a simplified summary of the RATS Architecture relevant for TUDA. The complete RATS Architecture and every corresponding constituent, message and interaction is defined in {{-rats}}.
 
 Attestation:
 
-: The creation of one ore more claims about the properties of an Attester, such that the claims can be used as evidence.
+: The creation of one ore more claims about the trustworthiness properties of an Attester, such that the claims can be used as Evidence.
 
 Conveyance:
 
-: The transfer of evidence from the Attester to the Verifier via an interconnect. 
+: The transfer of Evidence from the Attester to the Verifier via an interconnect. 
 
 Verification: 
 
-: The appraisal of evidence by evaluating it against declarative guidance.
+: The appraisal of Evidence by evaluating it against known-good-values (a type of declarative guidance).
 
-With TUDA, the claims that compose the evidence are signatures over trustworthy integrity measurements created by leveraging a hardware RoT. The evidence is appraised via corresponding signatures over reference integrity measurements (RIM, represented, for example via {{-coswid}}).
+With TUDA, the claims that compose the evidence are signatures over trustworthy integrity measurements created by leveraging roots of trust. The evidence is appraised via corresponding signatures over reference integrity measurements (RIM, represented, for example via {{-coswid}}).
 
 Protocols that facilitate Trust-Anchor based signatures in order to provide
-RATS are usually bi-directional challenge/response protocols, such as the Platform Trust Service protocol {{PTS}} or CAVES {{PRIRA}}, where one entity sends a challenge that is included inside the response to prove the recentness --- the freshness (see fresh in {{RFC4949}}) --- of the attestation information. The corresponding interaction model tightly couples the three activities of creating, transferring and appraising evidence.
+RATS are usually bi-directional challenge/response protocols, such as the Platform Trust Service protocol {{PTS}} or CAVES {{PRIRA}}, where one entity sends a challenge that is included inside the response to prove the recentness -- the freshness (see fresh in {{RFC4949}}) -- of the attestation information. The corresponding interaction model tightly couples the three activities of creating, transferring and appraising evidence.
 
-The Time-Based Uni-directional Attestation family of protocols --- TUDA --- described in this document can decouple the three activities RATS are composed of. As a result, TUDA provides additional capabilities, such as:
+The Time-Based Uni-directional Attestation family of protocols -- TUDA -- described in this document can decouple the three activities RATS are composed of. As a result, TUDA provides additional capabilities, such as:
 
 * remote attestation for Attesters that might not always be able to reach the Internet by enabling the verification of past states,
 * secure audit logs by combining the evidence created via TUDA with integrity measurement logs that represent a detailed record of corresponding past states,
 * an uni-directional interaction model that can traverse "diode-like" network security functions (NSF) or can be leveraged in RESTful architectures (e.g. CoAP {{-coap}}), analogously.
 
-## Evidence Creation
+## System Component Requirements
 
-TUDA is a family of protocols that bundles results from specific attestation activities. The attestation activities of TUDA are based on a hardware Root of Trust that provides the following capabilities:
+TUDA is a family of protocols that bundles results from specific attestation activities. The attestation activities of TUDA are based on a hardware roots of trust that provides the following capabilities:
 
-* Platform Configuration Registers (PCR) that store measurements consecutively (corresponding terminology: "to extend a PCR") and represent the chain of measurements as a single measurement value ("PCR value"),
-* Restricted Signing Keys (RSK) that can only be accessed, if a specific signature about measurements can be provided as authentication, and
-* a dedicated source of (relative) time, e.g. a tick counter.
+* Platform Configuration Registers (PCR) that can extend measurements consecutively and represent the sequence of measurements as a single digest,
+* Restricted Signing Keys (RSK) that can only be accessed, if a specific signature about a set of measurements can be provided as authentication, and
+* a dedicated source of (relative) time, e.g. a tick counter (a tick being a specific time interval, for example 10 ms).
 
 ## Evidence Appraisal
 
-To appraise the evidence created by an Attester, the Verifier requires corresponding Reference Integrity Measurements (RIM). Typically, a set of RIM are bundled in a RIM-Manifest (RIMM). The scope of a manifest encompasses, e.g., a platform, a device, a computing context, or a virtualised function. In order to be comparable, the hashing algorithms used by the Attester to create the integrity measurements have to match the hashing algorithms used to create the corresponding RIM that are used by the Verifier to appraise the integrity evidence.
+To appraise the evidence created by an Attester, the Verifier requires corresponding Reference Integrity Measurements (RIM). Typical set of RIMs are required to assess the integrity of an Attester. These sets are called RIM Bundles. The scope of a RIM Bundle encompasses, e.g., a platform, a device, a computing context, or a virtualised function. In order to be comparable, the hashing algorithms used by the Attester to create the integrity measurements have to match the hashing algorithms used to create the corresponding RIM that are used by the Verifier to appraise the attestation Evidence about software component integrity.
 
 ## Activities and Actions
 
@@ -296,13 +354,6 @@ The Time-Based Uni-directional Attestation family of protocols is designed to:
 ## Hardware Dependencies
 
 The binding of the attestation scheme used by TUDA to generate the TUDA IE is specific to the methods provided by the hardware RoT used (see above). In this document,expositional text and pseudo-code that is provided as a reference to instantiate the TUDA IE is based on TPM 1.2 and TPM 2.0 operations. The corresponding TPM commands are specified in {{TPM12}} and {{TPM2}}. The references to TPM commands and corresponding pseudo-code only serve as guidance to enable a better understanding of the attestation scheme and is intended to encourage the use of any appropriate hardware RoT or equivalent set of functions available to a CPU or Trusted Execution Environment {{TEE}}.
-
-## Requirements Notation
-
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-"SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
-"OPTIONAL" in this document are to be interpreted as described in RFC
-2119, BCP 14 {{RFC2119}}.
 
 # TUDA Core Concept
 
