@@ -45,8 +45,7 @@ author:
 - ins: C. Bormann
   name: Carsten Bormann
   org: Universitaet Bremen TZI
-  street:
-  - Bibliothekstr. 1
+  street: Bibliothekstr. 1
   city: Bremen
   code: D-28359
   country: Germany
@@ -54,20 +53,30 @@ author:
   email: cabo@tzi.org
 normative:
   RFC2119:
+  RFC3161: timestamp
+  RFC3411: snmp
+  RFC5209: nea 
+  RFC6690: link
+  RFC7049: cbor
+  RFC7230: http1
+  RFC7252: coap
+  RFC7320: lawn
+  RFC7519: jwt
+  RFC7540: http2
+  RFC8040: restconf
   RFC8174:
-  RFC8641:
-  RFC8640:
   RFC8639:
-  I-D.birkholz-rats-architecture: rats
+  RFC8640:
+  RFC8641:
+  RFC8610: cddl
 
 informative:
-  RFC4949:
-  RFC2790:
-  RFC6933:
   RFC1213:
   # RFC3410: STD62
   RFC3418:
-  RFC7049: cbor
+  RFC2790:
+  RFC4949:
+  RFC6933:
   STD62:
     title: Internet Standard 62
     author:
@@ -75,11 +84,11 @@ informative:
       STD: 62
       RFCs: 3411 to 3418
     date: 2002-12
-  RFC8610: cddl
   I-D.ietf-sacm-terminology: sacmterm
   I-D.ietf-core-comi: comi
   I-D.ietf-sacm-coswid: coswid
-  I-D.birkholz-rats-reference-interaction-model: charra
+  I-D.birkholz-rats-reference-interaction-model: models 
+  I-D.ietf-rats-architecture: rats
   SCALE:
     title: Improving Scalability for Remote Attestation
     author:
@@ -88,6 +97,26 @@ informative:
     date: 2008
     seriesinfo:
       Master Thesis (Diplomarbeit),: Technische Universitaet Darmstadt, Germany
+  Safford:
+    title: Using IMA for Integrity Measurement and Attestation
+    author:
+    - ins: D. Safford
+      name: David Safford
+    - ins: M. Zohar
+      name: Mimi Zohar
+    - ins: R. Sailer
+      name: Reiner Sailer
+    seriesinfo:
+      Linux Plumbers Conference 2009
+    date: 2009
+  Steffens:
+    title: The linux Integrity Measurement Architecture and TPM-based Network Endpoint Assessment
+    author:
+      ins: A. Steffen
+      name: Andreas Steffen
+    seriesinfo:
+      Linux Security Summit
+    date: 2012
   PRIRA:
     title: Principles of Remote Attestation
     author:
@@ -183,15 +212,6 @@ informative:
     date: 2000
     seriesinfo:
       Ph.D.: Dissertation, University of California, Irvine
-  RFC3161: timestamp
-  RFC3411: snmp
-  RFC7320: lawn
-  RFC7519: jwt
-  RFC7230: http1
-  RFC7252: coap
-  RFC7540: http2
-  RFC6690: link
-  RFC8040: restconf
   IEEE802.1AR:
     title: 802.1AR-2009 - IEEE Standard for Local and metropolitan area networks - Secure Device Identity
     author:
@@ -199,6 +219,14 @@ informative:
     date: 2009
     seriesinfo:
       IEEE: Std 802.1AR
+  IEEE802.11P:
+    title: >
+      802.11P-2010 - IEEE Standard for Information technology-- Local and metropolitan area networks-- Specific requirements-- Part 11: Wireless LAN Medium Access Control (MAC) and Physical Layer (PHY) Specifications Amendment 6: Wireless Access in Vehicular Environments
+    author:
+      org: IEEE Computer Society
+    date: 2010
+    seriesinfo:
+      IEEE: Std 802.11P
   IEEE1609:
     title: 1609.4-2016 - IEEE Standard for Wireless Access in Vehicular Environments (WAVE) -- Multi-Channel Operation
     author:
@@ -209,49 +237,51 @@ informative:
 
 --- abstract
 
-This documents defines the method and bindings used to conduct Time-based Uni-Directional Attestation (TUDA) between two RATS (Remote ATtestation procedureS) Principals over the Internet.
+This documents defines the method and bindings used to conduct Time-based Uni-Directional Attestation (TUDA) between two RATS (Remote ATtestation procedureS) entities over the Internet.
 TUDA does not require a challenge-response handshake and thereby does not rely on the conveyance of a nonce to prove freshness of remote attestation Evidence.
 Conversely, TUDA enables the creation of Secure Audit Logs that can constitute Evidence about current and past operational states of an Attester.
-As a prerequisite for TUDA, every RATS Principal requires access to a trusted and synchronized time-source.
-Per default, in TUDA this is a Time Stamp Authority (TSA) issuing signed Time Stamp Tokens (TST).
+As a prerequisite for TUDA, every RATS entity requires access to a trustable and synchronized time-source.
+Per default, in TUDA this is a Time Stamp Authority (TSA) issuing signed Time Stamp Tokens (TST) and taking on the role of a Handle Distributor.
 
 --- middle
 
 # Introduction
 
-Remote ATtestation procedureS (RATS) describe the attempt to determine and appraise properties, such as integrity and trustworthiness, of a communication partner -- the Attester -- over the Internet to another communication parter -- the Verifier -- without direct access.
+Remote ATtestation procedureS (RATS) describe the attempt to determine and appraise the system properties, such as integrity and trustworthiness, of a communication partner -- the Attester -- over the Internet to another communication partner -- the Verifier -- without direct access.
 TUDA uses the architectural constituents of the RATS Architecture {{-rats}} that defines the Roles Attester and Verifier in detail.
-The RATS Architecture also defines Role Messages.
-TUDA creates and conveys a specific type of Role Message called Evidence, a composition of trustwrthiness Claims provided by an Attester and consumed by a Verifier (potentially relayed by another RATS Role that is a Relying Party).
-TUDA -- in contrast to traditional bi-directional challenge-response protocols {{-charra}} -- enables a uni-directional conveyance of attestation Evidence that allows for providing attestation information without solicitation (e.g. as beacons or push data via YANG Push {{RFC8641}}, {{RFC8640}}, {{RFC8639}}).
+The RATS Architecture also defines Conceptual Messages conveyed between these roles.
+TUDA creates and conveys a specific type of Conceptual Message called Evidence, a composition of trustworthiness Claims collected from Target Environments of an Attester that are consumed by a Verifier (potentially relayed by other RATS entities that take on the role of Relying Party).
+In contrast to traditional bi-directional challenge-response protocols (see section 8.1 in {{-models}}), TUDA enables a uni-directional conveyance of attestation Evidence that allows for providing attestation information without solicitation (see section 8.2 in {{-models}}). Exemplary applications of TUDA are the creation of beacons in vehicular environments {{IEEE1609}} or the notification content of event streams created by YANG Push {{RFC8641}}, {{RFC8640}}, {{RFC8639}}. 
 
-As a result, this document introduces the term Forward Authenticity.
+Nonces enable an implicit time-keeping in which the freshness of evidence is inferred by the recentness of Evidence generated at the time of reception of a nonce (via a request for Evidence). The omission of nonces in TUDA allows for explicit time-keeping where freshness is not inferred from recentness. Instead, a cryptographic binding of a trusted synchronization to a global timescale in the Evidence itself allows for Evidence that proofs past operational states of an Attester. To capture this concept, this document introduces the term Forward Authenticity.
 
-Forward Authenticity (FA):
+Forward Authenticity:
 
 : A property of secure communication protocols, in which later compromise of the long-term keys of a data origin does not compromise past authentication of data from that origin.
-FA is achieved by timely recording of assessments of the authenticity from system components (via "audit logs" during "audit sessions") that are authorized for this purpose and trustworthy (e.g via endorsed roots of trust), in a time frame much shorter than that expected for the compromise of the long-term keys.
+FA is achieved by timely recording of assessments of the authenticity from Target Environments (via "audit logs" during "audit sessions") that are authorized for this purpose and trustworthy (e.g via endorsed Roots of Trusts), in a time frame much shorter than that expected for the compromise of the long-term keys.
 
 : Forward Authenticity enables new levels of assurance and can be included in basically every protocol, such as ssh, YANG Push, router advertisements, link layer neighbor discovery, or even ICMP echo.
 
-## Requirements Notation
+## Terminology
+
+This document use the terms defined in the RATS architecture {{-rats}} and {{-models}}.
 
 {::boilerplate bcp14}
 
-## Evidence
+## Evidence in TUDA
 
-Remote attestation Evidence is basically a set of trustworthiness claims (assertions about the Attester and its system characteristics including security posture and protection characteristics) that are accompanied by a proof of their veracity -- typically a signature based on shielded, private and potentially restricted key material.
-As key material alone is typically not self-descriptive with respect to its intended use (its semantics), the remote attestation Evidence created via TUDA is accompanied by two kinds of certificates that are cryptographically associated with a Trust Anchor (TA) {{RFC4949}} via a certification path:
+Remote attestation Evidence is a set of trustworthiness claims (assertions about the Target Environments of an Attester) that are accompanied by a proof of their veracity -- typically a signature based on shielded, private and potentially restricted key material (an Authentication Secret, see {{-models}}.
+As key material alone is typically not self-descriptive with respect to its intended use (its semantics), the Evidence created via TUDA is accompanied by two kinds of certificates that are cryptographically associated with a Trust Anchor (TA) {{RFC4949}} via a certification path:
 
-* an Attestation Key (AK) Certificate (AK-Cert) that represents the attestation provenance of the created Evidence, and
-* an Endorsement Key (EK) Certificate (EK-Cert) that represents the protection characteristics of the system components the AK is stored in.
+* an Attestation Key (AK) Certificate (AK-Cert) that represents the attestation provenance of the Attesting Environment that creates Evidence, and
+* an Endorsement Key (EK) Certificate (EK-Cert) that represents the protection characteristics of an Attesting Environment the AK is stored in.
 
-If a Verifier decides to trust both the TA of an AK-Cert and an EK-Cert presented by an Attester -- and the included assertions about the system characteristics describing the Attester, the attestation Evidence created via TUDA by the Attester is considered believable.
-Ultimately, believable Evidence is appraised by a Verifier in order to assess the trustworthiness of the corresponding Attester.
+If a Verifier decides to trust both the TA of an AK-Cert and an EK-Cert presented by an Attester -- and the included assertions about the system characteristics describing the Attester -- the Evidence created via TUDA by the Attester is considered trustable and believable.
+Ultimately, trustable and believable Evidence is appraised by a Verifier in order to assess the trustworthiness of the corresponding Attester.
 
 ## Creating Evidence about Software Component Integrity
 
-The TUDA protocol mechanism uses hash values of all started software components as a basis to provide and create Evidence about the integrity of the software components of an Attester.
+The TUDA protocol mechanism uses hash values of all started software components as a basis to provide and create Evidence about the integrity of the software components of an Attester. This concept is implemented, for example, in the Linux kernel and is called the Linux  Integrity  Measurement  Architecture (IMA) {{Safford}}. Open source solutions based on {{-nea}} use IMA to enable remote attestation {{Steffens}}.
 This section defines the processed data items, the required system components, and corresponding operations to enable the creation of Evidence about software component integrity for TUDA.
 
 ### Data Items
