@@ -8,6 +8,7 @@ area: Security
 wg: RATS Working Group
 kw: Internet-Draft
 cat: std
+consensus: true
 pi:
   toc: yes
   sortrefs: yes
@@ -52,9 +53,8 @@ author:
   phone: +49-421-218-63921
   email: cabo@tzi.org
 normative:
-  RFC2119:
   RFC3161: timestamp
-  RFC3411: snmp
+#  RFC3411: snmp
   RFC5209: nea
   RFC5247: eap
   RFC6690: link
@@ -65,7 +65,6 @@ normative:
   RFC7519: jwt
   RFC7540: http2
   RFC8040: restconf
-  RFC8174:
   RFC8639:
   RFC8640:
   RFC8641:
@@ -74,17 +73,17 @@ normative:
 informative:
   RFC1213:
   # RFC3410: STD62
-  RFC3418:
+#  RFC3418:
   RFC2790:
   RFC4949:
   RFC6933:
   STD62:
-    title: Internet Standard 62
-    author:
-    seriesinfo:
-      STD: 62
-      RFCs: 3411 to 3418
-    date: 2002-12
+#    title: Internet Standard 62
+#    author:
+#    seriesinfo:
+#      STD: 62
+#      RFCs: 3411 to 3418
+#    date: 2002-12
   I-D.ietf-sacm-terminology: sacmterm
   I-D.ietf-core-comi: comi
   I-D.ietf-sacm-coswid: coswid
@@ -303,7 +302,7 @@ Time-Based Uni-directional Attestation is designed to:
 * increase the confidence in authentication and authorization procedures,
 * address the requirements of constrained-node networks,
 * support interaction models that do not maintain connection-state over time, such as REST architectures {{REST}},
-* be able to leverage existing management interfaces, such as SNMP {{-snmp}}. RESTCONF {{-restconf}} or CoMI {{-comi}} --- and corresponding bindings,
+* be able to leverage existing management interfaces, such as SNMP ({{RFC3411}}). RESTCONF {{-restconf}} or CoMI {{-comi}} --- and corresponding bindings,
 * support broadcast and multicast schemes (e.g. {{IEEE1609}}),
 * be able to cope with temporary loss of connectivity, and to
 * provide trustworthy audit logs of past endpoint states.
@@ -857,7 +856,7 @@ in the Entity MIB v4 [RFC6933].
 ## Relationship to Other MIBs
 
 The General group in the TUDA MIB is analogous to the System group in MIB-II
-[RFC1213] and the System group in the SNMPv2 MIB [RFC3418] and provides
+[RFC1213] and the System group in the SNMPv2 MIB ({{RFC3418}}) and provides
 context information for the TUDA attestation process.  
 
 ## Definition of TUDA MIB
